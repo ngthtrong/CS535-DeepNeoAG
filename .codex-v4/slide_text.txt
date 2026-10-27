@@ -1,0 +1,259 @@
+
+=== SLIDE 1 ===
+Title 3 [30.3,145.0,898.0,194.0]: DeepNeoAGLearning ThroughControlled Experiments
+Subtitle 4 [31.0,384.0,340.0,51.0]: Computational Biology / Course investigation
+Subtitle 4 [500.0,384.0,398.0,51.0]: Complete experimental run / 25 October 2026
+Subtitle 4 [677.8,49.0,252.0,51.0]: October 2026
+Subtitle 4 [31.0,49.1,436.0,51.1]: DeepNeoAG
+TextBox 5 [31.0,462.0,898.0,27.0]: Composition + LR    /    One-hot MCNN    /    ESM pooled LR    /    ESM CNN    /    ESM MCNN
+
+=== SLIDE 2 ===
+Title 3 [31.0,210.0,898.0,100.0]: Introduction
+
+=== SLIDE 3 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Why predict neoantigen-like peptides?
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 3
+TextBox 7 [31.0,88.0,898.0,39.0]: Sequence prediction covers one part of a wider biological process
+TextBox 8 [31.0,126.0,898.0,48.0]: Tumor-specific mutations can alter peptides. Presentation and T-cell recognition depend on biological context.
+TextBox 11 [31.0,478.0,850.0,29.0]: Biological context only. This classifier does not establish presentation, immune response or vaccine effectiveness.
+
+=== SLIDE 4 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Defining the prediction problem
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 4
+TextBox 7 [31.0,88.0,898.0,39.0]: A ranking score becomes a binary decision at a locked threshold
+Rectangle 8 [31.0,221.0,180.0,64.0]: Peptide sequence
+Rectangle 9 [249.0,221.0,200.0,64.0]: Sequence classifier
+Rectangle 10 [487.0,221.0,125.0,64.0]: Score s
+Rectangle 11 [650.0,221.0,120.0,64.0]: s ≥ t?
+TextBox 19 [826.0,161.0,106.0,85.0]: YES / Label 1 / Neoantigen
+TextBox 20 [826.0,281.0,106.0,85.0]: NO / Label 0 / Dataset other
+TextBox 21 [31.0,313.0,430.0,32.0]: No explicit HLA allele input
+TextBox 22 [450.0,380.0,475.0,32.0]: t selected from training OOF predictions
+TextBox 23 [31.0,478.0,850.0,29.0]: A score is not proof of immunogenicity or a calibrated probability. Label 0 reflects the dataset definition.
+
+=== SLIDE 5 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Five questions behind the model sequence
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 5
+TextBox 4 [31.0,88.0,898.0,39.0]: Each approach is trained independently
+TextBox 6 [31.0,478.0,850.0,29.0]: Composition versus one-hot changes representation and classifier. Later matched comparisons isolate components more closely.
+
+=== SLIDE 6 ===
+Title 3 [31.0,210.0,898.0,100.0]: Methodology
+
+=== SLIDE 7 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Dataset provenance and published splits
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 7
+TextBox 4 [31.0,88.0,898.0,39.0]: The independent test keeps its published boundary
+Rectangle 5 [31.0,145.0,252.0,66.0]: Published data / 7,012 peptides
+Rectangle 7 [339.0,145.0,264.0,66.0]: Training / 5,608 records
+Rectangle 8 [649.0,145.0,280.0,66.0]: Independent test / 1,404 records
+TextBox 10 [31.0,478.0,850.0,29.0]: Record IDs and source labels are retained. Source similarity filtering has not been independently reconstructed.
+
+=== SLIDE 8 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Understanding the data before training
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 8
+TextBox 7 [31.0,88.0,898.0,39.0]: Rare positives and a length-35 boundary case affect the method
+TextBox 10 [31.0,478.0,850.0,29.0]: About 1 positive per 22 others. Keep the length-35 record. Length alone does not establish an MHC class.
+
+=== SLIDE 9 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Designing a fair evaluation
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 9
+TextBox 7 [31.0,88.0,898.0,39.0]: Fitting, early stopping, model selection and testing use distinct roles
+Rectangle 8 [31.0,129.0,898.0,38.0]: TRAINING ONLY: 5,608 records
+Rectangle 9 [31.0,201.0,192.0,68.0]: Shared stratified / 5-fold CV
+Rectangle 10 [251.0,201.0,222.0,68.0]: Fit subset + inner / 15% early stopping
+Rectangle 11 [501.0,201.0,196.0,68.0]: Outer-validation / OOF predictions
+Rectangle 12 [725.0,201.0,204.0,68.0]: Select by mean AP / Select t by OOF MCC
+TextBox 16 [31.0,290.0,590.0,54.0]: Neural seeds: 535, 536, 537 with shared partitions / LR uses the full outer-training portion, with no early stopping
+Rectangle 17 [640.0,300.0,133.0,65.0]: Lock settings / and threshold
+Rectangle 21 [31.0,379.0,308.0,64.0]: Refit on all / 5,608 training records
+Rectangle 22 [372.0,379.0,264.0,64.0]: Independent test / 1,404 records
+Rectangle 23 [682.0,402.0,247.0,41.0]: Final evaluation
+TextBox 32 [31.0,478.0,850.0,29.0]: Selection CV is optimistic after tuning. Seeds on the same fold are correlated evaluations, not independent datasets.
+
+=== SLIDE 10 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Metric definitions and threshold policy
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 10
+TextBox 4 [31.0,88.0,898.0,39.0]: ranking quality and a binary operating point answer different questions
+TextBox 6 [31.0,425.0,898.0,48.0]: Configuration: maximize mean CV AP. Threshold: maximize MCC from seed-averaged training OOF predictions. / Independent test uses both 0.5 and the locked OOF threshold. Main slides use the OOF threshold.
+TextBox 7 [31.0,478.0,850.0,29.0]: AP and ROC-AUC use scores. Precision, recall, specificity, MCC and confusion counts depend on the threshold.
+
+=== SLIDE 11 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Baseline 1: amino-acid composition
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 11
+TextBox 7 [31.0,88.0,898.0,39.0]: Composition contains some signal, but loses residue order
+Rectangle 8 [31.0,196.0,150.0,95.0]: ACDL / LDCA
+Rectangle 10 [230.0,196.0,260.0,95.0]: Same 20-component / frequency vector / A = C = D = L = 0.25
+Rectangle 12 [537.0,196.0,244.0,95.0]: StandardScaler / Balanced LR, C = 1
+Rectangle 14 [827.0,213.0,102.0,62.0]: Score
+TextBox 15 [31.0,317.0,460.0,36.0]: Order is lost
+TextBox 17 [31.0,478.0,850.0,29.0]: ACDL and LDCA are teaching examples. Test prevalence: 0.0434. The scaler fits within training partitions.
+
+=== SLIDE 12 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Baseline 2: one-hot MCNN
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 12
+TextBox 7 [31.0,88.0,898.0,39.0]: Ordered local patterns learned directly from task labels
+TextBox 8 [31.0,140.0,302.0,265.0]: No pretrained encoder /  / Five parallel windows / k = 2, 3, 4, 5, 8 /  / 64 filters per branch / 320 concatenated features /  / Mask padding before max pooling
+TextBox 11 [31.0,478.0,850.0,29.0]: Strong efficiency reference. Improvement over composition changes both representation and classifier.
+
+=== SLIDE 13 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: From peptides to contextual embeddings
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 13
+TextBox 7 [31.0,88.0,898.0,39.0]: A frozen ESM encoder gives every real residue a contextual representation
+TextBox 9 [686.0,140.0,243.0,240.0]: B / Peptides per batch /  / L / Padded residue positions /  / D / Features per residue
+TextBox 10 [686.0,398.0,243.0,55.0]: 8M: D = 320 / 35M: D = 480
+TextBox 11 [31.0,478.0,850.0,29.0]: Remove special tokens. Mean pooling uses real residues. CNN windows touching padding are excluded.
+
+=== SLIDE 14 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Pooling, single-window CNN and MCNN
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 14
+TextBox 7 [31.0,88.0,898.0,39.0]: The same frozen embeddings support three independent classifiers
+TextBox 8 [31.0,139.0,300.0,320.0]: Pooled LR / Real-residue mean; C = 0.1 / CV / test AP: 0.3976 / 0.4764 /  / Single-window CNN / k = 3; 64 filters / CV / test AP: 0.4868 / 0.5122 /  / Multi-window CNN / 256 filters × 5; concat 1,280 / CV / test AP: 0.5142 / 0.5437
+
+=== SLIDE 15 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Our controlled experiment matrix
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 15
+TextBox 4 [31.0,88.0,898.0,39.0]: A staged, one-factor search, with 22 configurations
+TextBox 6 [31.0,478.0,850.0,29.0]: 240 CV fits + 18 final refits = 258 fits. AdamW, LR 0.001, weight decay 0.01, batch 64, maximum 30 epochs.
+
+=== SLIDE 16 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Selected configurations
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 16
+TextBox 4 [31.0,88.0,898.0,39.0]: settings locked before independent testing
+TextBox 6 [31.0,478.0,850.0,29.0]: ESM is frozen. Parameters count only the trainable classifier. Neural final predictions average seeds 535, 536, 537.
+
+=== SLIDE 17 ===
+Title 3 [31.0,210.0,898.0,100.0]: Results
+
+=== SLIDE 18 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Tracking learning and computational cost
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 18
+TextBox 7 [31.0,88.0,898.0,39.0]: Early-stop AP can plateau while fitting loss continues to decline
+TextBox 11 [31.0,478.0,850.0,29.0]: Fold 0, seed 535. Raw loss scales differ. Timings depend on session state and stopping epoch, not deployment latency.
+
+=== SLIDE 19 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: What we observed across folds and seeds
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 19
+TextBox 7 [31.0,88.0,898.0,39.0]: Mean AP and descriptive spread answer different questions
+TextBox 10 [677.0,145.0,252.0,28.0]: Mean CV AP ± SD
+TextBox 11 [677.0,187.0,252.0,221.0]: One-hot MCNN / 0.4943 ± 0.1032 /  / 8M MCNN / 0.5142 ± 0.0547 /  / 35M MCNN / 0.5216 ± 0.0655
+TextBox 12 [31.0,478.0,850.0,29.0]: Selection CV, not an unbiased post-selection estimate. Fold 4 is difficult across neural methods; the cause is unresolved.
+
+=== SLIDE 20 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Fixed defaults versus tuned selections
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 22
+TextBox 4 [31.0,88.0,898.0,39.0]: comparison includes the model-selection step
+TextBox 6 [31.0,478.0,850.0,29.0]: Defaults and selected settings are not independent estimates. A larger selected head changes capacity as well as window coverage.
+
+=== SLIDE 21 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Encoder size, head quality and cost
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 23
+TextBox 7 [31.0,88.0,898.0,39.0]: transferred CNN settings, with changed D and head parameter count
+TextBox 10 [31.0,478.0,850.0,29.0]: 8M / 35M change embedding dimension and head capacity. Downstream fit time excludes extraction and depends on hardware.
+
+=== SLIDE 22 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Independent test: a final check
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 24
+TextBox 7 [31.0,88.0,898.0,39.0]: ESM 35M MCNN has the highest observed AP, with uncertain differences
+TextBox 11 [570.0,300.0,359.0,161.0]: 35M MCNN: 44 / 61 positives found / 52 false positives /  / AP 95% CI: [0.4631, 0.7061] /  / Paired AP difference vs one-hot / 95% CI: [−0.0444, 0.1151]
+TextBox 12 [31.0,478.0,850.0,29.0]: All 1,404 test records. Neural probabilities average three final seeds. Thresholds are locked from OOF MCC.
+
+=== SLIDE 23 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Complete independent-test metrics
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 25
+TextBox 4 [31.0,88.0,898.0,39.0]: ensemble probabilities and locked OOF thresholds
+TextBox 6 [31.0,478.0,850.0,29.0]: N = 1,404, including 61 positives and 1,343 others. LR has one refit. Neural probabilities average three refits.
+
+=== SLIDE 24 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Test uncertainty and seed spread
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 26
+TextBox 4 [31.0,88.0,898.0,39.0]: 2,000 stratified bootstrap repetitions, fixed trained models
+TextBox 6 [31.0,447.0,898.0,35.0]: Exploratory paired AP difference, 35M MCNN minus one-hot MCNN: 0.0350, 95% CI [−0.0444, 0.1151]. / No multiplicity correction. These intervals do not cover retraining or source-domain uncertainty.
+
+=== SLIDE 25 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Complete test precision–recall and ROC
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 27
+TextBox 7 [31.0,88.0,898.0,39.0]: all eight locked methods on the same independent test
+TextBox 10 [31.0,478.0,850.0,29.0]: N = 1,404. PR prevalence = 0.0434. Neural scores average three seed refits. No test-driven configuration changes.
+
+=== SLIDE 26 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: All eight confusion matrices
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 28
+TextBox 7 [31.0,88.0,898.0,39.0]: raw counts at locked OOF-selected thresholds
+TextBox 10 [31.0,478.0,850.0,29.0]: Label 1: neoantigen. Label 0: dataset other. Common color scale. Every panel covers the same 1,404 records.
+
+=== SLIDE 27 ===
+Title 3 [31.0,210.0,898.0,100.0]: Conclusion
+
+=== SLIDE 28 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Errors, limitations and lessons learned
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 30
+TextBox 7 [31.0,88.0,898.0,39.0]: Confident errors require inspection without inventing a biological mechanism
+TextBox 9 [31.0,350.0,566.0,58.0]: ESM 35M + MCNN / Locked threshold: 0.632288
+TextBox 10 [632.0,143.0,297.0,293.0]: Only 61 positive test records /  / Source similarity filtering remains unverified /  / Labels and source domain limit generalization /  / Sequence appearance does not identify an error mechanism
+TextBox 11 [31.0,478.0,850.0,29.0]: Examples selected reproducibly by confidence within FP/FN groups. A length-35 error alone does not prove a padding defect.
+
+=== SLIDE 29 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Conclusions and next experiments
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 32
+TextBox 4 [31.0,88.0,898.0,39.0]: Observed lessons under this dataset and protocol
+TextBox 6 [31.0,430.0,898.0,44.0]: Next: similarity-aware validation and an external cohort with locked choices
+TextBox 7 [31.0,478.0,850.0,29.0]: 35M MCNN has the highest observed test AP. Close model differences remain unresolved.
+
+=== SLIDE 30 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: What changed when one component changed?
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 21
+TextBox 7 [31.0,88.0,898.0,39.0]: Ablations describe conditional effects under the same protocol
+TextBox 11 [31.0,478.0,850.0,29.0]: Error bars show descriptive fold/seed SD. Weighted loss improves AP here, while MCC at 0.5 decreases (0.4225 vs 0.4398).
+
+=== SLIDE 31 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Fold and seed variation
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 20
+TextBox 7 [31.0,88.0,898.0,39.0]: each point is one run on the same published training split
+TextBox 10 [31.0,478.0,850.0,29.0]: Seeds and folds are correlated. Spread is descriptive, not a confidence interval. Difficult fold causes remain unresolved.
+
+=== SLIDE 32 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Execution provenance and limitations
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 31
+TextBox 7 [31.0,88.0,898.0,39.0]: numerical reconciliation does not establish exact execution-source identity
+TextBox 8 [31.0,144.0,898.0,110.0]: 258 completed fits and saved numerical evidence reconcile /  / The recorded run hash differs from the current pipeline and notebook. The exact executed notebook snapshot is missing.
+TextBox 9 [31.0,283.0,898.0,106.0]: Recorded full-run code SHA-256 / 3bd6cb69a8bfeca0a63bf91c461152c45312a7e5c3b9ff55308d7090009b997e /  / Current scripts/course_pipeline.py SHA-256 / a01bdafcf50131f31f1cc5bca963e66cfa6f9a6ac4240bbada93a6ec33fcdf95
+TextBox 10 [31.0,417.0,898.0,55.0]: Next evidence: archive the executed notebook, audit sequence similarity reproducibly, then evaluate locked choices on an external cohort.
+TextBox 11 [31.0,478.0,850.0,29.0]: Source-domain generalization, label quality and only 61 positive test cases limit the interpretation.
+
+=== SLIDE 33 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Complete CV configurations (1/2)
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 33
+TextBox 4 [31.0,88.0,898.0,39.0]: Appendix A1: all 22 settings, including unselected configurations
+TextBox 6 [31.0,478.0,850.0,29.0]: Mean and sample SD over saved outer-fold/seed rows. Selection reuses CV, so these are optimistic after tuning.
+
+=== SLIDE 34 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Complete CV configurations (2/2)
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 34
+TextBox 4 [31.0,88.0,898.0,39.0]: Appendix A2: all 22 settings, including unselected configurations
+TextBox 6 [31.0,478.0,850.0,29.0]: Mean and sample SD over saved outer-fold/seed rows. Selection reuses CV, so these are optimistic after tuning.
+
+=== SLIDE 35 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Complete learning histories
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 35
+TextBox 7 [31.0,88.0,898.0,39.0]: Appendix A3: selected settings, first fold and first seed
+TextBox 10 [31.0,478.0,850.0,29.0]: Fold 0, seed 535. Raw weighted losses have different scales. Early-stop AP supports checkpoint selection.
+
+=== SLIDE 36 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Complete controlled ablations
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 36
+TextBox 7 [31.0,88.0,898.0,39.0]: Appendix A4: one-factor 8M comparisons
+TextBox 10 [31.0,478.0,850.0,29.0]: Error bars show descriptive fold/seed SD. Window, filter and loss contrasts retain their fixed conditions.
+
+=== SLIDE 37 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: Additional representative errors
+Slide Number Placeholder 3 [888.0,494.0,41.0,19.0]: 37
+TextBox 4 [31.0,88.0,898.0,39.0]: Appendix A5: two FP and two FN examples for selected multi-window models
+TextBox 6 [31.0,478.0,850.0,29.0]: Deterministic confidence-based examples, not a mechanistic explanation. Full sequences and all model examples remain in the source CSV.
+
+=== SLIDE 38 ===
+Google Shape;533;p58 [31.0,27.0,898.0,57.0]: References and image credits
+Slide Number Placeholder 6 [888.0,494.0,41.0,19.0]: 38
+TextBox 7 [31.0,88.0,898.0,39.0]: Appendix A6: sources for biological context, methods and empirical figures
+TextBox 8 [31.0,136.0,898.0,324.0]: Chuang et al. (2024), International Journal of Biological Macromolecules / https://doi.org/10.1016/j.ijbiomac.2024.136252 / Dataset and original project: https://github.com/B1607/DeepNeoAG /  / ESM models and implementation / https://github.com/facebookresearch/esm /  / Slide 2 illustration: adapted from Nature (2023) via National Cancer Institute / doi:10.1038/s41586-023-06063-y, CC BY 4.0. Resized only. / https://creativecommons.org/licenses/by/4.0/ /  / Empirical figures: complete supplied training run, results_full/ / Named figure exports: docs/assets/full_results/ / Operating Review template: retained source deck, cloned and adapted
+TextBox 9 [31.0,478.0,850.0,29.0]: No AI-generated illustration is presented. Conceptual architecture placeholders remain for later image insertion.
