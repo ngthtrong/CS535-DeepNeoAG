@@ -1,0 +1,59 @@
+[
+  {
+    "slide": 12,
+    "asset": "I_V16_onehot_mcnn",
+    "status": "inserted",
+    "native_group": "DIAGRAM_I_EDITABLE",
+    "frame_pt": [
+      365,
+      138,
+      564,
+      285
+    ],
+    "png": "docs/assets/generated/I_V16_onehot_mcnn.png",
+    "svg": "docs/assets/generated/I_V16_onehot_mcnn.svg",
+    "basis": [
+      "docs/EXPERIMENT_PROTOCOL.md",
+      "results_full/tables/selected_models.csv"
+    ],
+    "design": "Recomposed from actual slide context; old prompt not used as generation input."
+  },
+  {
+    "slide": 13,
+    "asset": "C_V05_embeddings",
+    "status": "inserted",
+    "native_group": "DIAGRAM_C_EDITABLE",
+    "frame_pt": [
+      31,
+      137,
+      620,
+      310
+    ],
+    "png": "docs/assets/generated/C_V05_embeddings.png",
+    "svg": "docs/assets/generated/C_V05_embeddings.svg",
+    "basis": [
+      "docs/EXPERIMENT_PROTOCOL.md",
+      "results_full/tables/selected_models.csv"
+    ],
+    "design": "Recomposed from actual slide context; old prompt not used as generation input."
+  },
+  {
+    "slide": 14,
+    "asset": "D_V06_selected_architectures",
+    "status": "inserted",
+    "native_group": "DIAGRAM_D_EDITABLE",
+    "frame_pt": [
+      365,
+      138,
+      564,
+      317
+    ],
+    "png": "docs/assets/generated/D_V06_selected_architectures.png",
+    "svg": "docs/assets/generated/D_V06_selected_architectures.svg",
+    "basis": [
+      "docs/EXPERIMENT_PROTOCOL.md",
+      "results_full/tables/selected_models.csv"
+    ],
+    "design": "Recomposed from actual slide context; old prompt not used as generation input."
+  }
+]

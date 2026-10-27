@@ -1,0 +1,41 @@
+[
+  {
+    "slide": 12,
+    "shape_name": "PLACEHOLDER_V16",
+    "asset": "V16",
+    "ratio": "16:9",
+    "prompt": "Prompt I in IMAGE_GENERATION_PROMPTS.md",
+    "frame_pt": [
+      365,
+      138,
+      564,
+      285
+    ]
+  },
+  {
+    "slide": 13,
+    "shape_name": "PLACEHOLDER_V05",
+    "asset": "V05",
+    "ratio": "16:9",
+    "prompt": "Prompt C in IMAGE_GENERATION_PROMPTS.md",
+    "frame_pt": [
+      31,
+      137,
+      620,
+      310
+    ]
+  },
+  {
+    "slide": 14,
+    "shape_name": "PLACEHOLDER_V06",
+    "asset": "V06",
+    "ratio": "16:9",
+    "prompt": "Prompt D; five parallel MCNN branches",
+    "frame_pt": [
+      365,
+      138,
+      564,
+      317
+    ]
+  }
+]

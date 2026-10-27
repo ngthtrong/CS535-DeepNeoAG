@@ -18,13 +18,17 @@ htmlcov/
 .ipynb_checkpoints/
 .jupyter_cache/
 
-# Rebuildable packages, local outputs and temporary files
+# Rebuildable packages and temporary files
 /build/
 /dist/
 *.egg-info/
 /tmp/
-/output/
-/outputs/
+
+# Publish report and presentation deliverables; ignore local run outputs
+/output/*
+!/output/pdf/
+/outputs/*
+!/outputs/presentation/
 
 # Datasets are downloaded locally; keep only the download documentation
 /data/*
