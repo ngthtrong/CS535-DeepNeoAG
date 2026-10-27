@@ -1,0 +1,51 @@
+# Python environments and bytecode
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Python tooling caches and coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Jupyter runtime files
+.ipynb_checkpoints/
+.jupyter_cache/
+
+# Rebuildable packages, local outputs and temporary files
+/build/
+/dist/
+*.egg-info/
+/tmp/
+/output/
+/outputs/
+
+# Datasets are downloaded locally; keep only the download documentation
+/data/*
+!/data/README.md
+
+# Local experiment outputs, copied datasets, embeddings and checkpoints
+/results_full/
+*.pt
+*.pth
+*.ckpt
+
+# Local credentials and environment settings
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Editor and operating-system temporary files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini

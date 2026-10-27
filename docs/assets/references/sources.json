@@ -1,0 +1,22 @@
+[
+  {
+    "name": "R1_neoantigen_vaccine.jpg",
+    "landing": "https://www.cancer.gov/news-events/cancer-currents-blog/2025/neoantigen-vaccine-pancreatic-kidney-cancer",
+    "url": "https://www.cancer.gov/sites/www/files/styles/cgov_article/public/cgov_image/media_image/2025-03/neoantigen%20vaccine%20manufacture.jpg?itok=p3HFIlKP",
+    "license": "CC BY 4.0",
+    "credit": "Adapted from Nature (May 2023), doi:10.1038/s41586-023-06063-y, via NCI. No changes.",
+    "status": "downloaded",
+    "bytes": 32107,
+    "sha256": "9360f6fa5918b385daaf6d4231b6ec63e7ec90bbe8835e5afa3b3411ca94a18c"
+  },
+  {
+    "name": "R2_antigen_presentation.svg",
+    "landing": "https://commons.wikimedia.org/wiki/File:Antigen_presentation.svg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Antigen_presentation.svg",
+    "license": "CC BY-SA 3.0",
+    "credit": "Sjef and Wikimedia Commons file-history contributors. No changes.",
+    "status": "downloaded",
+    "bytes": 38925,
+    "sha256": "61413919d8b341e0be650d385f0a13e2594f4727c7ce54d1fe1967426d57fba7"
+  }
+]

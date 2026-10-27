@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<!-- saved from url=(0080)http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html -->
+<html lang="en"><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js" id="eppiocemhmnlbhjplcgkofciiegomcon"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js"></script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS535 Computational Biology | CNN → Deep Learning → Pretrained Models</title>
+<style>
+:root{
+  --bg:#f6f7fb; --paper:#ffffff; --ink:#172033; --muted:#667085;
+  --accent:#315efb; --accent2:#6c3cff; --line:#e7e9f0; --soft:#eef2ff;
+  --good:#0f8a5f; --warn:#b97000; --bad:#b42318; --code:#111827;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(125deg,#172554,#1d4ed8 58%,#6d28d9);color:#fff;padding:56px 7vw 44px}
+header .kicker{font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;opacity:.82}
+header h1{font-size:clamp(2rem,5vw,4.2rem);line-height:1.08;margin:.45rem 0 1rem;max-width:1050px}
+header p{max-width:900px;font-size:1.08rem;opacity:.92}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:6px 11px;border-radius:999px;font-size:.9rem}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;max-width:1450px;margin:0 auto;padding:28px}
+nav{position:sticky;top:18px;align-self:start;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;max-height:calc(100vh - 36px);overflow:auto}
+nav h3{margin:0 0 10px;font-size:.95rem;color:var(--muted)}
+nav a{display:block;color:#344054;text-decoration:none;padding:7px 9px;border-radius:8px;font-size:.92rem}
+nav a:hover{background:var(--soft);color:var(--accent)}
+main{min-width:0}
+section{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px;margin-bottom:22px;box-shadow:0 2px 8px rgba(16,24,40,.025)}
+h2{font-size:1.7rem;line-height:1.25;margin:0 0 16px}
+h3{margin:24px 0 10px}
+h4{margin:18px 0 8px}
+p{margin:9px 0}
+.lead{font-size:1.09rem;color:#344054}
+.callout{border-left:4px solid var(--accent);background:#f8faff;padding:14px 16px;border-radius:10px;margin:16px 0}
+.callout.good{border-left-color:var(--good);background:#f2fbf7}
+.callout.warn{border-left-color:var(--warn);background:#fff8eb}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:16px 0}
+.card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+.card b{display:block;margin-bottom:5px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.95rem}
+th,td{border-bottom:1px solid var(--line);padding:10px 11px;text-align:left;vertical-align:top}
+th{background:#f9fafb;color:#344054}
+code{background:#f2f4f7;padding:2px 5px;border-radius:5px}
+pre{background:var(--code);color:#e5e7eb;padding:16px;border-radius:12px;overflow:auto;line-height:1.5}
+.flow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#111827;color:#dbeafe;border-radius:14px;padding:17px;overflow:auto;white-space:pre}
+.small{color:var(--muted);font-size:.9rem}
+.metric{display:inline-block;border:1px solid var(--line);padding:5px 9px;border-radius:999px;margin:3px;font-size:.88rem;background:#fafbff}
+hr{border:0;border-top:1px solid var(--line);margin:24px 0}
+footer{max-width:1450px;margin:0 auto;padding:10px 28px 40px;color:var(--muted)}
+@media(max-width:900px){.layout{grid-template-columns:1fr;padding:16px}nav{position:relative;top:auto;max-height:none}header{padding:40px 22px}}
+</style>
+
+<style id="conv-demo-style">
+.conv-demo-wrap{display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,1fr);gap:18px;align-items:start;margin:18px 0}
+.conv-panel{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfcff}
+.conv-panel h4{margin:0 0 10px}
+.conv-canvas-box{position:relative;width:100%;max-width:420px;aspect-ratio:1/1;background:#111827;border-radius:10px;overflow:hidden;margin:auto}
+.conv-canvas-box canvas{width:100%;height:100%;display:block;image-rendering:auto}
+.conv-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:14px 0}
+.conv-control label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:4px}
+.conv-control select,.conv-control input[type="number"],.conv-control input[type="file"]{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.kernel-editor-wrap{overflow:auto;max-width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}
+.kernel-grid{border-collapse:separate;border-spacing:4px;width:auto;margin:0 auto}
+.kernel-grid td{border:0;padding:0}
+.kernel-grid input{width:58px;padding:6px 3px;border:1px solid #cfd4dc;border-radius:6px;text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem}
+.kernel-grid input:focus{outline:2px solid #9ab0ff;border-color:var(--accent)}
+.matrix-title{font-weight:700;margin:12px 0 6px}
+.matrix-scroll{overflow:auto;max-width:100%}
+.matrix-table{border-collapse:separate;border-spacing:3px;width:auto;margin:0}
+.matrix-table td{min-width:48px;text-align:center;padding:5px 7px;border:1px solid #e0e4ea;border-radius:5px;background:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem}
+.matrix-table td.hot{background:#fff4d6;border-color:#f0b429}
+.calc-strip{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.calc-chip{padding:8px 10px;border-radius:9px;background:#eef2ff;border:1px solid #d9e0ff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem}
+.calc-chip strong{color:#203fb3}
+.conv-note{font-size:.88rem;color:var(--muted)}
+.conv-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.83rem;color:var(--muted);margin-top:8px}
+.legend-box{display:inline-block;width:12px;height:12px;border:2px solid #ffcc00;margin-right:4px;vertical-align:-2px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.conv-btn{border:1px solid #cfd7ff;background:#eef2ff;color:#1f3fb8;border-radius:8px;padding:8px 11px;cursor:pointer;font-weight:600}
+.conv-btn:hover{background:#e3e9ff}
+.formula-live{padding:12px;border-radius:10px;background:#111827;color:#e5e7eb;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto}
+.feature-scale{height:12px;border-radius:99px;background:linear-gradient(90deg,#000,#fff);border:1px solid #d0d5dd;margin-top:8px}
+@media(max-width:900px){.conv-demo-wrap{grid-template-columns:1fr}.kernel-grid input{width:52px}}
+</style>
+
+
+<style id="multi-kernel-demo-style">
+.mk-layout{display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,1fr);gap:18px;align-items:start}
+.mk-panel{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfcff}
+.mk-grid{border-collapse:separate;border-spacing:4px;margin:8px 0}
+.mk-grid td{min-width:54px;height:42px;text-align:center;border:1px solid #d8dde6;border-radius:7px;background:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600}
+.mk-grid td.patch{background:#fff6cf;border-color:#e7b91f}
+.mk-grid td.focus{outline:3px solid #315efb}
+.mk-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:14px}
+.mk-filter-card{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}
+.mk-filter-card h4{margin:0 0 6px}
+.mk-filter-card .activation{font-size:1.35rem;font-weight:800;margin-top:8px}
+.mk-products{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#111827;color:#e5e7eb;padding:10px;border-radius:8px;font-size:.84rem;overflow:auto;white-space:pre-wrap}
+.mk-featuremaps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.mk-map{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px}
+.mk-map table{border-collapse:separate;border-spacing:3px;margin:6px 0;width:auto}
+.mk-map td{min-width:44px;text-align:center;padding:5px;border:1px solid #e0e4ea;border-radius:5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem}
+.mk-btn{border:1px solid #cfd7ff;background:#eef2ff;color:#1f3fb8;border-radius:8px;padding:8px 11px;cursor:pointer;font-weight:600}
+.mk-btn:hover{background:#e3e9ff}
+.mk-note{font-size:.9rem;color:var(--muted)}
+@media(max-width:900px){.mk-layout{grid-template-columns:1fr}}
+</style>
+
+
+<style id="mnist-demo-style">
+.mnist-layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:18px;align-items:start}
+.mnist-canvas-wrap{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.mnist-canvas-box{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff}
+.mnist-canvas-box canvas{width:224px;height:224px;image-rendering:pixelated;background:#000;border-radius:8px;display:block}
+.mnist-feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.mnist-feature-card{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px}
+.mnist-feature-card canvas{width:100%;max-width:196px;aspect-ratio:1/1;image-rendering:pixelated;background:#000;border-radius:7px;display:block;margin:auto}
+.mnist-bars{display:grid;gap:7px;margin-top:12px}
+.mnist-bar{display:grid;grid-template-columns:95px 1fr 62px;gap:8px;align-items:center;font-size:.86rem}
+.mnist-bar-track{height:12px;background:#eef0f3;border-radius:99px;overflow:hidden}
+.mnist-bar-fill{height:100%;background:linear-gradient(90deg,#315efb,#6d28d9)}
+.mnist-pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0}
+.mnist-stage{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fafbff;text-align:center}
+.mnist-stage strong{display:block;font-size:1.05rem;margin-bottom:4px}
+.mnist-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.mnist-controls select,.mnist-controls button{padding:8px 10px;border:1px solid #cfd7ff;border-radius:8px;background:#fff}
+.mnist-controls button{background:#eef2ff;color:#1f3fb8;font-weight:700;cursor:pointer}
+.mnist-explain{font-size:.92rem;color:var(--muted)}
+@media(max-width:900px){.mnist-layout{grid-template-columns:1fr}}
+</style>
+
+<script bis_use="true" type="text/javascript" charset="utf-8" nonce="" data-dynamic-id="71709eff-bca2-4816-b748-dcbddba98c72" src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/executors/200.js"></script><script bis_use="true" type="text/javascript" charset="utf-8" nonce="" data-dynamic-id="71709eff-bca2-4816-b748-dcbddba98c72" src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/executors/101.js"></script></head>
+<body __processed_59c982a1-1173-4148-bf3b-e8d02c2fbec0__="true">
+<header>
+  <div class="kicker">CS535 Computational Biology · Graduate Course</div>
+  <h1>From CNN Fundamentals to Modern Deep Learning and Pretrained Models</h1>
+  <p>Use large-scale Cats vs. Dogs image classification as a visual research sandbox to build rigorous machine-learning research skills, then transfer the same ideas to computational biology, 1D CNNs, and protein language models.</p>
+  <div class="badges">
+    <span class="badge">Google Colab</span><span class="badge">Python / PyTorch 2.x</span>
+    <span class="badge">25K-class dataset scale</span><span class="badge">Controlled experiments</span>
+    <span class="badge">Transfer learning</span><span class="badge">Independent challenge set</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav>
+  <h3>Course Navigation</h3>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#goals">1. Course Goals</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#dataset">2. Large Dataset and Data Splits</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#cnn">3. CNN in Depth</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#lee">3A. Hung-yi Lee’s CNN Teaching Framework</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#conv-manual">3A+. Manual Convolution and Multi-Kernel Demo</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#mnist-bridge">3A++. Integrated MNIST Example</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#conv-live">3A+++. Live Image Convolution Demo</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#kernel-lab">3B. Fine-Grained Kernel Experiments</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#filter-lab">3C. Filter-Count Experiments</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#pooling-lab">3D. Pooling / Stride / Padding</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#experiments">4. CNN Controlled Experiments</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#deepmodels">5. Evolution of Deep Learning Architectures</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#pretrained">6. Pretrained Models</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#metrics">7. Evaluation Metrics</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#challenge">8. Hard / OOD Challenge</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#report">9. Academic Research Report</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#bio">10. Transition to Bioinformatics</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#schedule">11. Suggested Teaching Sequence</a>
+  <a href="http://140.138.155.226/~yien/cb/2026/CS535_CNN_Deep_Learning_Course_English.html#refs">12. Resources and References</a>
+</nav>
+
+<main>
+<section id="goals">
+<h2>1. Course Goal: Learn to Conduct Machine-Learning Research, Not Just Run a CNN</h2>
+<p class="lead">This module starts with Cats vs. Dogs classification so students can clearly observe the deep-learning research workflow without a heavy biological prerequisite. By the end, students should be able to transfer the same experimental design principles to protein sequences, functional prediction, and other computational-biology problems.</p>
+<div class="flow">Scientific question
+      ↓
+Dataset construction / quality control
+      ↓
+Train / validation / independent test
+      ↓
+Baseline CNN
+      ↓
+Controlled architecture &amp; hyperparameter experiments
+      ↓
+Modern deep learning architectures
+      ↓
+Pretrained model / transfer learning
+      ↓
+Independent challenge &amp; OOD test
+      ↓
+Error analysis + statistical interpretation
+      ↓
+Academic report</div>
+<div class="callout"><b>Core rule:</b>Change only the main experimental variable at a time. Use the validation set for model and hyperparameter selection; use the independent test set only for final evaluation, never for repeated tuning.</div>
+</section>
+
+<section id="dataset">
+<h2>2. Use a Sufficiently Large Cats vs. Dogs Dataset</h2>
+<p>The recommended primary dataset is the Microsoft/Asirra-derived Cats vs. Dogs image collection. The raw archive contains about 25,000 cat and dog images. Real-world datasets include a small number of corrupted or abnormal files, so data cleaning is itself the first research step. The Colab notebook downloads the ~786 MB public archive, validates images with PIL, and builds a manifest.</p>
+<table>
+<tbody><tr><th>Purpose</th><th>Suggested Split</th><th>Rule</th></tr>
+<tr><td>Training</td><td>70%</td><td>Augmentation allowed; used to update model parameters</td></tr>
+<tr><td>Validation</td><td>15%</td><td>Select architecture, learning rate, dropout, and training duration</td></tr>
+<tr><td>Independent Test</td><td>15%</td><td>Use only after the model and hyperparameters are fixed</td></tr>
+<tr><td>Instructor Challenge</td><td>Additional 50–100+ images</td><td>Separate source from the main dataset; never used for training</td></tr>
+</tbody></table>
+<h3>Image-Resolution Study</h3>
+<p>Recommended comparison: <code>64×64</code>, <code>96×96</code>, <code>128×128</code>, <code>160×160</code>, <code>224×224</code> . The notebook provides a <b>no-upscale + padding</b> transform. If the original image is smaller than the target resolution, it is not artificially enlarged; padding is used instead. This avoids inventing visual detail and allows a fair study of resolution versus computational cost.</p>
+</section>
+
+<section id="cnn">
+<h2>3. CNN in Depth: From Operations to Representations</h2>
+<div class="grid">
+<div class="card"><b>Convolution / Kernel</b>Study local receptive fields using 3×3, 5×5, and 7×7 kernels, and analyze how kernel size affects parameter count and computation.</div>
+<div class="card"><b>Filters / Channels</b>Vary channels from 16, 32, 64, 128 to 256 to understand feature maps and model capacity.</div>
+<div class="card"><b>Stride / Padding</b>Understand output size, information preservation, and boundary effects.</div>
+<div class="card"><b>Pooling</b>Compare MaxPool, AvgPool, and Adaptive/Global pooling; discuss invariance and information compression.</div>
+<div class="card"><b>Activation</b>Use ReLU as the baseline, extend to GELU/SiLU, and observe effects on optimization and nonlinearity.</div>
+<div class="card"><b>Normalization</b>Study how BatchNorm affects training stability and convergence.</div>
+<div class="card"><b>Dropout / Weight Decay</b>Use the training–validation gap to directly observe overfitting.</div>
+<div class="card"><b>Receptive Field</b>Understand how stacked small kernels progressively integrate local patterns into broader representations.</div>
+</div>
+
+<h3>Students Must Be Able to Calculate Parameter Counts</h3>
+<p>For a convolution layer with input channels = 3, kernel = 3×3, and output filters = 32:</p>
+<pre>parameters = (3 × 3 × 3 + 1 bias) × 32 = 896</pre>
+<p>Students should be able to estimate parameter count, feature-map size, and GPU-memory requirements from the architecture instead of treating the CNN as a black box.</p>
+
+<h3>From Shallow to Deep Representations</h3>
+<div class="flow">Edges / textures
+      ↓
+Local shapes
+      ↓
+Parts (ear / eye / fur patterns)
+      ↓
+Object-level representations
+      ↓
+Cat vs. Dog decision</div>
+<p>Students should also recognize that this is a useful visual analogy; internal CNN representations do not necessarily correspond to human-nameable concepts.</p>
+</section>
+
+
+<section id="lee">
+<h2>3A. Based on Hung-yi Lee’s CNN Course: First Ask “Why Do We Need CNNs?”</h2>
+<p class="lead">This course adopts the conceptual progression used in Hung-yi Lee’s CNN lectures: rather than memorizing APIs first, derive the CNN architecture from structural observations about images.</p>
+<h3>Observation 1: Important patterns are usually local → Receptive Field / Local Connectivity</h3>
+<p>To recognize a cat, a neuron does not necessarily need to see the entire image at once. Ears, eyes, fur texture, and contours can first be captured by local pattern detectors, so CNN neurons operate on local receptive fields.</p>
+<h3>Observation 2: The same pattern may appear anywhere → Parameter Sharing / Convolution</h3>
+<p>The same detector should work at different image locations. CNNs reuse the same kernel weights across positions, producing a feature map while dramatically reducing the number of parameters.</p>
+<h3>Observation 3: Moderate subsampling often preserves object identity → Pooling / Downsampling</h3>
+<p>Pooling reduces spatial resolution and computation while increasing effective receptive field, but pooling is not mandatory for every task; architecture design must depend on the data and objective.</p>
+<div class="callout"><b>Teaching sequence:</b>Problems with fully connected networks → local receptive fields → stride/overlap/padding → parameter sharing → filters/feature maps → multiple convolution layers → pooling → complete CNN → augmentation and invariance limitations.</div>
+<h3>Feature Maps and Multi-Layer CNNs</h3>
+<p>For RGB input, a nominal 3×3 filter is actually 3×3×3. If the first layer outputs 64 feature maps, each filter in the next layer spans all 64 channels and therefore has shape 3×3×64.</p>
+</section>
+
+
+
+<section id="conv-manual">
+<h2>3A+. Manual Convolution: How Can Multiple Kernels Analyze the Same Patch?</h2>
+<p class="lead">Before using real photographs, perform a complete convolution on a very small 5×5 grayscale matrix. This example builds two essential intuitions:<b>A kernel is a local pattern detector, and the same location can be examined by many different kernels simultaneously.</b></p>
+
+<div class="callout">
+<b>Simplifying assumption:</b>Larger grayscale values are brighter. The 5×5 image below contains a vertical transition from dark to bright. The yellow 3×3 region is the current receptive field.
+</div>
+
+<div class="mk-layout">
+  <div class="mk-panel">
+    <h3>Step 1. Input Image: a 5×5 Grayscale Matrix</h3>
+    <table class="mk-grid" id="mkInputGrid"></table>
+    <p class="mk-note">Currently selected 3×3 patch:</p>
+    <table class="mk-grid" id="mkPatchGrid"></table>
+  </div>
+
+  <div class="mk-panel">
+    <h3>Step 2. How Is One Kernel Computed?</h3>
+    <p>Vertical-edge kernel: </p>
+    <table class="mk-grid" id="mkSingleKernel"></table>
+    <div class="mk-products" id="mkSingleCalc"></div>
+    <div class="calc-strip">
+      <div class="calc-chip">Σ products = <strong id="mkSingleSum">0</strong></div>
+      <div class="calc-chip">ReLU = <strong id="mkSingleRelu">0</strong></div>
+    </div>
+  </div>
+</div>
+
+<h3>Step 3. Send the Same Patch to Three Different Kernels</h3>
+<p>A real convolution layer does not contain just one filter. Suppose the layer has three filters. The same 3×3 patch is evaluated by three independent sets of weights, producing <b>3 activations</b>; after scanning the full image, this produces <b>3 feature maps</b> .</p>
+
+<div class="mk-filters">
+  <div class="mk-filter-card">
+    <h4>Filter A — Vertical edge detector</h4>
+    <table class="mk-grid" id="mkKernelA"></table>
+    <p>Responds strongly to local left–right brightness differences.</p>
+    <div class="activation">Activation: <span id="mkActA"></span></div>
+  </div>
+
+  <div class="mk-filter-card">
+    <h4>Filter B — Horizontal edge detector</h4>
+    <table class="mk-grid" id="mkKernelB"></table>
+    <p>Responds strongly to local top–bottom brightness differences.</p>
+    <div class="activation">Activation: <span id="mkActB"></span></div>
+  </div>
+
+  <div class="mk-filter-card">
+    <h4>Filter C — Bright-region detector</h4>
+    <table class="mk-grid" id="mkKernelC"></table>
+    <p>Responds strongly when the entire patch is bright.</p>
+    <div class="activation">Activation: <span id="mkActC"></span></div>
+  </div>
+</div>
+
+<div class="callout good">
+<b>Intuition:</b>A patch can strongly activate Filter A while barely activating Filter B. CNNs describe the same region with many different filters, and each filter creates a new channel/feature map.
+</div>
+
+<h3>Step 4. Slide the Kernels Across the Entire 5×5 Image</h3>
+<p>The example below uses VALID convolution (no padding). A 5×5 input with a 3×3 kernel therefore produces a 3×3 feature map. Three filters produce three different 3×3 maps.</p>
+
+<div class="mk-featuremaps">
+  <div class="mk-map">
+    <h4>Feature Map A — Vertical edge</h4>
+    <table id="mkMapA"></table>
+  </div>
+  <div class="mk-map">
+    <h4>Feature Map B — Horizontal edge</h4>
+    <table id="mkMapB"></table>
+  </div>
+  <div class="mk-map">
+    <h4>Feature Map C — Bright region</h4>
+    <table id="mkMapC"></table>
+  </div>
+</div>
+
+<h3>Step 5. Multiple Kernels = Multiple Output Channels</h3>
+<div class="flow">Input grayscale image
+      5 × 5 × 1
+          ↓
+   3 convolution kernels
+  each kernel = 3 × 3 × 1
+          ↓
+3 output feature maps
+      3 × 3 × 3</div>
+
+<p>For RGB input, each kernel is not merely 3×3; it is <b>3×3×3</b> because it must read the R, G, and B channels simultaneously. If the layer has 64 filters, the output contains 64 feature maps.</p>
+
+<div class="flow">RGB input
+224 × 224 × 3
+      ↓
+64 kernels
+each = 3 × 3 × 3
+      ↓
+64 feature maps
+224 × 224 × 64   (with SAME padding, stride 1)</div>
+
+<h3>Step 6. What Does It Mean to Say “Each Kernel Represents a Pattern”?</h3>
+<p>In this teaching example, we manually define vertical-edge, horizontal-edge, and bright-region filters, so their meanings are explicit. In a real CNN, kernel weights are learned from data through backpropagation. A more precise statement is:</p>
+
+<div class="callout">
+<b>Each learned kernel can be viewed as a pattern detector.</b><br>
+Shallow filters often respond to low-level patterns such as edges, orientation, color contrast, and texture. Deeper filters combine multiple earlier feature maps and may respond to more complex shapes and local structures. However, a deep kernel is not necessarily interpretable as a human-named “ear filter” or “eye filter.”
+</div>
+
+<p>The core idea of a CNN is therefore:</p>
+<div class="flow">many local pattern detectors
+        ↓
+many feature maps
+        ↓
+combine simple patterns
+        ↓
+higher-level patterns
+        ↓
+classification</div>
+</section>
+
+
+<section id="mnist-bridge">
+<h2>3A++. Integrated MNIST Example: From Manual Kernels to a Real CNN</h2>
+<p class="lead">MNIST is an excellent bridge dataset: each image is only <b>28×28 grayscale</b>, which is much simpler than natural cat/dog photographs. Students can directly observe how strokes, edges, and corners are captured by convolutional filters and how multiple filters form multiple feature maps.</p>
+
+<div class="callout">
+<b>MNIST setup:</b>10 digit classes (0–9), with the standard split of 60,000 training images and 10,000 test images. Each image is 28×28 with one grayscale channel.
+</div>
+
+<div class="mnist-controls">
+  <label>Digit:
+    <select id="mnistDigitSelect">
+      <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option>
+      <option selected="">5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+    </select>
+  </label>
+  <button id="mnistNextDigit">Next digit</button>
+</div>
+
+<div class="mnist-layout">
+  <div class="mnist-canvas-box">
+    <h4>28×28 input</h4>
+    <canvas id="mnistInputCanvas" width="28" height="28"></canvas>
+    <p class="mnist-explain">This is a self-contained MNIST-style 28×28 demonstration glyph. The real MNIST dataset is downloaded and trained in the Colab notebook.</p>
+  </div>
+
+  <div>
+    <h3 style="margin-top:0">Four Kernels Analyze the Same Digit Simultaneously</h3>
+    <div class="mnist-feature-grid">
+      <div class="mnist-feature-card">
+        <h4>Vertical edge</h4>
+        <canvas id="mnistF1" width="28" height="28"></canvas>
+        <p>Responds to vertical strokes and left–right intensity differences.</p>
+      </div>
+      <div class="mnist-feature-card">
+        <h4>Horizontal edge</h4>
+        <canvas id="mnistF2" width="28" height="28"></canvas>
+        <p>Responds to horizontal strokes and top–bottom intensity differences.</p>
+      </div>
+      <div class="mnist-feature-card">
+        <h4>Diagonal / corner-like</h4>
+        <canvas id="mnistF3" width="28" height="28"></canvas>
+        <p>More sensitive to diagonal strokes and turns.</p>
+      </div>
+      <div class="mnist-feature-card">
+        <h4>Blur / local density</h4>
+        <canvas id="mnistF4" width="28" height="28"></canvas>
+        <p>Reflects local average intensity and stroke density.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>From One Image to Multiple Channels</h3>
+<div class="mnist-pipeline">
+  <div class="mnist-stage"><strong>Input</strong>28×28×1</div>
+  <div class="mnist-stage"><strong>Conv</strong>4 kernels, each 3×3×1</div>
+  <div class="mnist-stage"><strong>Output</strong>28×28×4</div>
+  <div class="mnist-stage"><strong>Next layer</strong>Each new kernel reads all 4 input channels</div>
+</div>
+
+<p>This is what “multiple convolution kernels” really means: the first layer does not turn an image into one feature map, but into many. For example, with 32 filters:</p>
+<div class="flow">28 × 28 × 1
+      ↓
+32 kernels, each 3 × 3 × 1
+      ↓
+28 × 28 × 32</div>
+
+<p>At the second layer, if the input already has 32 channels, each new 3×3 kernel is actually:</p>
+<div class="flow">3 × 3 × 32</div>
+
+<p>If the second layer has 64 filters, the output is:</p>
+<div class="flow">28 × 28 × 64</div>
+
+<h3>How Does This Connect to the Idea That Each Kernel Is a Pattern Detector?</h3>
+<p>For MNIST, shallow filters are easy to interpret as:</p>
+<div class="grid">
+  <div class="card"><b>vertical stroke detector</b>detecting vertical strokes such as those in 1, 4, and 7.</div>
+  <div class="card"><b>horizontal stroke detector</b>detecting horizontal strokes such as those in 2, 5, and 7.</div>
+  <div class="card"><b>curve / corner detector</b>describing curves and turns in digits such as 0, 2, 3, 5, 6, 8, and 9.</div>
+  <div class="card"><b>local density / blob detector</b>describing whether strokes are locally concentrated.</div>
+</div>
+
+<p>The second layer no longer reads raw pixels directly. Instead, it sees the multiple feature maps produced by the first layer, allowing simple patterns to be combined into more complex local structures. For example:</p>
+<div class="flow">vertical stroke
+      +
+horizontal stroke
+      +
+corner response
+      ↓
+a more complex "top-left bend" pattern
+      ↓
+higher-level digit representation</div>
+
+<div class="callout good">
+<b>Good in-class question:</b>If digit 5 has a strong top horizontal stroke, a strong left vertical stroke, and a curved lower region, which filters might activate simultaneously? How would the feature-map combination differ for digit 1?
+</div>
+
+<h3>Real MNIST CNN: What Will the Colab Notebook Do?</h3>
+<table>
+<tbody><tr><th>Step</th><th>Content</th></tr>
+<tr><td>1</td><td>Use <code>torchvision.datasets.MNIST</code> to download 60k training and 10k test images</td></tr>
+<tr><td>2</td><td>Display real 28×28 pixels</td></tr>
+<tr><td>3</td><td>Apply handcrafted edge filters and inspect feature maps</td></tr>
+<tr><td>4</td><td>Train a small two-layer CNN</td></tr>
+<tr><td>5</td><td>Visualize the learned first-layer filters</td></tr>
+<tr><td>6</td><td>Visualize multiple first-layer feature maps for the same digit</td></tr>
+<tr><td>7</td><td>Observe which feature maps respond most strongly to particular strokes</td></tr>
+<tr><td>8</td><td>Then transition to Cats vs. Dogs, greatly increasing image complexity</td></tr>
+</tbody></table>
+
+<div class="callout">
+<b>Teaching role:</b>
+5×5 manual matrix → MNIST 28×28 → Cats vs. Dogs 224×224.
+This creates a natural progression: first understand the mathematics, then multiple filters and feature maps, and only then move to real natural images.
+</div>
+</section>
+
+<section id="conv-live">
+<h2>3A+++. Live Convolution Visual Lab: See Exactly How Every Number Is Computed</h2>
+<p class="lead">This interactive lab breaks convolution into a process students can see, click, modify, and calculate. The left panel shows the input image; the right panel shows the feature map produced by the current kernel. Clicking any point on the input highlights the corresponding receptive field and displays the pixel matrix, kernel matrix, element-wise products, and final sum.</p>
+
+<div class="callout">
+<b>Suggested classroom sequence:</b>
+Start with <code>Identity 1×1</code> → <code>Blur</code> → <code>Sharpen</code> → <code>Vertical edge</code> → <code>Horizontal edge</code> → <code>Sobel X/Y</code> → <code>Laplacian</code> .
+Then modify any kernel weight directly and observe how the feature map changes immediately.
+</div>
+
+<div class="conv-controls">
+  <div class="conv-control">
+    <label>Filter preset</label>
+    <select id="convPreset">
+      <option value="identity">Identity 1×1</option>
+      <option value="blur3">Mean Blur 3×3</option>
+      <option value="gauss3">Gaussian Blur 3×3</option>
+      <option value="sharpen">Sharpen 3×3</option>
+      <option value="edgeV">Vertical Edge 3×3</option>
+      <option value="edgeH">Horizontal Edge 3×3</option>
+      <option value="sobelX">Sobel X 3×3</option>
+      <option value="sobelY">Sobel Y 3×3</option>
+      <option value="laplacian">Laplacian 3×3</option>
+      <option value="emboss">Emboss 3×3</option>
+      <option value="blur5">Mean Blur 5×5</option>
+      <option value="gauss5">Gaussian Blur 5×5</option>
+      <option value="custom3">Custom 3×3</option>
+    </select>
+  </div>
+  <div class="conv-control">
+    <label>Kernel size</label>
+    <select id="convKernelSize">
+      <option>1</option><option>2</option><option selected="">3</option><option>4</option>
+      <option>5</option><option>6</option><option>7</option><option>10</option>
+    </select>
+  </div>
+  <div class="conv-control">
+    <label>Input channel</label>
+    <select id="convChannel">
+      <option value="gray" selected="">Grayscale</option>
+      <option value="r">Red channel</option>
+      <option value="g">Green channel</option>
+      <option value="b">Blue channel</option>
+    </select>
+  </div>
+  <div class="conv-control">
+    <label>Bias</label>
+    <input id="convBias" type="number" step="0.1" value="0">
+  </div>
+  <div class="conv-control">
+    <label>Activation</label>
+    <select id="convActivation">
+      <option value="none">None</option>
+      <option value="relu">ReLU</option>
+    </select>
+  </div>
+  <div class="conv-control">
+    <label>Upload cat / dog image</label>
+    <input id="convUpload" type="file" accept="image/*">
+  </div>
+</div>
+
+<div class="btnrow">
+  <button class="conv-btn" id="convResetImage">Reset demo image</button>
+  <button class="conv-btn" id="convNormalizeKernel">Normalize kernel sum to 1</button>
+  <button class="conv-btn" id="convZeroKernel">Set kernel to 0</button>
+</div>
+
+<div class="matrix-title">Editable kernel / filter weights</div>
+<div class="kernel-editor-wrap">
+  <table class="kernel-grid" id="convKernelGrid"></table>
+</div>
+<p class="conv-note">Deep-learning libraries usually implement cross-correlation: the kernel is not flipped before applying it. This demo follows the same convention. Even kernels (2×2, 4×4, 6×6, 10×10) use asymmetric SAME padding.</p>
+
+<div class="conv-demo-wrap">
+  <div class="conv-panel">
+    <h4>Input image + selected receptive field</h4>
+    <div class="conv-canvas-box"><canvas id="convInputCanvas" width="256" height="256"></canvas></div>
+    <div class="conv-legend"><span><span class="legend-box"></span>Yellow box = current kernel footprint</span><span>Click any image location to recalculate</span></div>
+  </div>
+
+  <div class="conv-panel">
+    <h4>Output feature map</h4>
+    <div class="conv-canvas-box"><canvas id="convOutputCanvas" width="256" height="256"></canvas></div>
+    <div class="feature-scale"></div>
+    <div class="conv-note">For display, the raw convolution output is min–max normalized to 0–255. The selected value shown below is the actual unnormalized convolution value.</div>
+  </div>
+</div>
+
+<div class="calc-strip">
+  <div class="calc-chip">Selected position: <strong id="convPos">(128,128)</strong></div>
+  <div class="calc-chip">Raw sum: <strong id="convRaw">0</strong></div>
+  <div class="calc-chip">+ bias: <strong id="convBiased">0</strong></div>
+  <div class="calc-chip">After activation: <strong id="convActivated">0</strong></div>
+  <div class="calc-chip">Feature-map min/max: <strong id="convRange">0 / 0</strong></div>
+</div>
+
+<div class="formula-live" id="convFormula">
+output(x,y) = Σ patch(i,j) × kernel(i,j) + bias
+</div>
+
+<div class="conv-demo-wrap">
+  <div class="conv-panel">
+    <h4>Input patch values</h4>
+    <div class="matrix-scroll"><table class="matrix-table" id="convPatchTable"></table></div>
+  </div>
+  <div class="conv-panel">
+    <h4>Element-wise products: patch × kernel</h4>
+    <div class="matrix-scroll"><table class="matrix-table" id="convProductTable"></table></div>
+  </div>
+</div>
+
+<div class="callout good">
+<b>Classroom questions:</b>
+Why does a vertical-edge filter brighten the left/right contours of the cat face? Why are blur-filter weights often normalized to sum to 1?
+What happens to raw feature-map values if every kernel weight is multiplied by 10? After adding ReLU, what happens to negative edge responses?
+</div>
+</section>
+
+<section id="kernel-lab">
+<h2>3B. Kernel Size: Fine-Grained Experiments from 1×1 to 10×10</h2>
+<div class="flow">1×1 → 2×2 → 3×3 → 4×4 → 5×5 → 6×6 → 7×7 → 10×10
+(optional historical reference: 11×11)</div>
+<table>
+<tbody><tr><th>Kernel</th><th>Interpretation</th><th>Teaching Focus</th></tr>
+<tr><td>1×1</td><td>No neighboring-pixel aggregation; channel mixing/projection only</td><td>Inception / bottleneck / pointwise convolution</td></tr>
+<tr><td>2×2</td><td>Very small spatial neighborhood; even-sized kernel</td><td>asymmetric SAME padding and spatial alignment</td></tr>
+<tr><td>3×3</td><td>Classic small kernel</td><td>Common in VGG/ResNet; can be stacked to expand receptive field</td></tr>
+<tr><td>4×4</td><td>Even-sized kernel</td><td>Observe parameter growth and alignment issues</td></tr>
+<tr><td>5×5</td><td>Wider local context</td><td>Compare with stacked 3×3 convolutions</td></tr>
+<tr><td>6×6</td><td>Larger even-sized kernel</td><td>Test whether larger kernels truly improve generalization</td></tr>
+<tr><td>7×7</td><td>Large receptive field</td><td>Large stem / modern large-kernel design</td></tr>
+<tr><td>10×10</td><td>Deliberately large-kernel stress test</td><td>compute, oversmoothing, and the locality assumption</td></tr>
+<tr><td>11×11</td><td>Historical comparison</td><td>AlexNet’s large first-layer kernel</td></tr>
+</tbody></table>
+<h3>Output-Size Formula</h3>
+<pre>H_out = floor((H_in + P_top + P_bottom - dilation×(K-1) - 1) / stride + 1)</pre>
+<p>Odd kernels can preserve size with symmetric padding. Even kernels require asymmetric left/right or top/bottom padding to achieve exact SAME output. The notebook therefore includes a custom SamePadConv2d implementation.</p>
+<h3>Why Do Many CNNs Prefer Small Kernels?</h3>
+<p>Classic CS231n sizing guidelines emphasize small filters such as 3×3 (and commonly up to 5×5), stride 1, and size-preserving padding. VGG further demonstrated increasing depth with stacked 3×3 convolutions. With the same channel count C, three 3×3 layers require about 27C² weights, whereas one 7×7 layer requires 49C²; the stacked design also inserts additional nonlinearities.</p>
+<div class="callout warn"><b>Research principle:</b>This does not mean “3×3 is always best.” Students must actually plot kernel size from 1–10 against performance, parameter count, and runtime.</div>
+</section>
+
+<section id="filter-lab">
+<h2>3C. Number of Filters / Channels: 32 → 1024</h2>
+<div class="flow">32 → 64 → 96 → 128 → 256 → 512 → 1024 filters</div>
+<table>
+<tbody><tr><th>Filters</th><th>Research Focus</th><th>Trade-off</th></tr>
+<tr><td>32</td><td>Small baseline</td><td>Fast and memory-efficient</td></tr>
+<tr><td>64</td><td>Classic reference point</td><td>Useful fixed width for kernel sweeps</td></tr>
+<tr><td>96</td><td>Not a power of two</td><td>Channels do not have to be powers of two</td></tr>
+<tr><td>128</td><td>Medium-size network</td><td>Increased capacity and computation</td></tr>
+<tr><td>256</td><td>Large feature bank</td><td>Higher GPU-memory usage and overfitting risk</td></tr>
+<tr><td>512</td><td>High capacity</td><td>Observe diminishing returns</td></tr>
+<tr><td>1024</td><td>stress test</td><td>Reduce batch size; study scaling rather than assuming this is optimal</td></tr>
+</tbody></table>
+<pre>Conv parameters = K × K × C_in × C_out + C_out</pre>
+<p>If channels in adjacent layers are doubled together, parameter count grows approximately quadratically. Therefore, a 1024-filter experiment should not naively double channels again at every layer. The notebook separates width sweeps from depth sweeps.</p>
+</section>
+
+<section id="pooling-lab">
+<h2>3D. Pooling, Stride, Padding, Dilation</h2>
+<table>
+<tbody><tr><th>Method</th><th>Experimental Settings</th><th>Research Question</th></tr>
+<tr><td>Max Pooling</td><td>2×2 / 3×3 / 4×4 / 5×5; stride 1/2/3</td><td>strong activations and information loss</td></tr>
+<tr><td>Average Pooling</td><td>same window/stride</td><td>averaging vs. maximum response</td></tr>
+<tr><td>No Pooling</td><td>none</td><td>Is pooling necessary?</td></tr>
+<tr><td>Global Average Pooling</td><td>AdaptiveAvgPool2d(1)</td><td>Compare parameters and overfitting against Flatten + Dense</td></tr>
+</tbody></table>
+<div class="flow">pool kernel: 2, 3, 4, 5
+pool stride: 1, 2, 3
+conv stride: 1, 2, 3
+padding: VALID / SAME
+dilation: 1, 2, 3</div>
+<p>A classic CS231n setting is 2×2 max pooling with stride 2; larger pooling windows can be overly destructive. In this course, that rule of thumb becomes a testable experimental hypothesis.</p>
+</section>
+
+<section id="experiments">
+<h2>4. CNN Controlled Experiments: The Core of the Research Training</h2>
+<table>
+<tbody><tr><th>Experiment</th><th>Independent Variable</th><th>Suggested Settings</th><th>Main Question</th></tr>
+<tr><td>E1 Baseline</td><td>Fixed</td><td>3 blocks, 3×3, 32→64→128</td><td>Establish a reproducible baseline</td></tr>
+<tr><td>E2 Depth</td><td>CNN depth</td><td>2 / 3 / 4 / 5 blocks</td><td>Is a deeper CNN always more accurate?</td></tr>
+<tr><td>E3 Kernel</td><td>kernel size</td><td>1 / 2 / 3 / 4 / 5 / 6 / 7 / 10 (+11 historical)</td><td>receptive field, even/odd, compute</td></tr>
+<tr><td>E4 Width</td><td>filters</td><td>32 / 64 / 96 / 128 / 256 / 512 / 1024</td><td>capacity, memory, diminishing returns</td></tr>
+<tr><td>E5 Pooling</td><td>pool type / size</td><td>none/max/avg; 2/3/4/5; stride 1/2/3</td><td>Feature compression and information loss</td></tr>
+<tr><td>E6 Dropout</td><td>dropout</td><td>0 / .2 / .5</td><td>regularization trade-off</td></tr>
+<tr><td>E7 Resolution</td><td>input size</td><td>64 / 96 / 128 / 160 / 224</td><td>accuracy vs. compute</td></tr>
+<tr><td>E8 Batch size</td><td>batch</td><td>16 / 32 / 64</td><td>GPU, noise, generalization</td></tr>
+<tr><td>E9 Optimizer</td><td>optimizer</td><td>SGD / Adam / AdamW</td><td>optimization behavior</td></tr>
+<tr><td>E10 LR</td><td>learning rate</td><td>1e-2 / 1e-3 / 1e-4</td><td>Convergence speed and stability</td></tr>
+<tr><td>E11 Augmentation</td><td>augmentation</td><td>none / mild / strong</td><td>When does it improve generalization?</td></tr>
+</tbody></table>
+<div class="callout warn"><b>Experimental-design warning:</b>Do not change kernel size, depth, dropout, and learning rate simultaneously and then claim that one factor caused the improvement. For multi-factor experiments, use an explicit factorial design or systematic search and clearly define the research question.</div>
+</section>
+
+<section id="deepmodels">
+<h2>5. Extend to More Advanced Deep-Learning Architectures</h2>
+<p>After building a CNN from scratch, examine what problems later architecture innovations were designed to solve.</p>
+<table>
+<tbody><tr><th>Architecture</th><th>Core Idea</th><th>Classroom Research Question</th></tr>
+<tr><td>VGG-style</td><td>Stack small 3×3 convolutions</td><td>What do additional depth and parameters provide?</td></tr>
+<tr><td>ResNet</td><td>Residual / skip connection</td><td>Why can residual connections make deeper networks easier to optimize?</td></tr>
+<tr><td>MobileNetV3</td><td>Depthwise separable convolution</td><td>How can parameters and FLOPs be reduced?</td></tr>
+<tr><td>EfficientNet</td><td>Depth / width / resolution scaling</td><td>How can efficiency and performance be balanced?</td></tr>
+<tr><td>ConvNeXt</td><td>Modernized ConvNet design</td><td>How can CNNs incorporate modern architectural design ideas?</td></tr>
+</tbody></table>
+<p>The notebook provides a common training/evaluation pipeline so students can compare a simple CNN, ResNet18, MobileNetV3-Small, EfficientNet-B0, and ConvNeXt-Tiny on the same data split.</p>
+</section>
+
+<section id="pretrained">
+<h2>6. Introduce Pretrained Models Only Afterward: Understand Transfer Learning Properly</h2>
+<p>Training from scratch first makes the benefit of pretrained representations visible. Compare three strategies:</p>
+<div class="grid">
+<div class="card"><b>A. From scratch</b><code>weights=None</code><br>All parameters are randomly initialized.</div>
+<div class="card"><b>B. Feature extraction</b>Load ImageNet weights, freeze the backbone, and train only the final classifier.</div>
+<div class="card"><b>C. Fine-tuning</b>Train the classifier first, then unfreeze part or all of the backbone and fine-tune with a smaller learning rate.</div>
+</div>
+<div class="flow">ImageNet
+   ↓
+Pretrained visual representation
+   ↓
+Replace final classifier
+   ↓
+Cat/Dog feature extraction
+   ↓
+Fine-tuning
+   ↓
+Independent &amp; challenge evaluation</div>
+<p>Emphasize that different TorchVision pretrained weights have their own official preprocessing recipes. To reproduce pretrained performance faithfully, use the corresponding weight transforms. For controlled-resolution experiments that intentionally avoid upscaling small images, treat the custom preprocessing as a separate protocol rather than mixing it with the official pretrained benchmark.</p>
+</section>
+
+<section id="metrics">
+<h2>7. Evaluation Metrics: Accuracy Is Not Enough</h2>
+<p>For binary classification, begin with the confusion matrix:</p>
+<table>
+<tbody><tr><th></th><th>Predicted Dog</th><th>Predicted Cat</th></tr>
+<tr><th>Actual Dog</th><td>TP</td><td>FN</td></tr>
+<tr><th>Actual Cat</th><td>FP</td><td>TN</td></tr>
+</tbody></table>
+<div>
+<span class="metric">Accuracy</span><span class="metric">Balanced Accuracy</span>
+<span class="metric">Precision</span><span class="metric">Recall / Sensitivity</span>
+<span class="metric">Specificity</span><span class="metric">F1-score</span>
+<span class="metric">ROC-AUC</span><span class="metric">PR-AUC / Average Precision</span>
+<span class="metric">MCC</span><span class="metric">Brier Score</span>
+<span class="metric">TP / TN / FP / FN</span>
+</div>
+<h3>Core Formulas</h3>
+<pre>Accuracy    = (TP + TN) / (TP + TN + FP + FN)
+Precision   = TP / (TP + FP)
+Sensitivity = TP / (TP + FN)
+Specificity = TN / (TN + FP)
+F1          = 2 × Precision × Recall / (Precision + Recall)</pre>
+<p>ROC-AUC measures the TPR/FPR trade-off across thresholds. PR-AUC is often more informative under class imbalance or when the positive class is particularly important. MCC uses information from all four cells of the binary confusion matrix and is a valuable complementary metric.</p>
+<div class="callout good"><b>Extension:</b>Compare threshold = 0.5 with a threshold selected on the validation set, and explain why the test set must not be used to choose the threshold.</div>
+</section>
+
+<section id="challenge">
+<h2>8. Build a Hard / OOD Challenge Set: Does the Model Really Generalize?</h2>
+<p>Each group should collect or generate at least 40–60 additional images, while the instructor keeps a separate hidden challenge set. Recommended cases include:</p>
+<div class="grid">
+<div class="card"><b>Occlusion</b>Only part of the animal is visible or it is occluded by furniture.</div>
+<div class="card"><b>Scale</b>The animal is extremely small or photographed at extreme close range.</div>
+<div class="card"><b>Illumination</b>Low light, backlighting, or high contrast.</div>
+<div class="card"><b>Motion / Blur</b>Blur or fast motion.</div>
+<div class="card"><b>Viewpoint</b>Rear view, top-down view, or unusual pose.</div>
+<div class="card"><b>Rare breeds</b>Unusual-looking cat or dog breeds.</div>
+<div class="card"><b>Mixed scene</b>Cat and dog appear in the same scene.</div>
+<div class="card"><b>OOD</b>Foxes, wolves, tigers, stuffed animals, statues, and cartoons.</div>
+</div>
+<p>OOD images should not be evaluated with ordinary binary accuracy because the model was trained only on cat/dog classes. Students should examine <b>confidence, entropy, high-confidence errors</b>, and discuss the limitations of a closed-set classifier.</p>
+</section>
+
+<section id="report">
+<h2>9. Academic Research Report and 20-Slide Presentation</h2>
+<table>
+<tbody><tr><th>Section</th><th>Questions That Must Be Answered</th></tr>
+<tr><td>Background</td><td>How did CNN architectures evolve? What is the research question?</td></tr>
+<tr><td>Dataset</td><td>What are the dataset size, cleaning procedure, split, and image-size distribution?</td></tr>
+<tr><td>Methods</td><td>Baseline and model architecture, loss, optimizer, and training protocol</td></tr>
+<tr><td>Controlled Experiments</td><td>What changed in each experiment? Were all other conditions held fixed?</td></tr>
+<tr><td>Results</td><td>metrics, learning curves, ROC/PR, confusion matrix</td></tr>
+<tr><td>Pretrained Comparison</td><td>scratch vs frozen vs fine-tuned</td></tr>
+<tr><td>Challenge Test</td><td>Is there a performance gap between the standard test set and the hard/OOD set?</td></tr>
+<tr><td>Error Analysis</td><td>Which images are most often misclassified, and why?</td></tr>
+<tr><td>Limitations</td><td>Dataset bias, binary closed-set assumptions, compute, and reproducibility</td></tr>
+<tr><td>Conclusion</td><td>Conclusions supported by evidence rather than merely reporting the highest accuracy</td></tr>
+</tbody></table>
+</section>
+
+<section id="bio">
+<h2>10. Transition to Computational Biology: The Same Research Logic</h2>
+<table>
+<tbody><tr><th>Computer Vision</th><th>Computational Biology</th></tr>
+<tr><td>Image</td><td>Protein sequence</td></tr>
+<tr><td>Pixel / local patch</td><td>Amino acid / local sequence window</td></tr>
+<tr><td>2D convolution</td><td>1D convolution</td></tr>
+<tr><td>Spatial feature</td><td>Sequence motif / local functional pattern</td></tr>
+<tr><td>ImageNet pretraining</td><td>Large-scale protein sequence pretraining</td></tr>
+<tr><td>Pretrained CNN</td><td>Protein Language Model (ESM / ProtT5)</td></tr>
+<tr><td>Hard images</td><td>Remote homologs / difficult proteins</td></tr>
+<tr><td>Duplicate image leakage</td><td>Sequence homology leakage</td></tr>
+</tbody></table>
+<div class="flow">Protein sequence
+      ↓
+Protein Language Model
+      ↓
+L × D residue embeddings
+      ↓
+1D CNN / multi-window CNN
+      ↓
+Pooling
+      ↓
+Biological prediction</div>
+<p>The first half of the course is therefore not an unrelated computer-vision exercise. It uses a highly visible data type to build intuition for model research and independent validation before moving into bioinformatics.</p>
+</section>
+
+<section id="schedule">
+<h2>11. Suggested Teaching Sequence (CNN / Deep Learning Module)</h2>
+<table>
+<tbody><tr><th>Week / Unit</th><th>Content</th><th>Deliverable</th></tr>
+<tr><td>1</td><td>Dataset, split, baseline ML/CNN, confusion matrix</td><td>Baseline notebook</td></tr>
+<tr><td>2</td><td>Convolution, kernel, filters, padding, pooling, receptive field</td><td>CNN architecture experiments</td></tr>
+<tr><td>3</td><td>Depth, width, resolution, batch, LR, optimizer</td><td>Controlled experiment table</td></tr>
+<tr><td>4</td><td>Overfitting, dropout, BN, weight decay, augmentation</td><td>Learning-curve analysis</td></tr>
+<tr><td>5</td><td>ResNet / MobileNet / EfficientNet / ConvNeXt</td><td>Architecture comparison</td></tr>
+<tr><td>6</td><td>ImageNet pretrained, freeze, fine-tuning</td><td>Transfer-learning benchmark</td></tr>
+<tr><td>7</td><td>Hard/OOD benchmark, error analysis</td><td>Final scientific report</td></tr>
+</tbody></table>
+</section>
+
+<section id="refs">
+<h2>12. Resources and References</h2>
+<ul>
+<li>Microsoft/Asirra Cats vs. Dogs dataset; the TensorFlow Datasets catalog reports 23,262 valid images and notes that corrupted images are excluded.</li>
+<li>Kaggle Dogs vs. Cats competition: the training archive contains 25,000 labeled cat/dog images.</li>
+<li>PyTorch TorchVision Models: ResNet, MobileNet, EfficientNet, ConvNeXt, and pretrained-weight APIs.</li>
+<li>scikit-learn Metrics: confusion matrix, ROC-AUC, precision/recall, average precision, MCC, and related metrics.</li>
+</ul>
+
+<h3>Public CNN Courses Integrated into This Curriculum</h3>
+<table>
+<tbody><tr><th>Source</th><th>Ideas Incorporated into This Course</th></tr>
+<tr><td>Hung-yi Lee, Machine Learning 2021 CNN</td><td>local receptive fields, parameter sharing, filters/feature maps, multiple convolution layers, pooling, and augmentation limitations.</td></tr>
+<tr><td>Stanford CS231n</td><td>output sizing, stride / padding, receptive field, small-filter design, pooling sizing rules .</td></tr>
+<tr><td>DeepLearning.AI CNN</td><td>edge detection, padding, strided convolution, volume convolution, pooling, why convolutions, case studies .</td></tr>
+<tr><td>MIT Hands-On Deep Learning</td><td>practical CNN training and transfer-learning workflow.</td></tr>
+<tr><td>PyTorch official</td><td>fixed feature extractors and fine-tuning pretrained ConvNets.</td></tr>
+</tbody></table>
+<p class="small">
+<a href="https://speech.ee.ntu.edu.tw/~hylee/ml/2021-spring.php" target="_blank">Hung-yi Lee ML2021</a> ·
+<a href="https://speech.ee.ntu.edu.tw/~hylee/ml/ml2021-course-data/cnn_v4.pdf" target="_blank">CNN slides</a> ·
+<a href="https://cs231n.github.io/convolutional-networks/" target="_blank">CS231n</a> ·
+<a href="https://learn.deeplearning.ai/courses/convolutional-neural-networks/" target="_blank">DeepLearning.AI CNN</a> ·
+<a href="https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial" target="_blank">PyTorch Transfer Learning</a>
+</p>
+<p class="small">Notebook v2 integrates fine-grained kernel, filter-count, and pooling sweeps in a single executable Colab workflow.</p>
+</section>
+</main>
+</div>
+
+<footer>
+CS535 Computational Biology · CNN Research Lab → Modern Deep Learning → Pretrained Models → Protein Language Models
+</footer>
+
+<script id="conv-demo-script">
+(() => {
+  const DEFAULT_IMAGE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAEAAElEQVR42oT8S8++3dPnBdV2bY7zvO4bZs7EN+DAmCgDJ058GSoITdPddvdDo4gDZKMxKkTSrRDxfZigHWYOGgVMZGyiiYykn/t3XedxrLVq5+CPCNLg5x2sqlTVd1WqCv/O//P/lqdrRUIGy+9Qa9x1GKFpGZx98moXx52tAQc8jBHYL8RPkJicZlOELBdt5hkLvq51Y2+BTz4aUFLt85t/pdpJzru9vhbce803HhfJjzehOWKJ16ojndMIiZCbxTdyox2q/dM/Gr38kF6xXaUSBVISHmfALGlaHxCNlag98gyk2ww71ycRShUfFU0/Ub0kiFWsdscsZLx5X16Q2VgfOvTB0FToJ4p0kP1hrfNDrLZB9qHf6/Moq7+wDJLvnq8ErAo++dOjOW3I8aXnTtg03n4+EW2kf3Nv5OC9ag9Jw1Z5fNGYZ60xZ+DWJLe2cL9cqldE1aqhx/haO3rUGTGDEZ/QQRLn4evcz2gxS79743rsDBpWtgTf3LJuSgZGTzd/vXT/LBYycYKcGRlf0vlXrRk9aZ8NzMnaafOa6/rh87JZmMhU9OQZAI/s6V+Lt8LAeBK4MekGb2rlwYUbWVycWWNZVLKOtnL9bmwvJPc/GQv2C4dIVDty6/ZFkx1Ld97Yfut5V5d0QJiETz3YOkjfa5dZ/f0t7Hy51AkS+Hi1CwOAEKjl/OSnNYmOtFcmAxP89PZaRiPsD9JuLlcF/4W//Gc4RDdELy1+WprzZLEnnysNWmsD6dFSQ9XZAA3BglB4gkQpEOZyzZYdhK6AG4UDkKMaxxkScAR9ZHFrAX6SdfOU26UhFr1OGS2LzFHAAzBfpw7D1J8NjSCyiS4WkHyc5wwz6XVuwn7cWvHJaIIK4Wh0aGFBpIxthYlcBTycArXSGTigYVFmZCEkgFa/3U2pwutmrtuvmmueXmwVHWst6KgPH84cKMcR1FOuXrFLEINy12gsk845gpYuJ030glMWS0mNLYi+MAO1plO9ILhFCcAB6k8tqLqAKywz/ZBicNVWB4tOFd1wA+DNJvsdb8jtg4dEch0nHiGAgWKhChujAJOU6PPmvrzqUNfzcejE/PiGuoIiOKHRaxWg2F7PJLZzPyXvABNH7wj5dn+wWGWBicuR6PtyItKRuOQZqUnYvGCe+/bpcaLRhYuXXAi7MEM1AV5PnTFhs8r+CTKTof7hoTf9EJ6zKAthEiwF4vJIybvy5fnTF1Vthh697MQ+PKBAxvGCYovzAih2LD4txcsFn7kaC4nfT2nJKmg98LRssuFbVqcR2Hvizf/QP/k/0PWBr5LgzEAiimKtnMTPmAuKzZvkfVjJnJASUinhBClmotiqNpEqSiOfd2KxFgfLfChfDtVAQkpL98YHA2ioGfReiwPQ9RTgOIf5lX2NpZsJxTGHQ3bvlMfA765dg59M9b2IjUld0qsCgkVSny5YomIJDGS9Yx2sN6C6GHERnciu261vTE1kxCrGw8J14GLiHmlTaBdzPwDAlXhoBDnLgX7xrwTe3LPHWZG9tb0PNx70VO3HmKmYKVY2xqrO7nJ1JIeiRvagebQkCPGkzvdzVCgfagOCGkBwZ1mUUuPRkOrKHzDWEWIIkUBCrTobywg7JwCd3fdCFRyVCbW4nwwYWU7ayop4p3D+dMEEYHuNfpJe/jCM1+FDd7VQN0GDPqiCqhOYRkPU70DmPAajVoJmrfSZeFYjy4MIhoHIK7M/ai/UPiBh44/QlB3PNdHhZqH3fkXsyMxsVHtdff5Qvp3hRQwoxYUvOMU9udrDHWUgHtmN3z7bYC1dehe+uAMEJ5rXpW5LtJM23pGj+g9hJ4tuGK8fAKEiiBxtPA6jujc+ggXMSwgK8+P8j/31vwpkmOoByaAlLc+ON5a0BijnRh6BZK0mmZqUeGoRDraPdj2PT+yrEtFKKbFkGQLs8iYs27n12MllbAOrdWCrIgAigsT2AXqnIwoB23IUTIeNY2z/aSaRgNOJsXDT1hgIwR1qDxqnftRh/3618NSqbS/oUAq0YGU5JTNHle+Qnn7gVcwxS5ykAYZQEyLLbKALP90PUSFrhBeEwEbp8HRshUYlaCGwH5ppIr93Qo6fKuoL/DArtAeJ0x7AcZVBK0jvVUSwBYofwVEkW7nfAZN/nSQYCUtWBz7wzjQ3NAENTR8xkm+nCRueAQgyg7EOH4EBtoERiasoX4QEseWQJzTkLaFB9UYANFgEr7NBGoJQOWUu0OSTHWdt9VOtDtPAdlouaUSr5/TrqJMXsRJx1QlWh5z8yigUIb8ngkufhcDWmj5EACSyVuDELKoFyE+RR9Mkn2BkU6QcAPpIsJZ2RNNSOXExD2+96mg2pNtO24maUFoSGLXiOdw5vUlRMFn0cZ7g9+RwiAA0hEsygEq4RbAoAnrSEE+6II4AKrAvrovp1mZOvfNf+LO/JE3xkRgnPtI2JwcJKz/6y6NpGCnIFEgO/9VU7Tg0tERtFSAKZik4qaG5aVwtfQ2kLYHPrhkEOY8DQKUZpS4tBBDcBJv8Ss4WCJTClc4pg4vC2AhGYZOg1EcHZrUDlJ0AH0zpKdCEX53Nw6pvRizgJKsjKKouPGyVtkAkLhCWhxZ3XPim9MECP77Rx5An7jfKZjqbRiloYKAVUTAL94NOQEzWcIgcOOgN0QC8cjSkFsXCFeR+hNR+2NlSpDlCyx+D7nQIOZyRfQFhcSKEk6iicHcB+WxUbpRSJAi3YCZmNT6WKnsX68lDi+MLpIQJzpFCFFhHIQMmfrWX395mbdc35U3IIYS0H2hNIMDRKjoBZ9tEFcexpInVSAKQY4tJmL3EumG6EDz7ZKcOoCnAzTVekBlFSY5QCB3wrNqdxYz5PuerdZwJOwGpJrMpJg7chL/5eXKMVt45y128+CqNHr1uTqHyclA48Ug0hPMuAYGKOoSNUJhAiSKzYoG2WFeMzYXHFQL6l9dPUXB1a0lrTxWXjnGekfXpDKtQylABFhtZZUye/I/9jb9cgXAln15Xc/qgD0en1OCy5PFyjPywF4Mmx0EmCwQP0S5+7oQhOaQ9mb2wzueanHpJ2lGNClicXMApyFJU7aTanwTOPJ31oWDnZFSICvHC7oxOJDcD4RVEj0efAFsgMrCUiy0TOCIqwPkQfBU4uAftAtbTXL0Cq3S9dmuRvOEoaWbJOVhRi7ilI3Gk+wSkN5Rzb1rbIXtoNsN0jTJoE8vC7yjgOiJa4enVWIsWP3RhmgGXsjUZYNa7WJTu9OmbKxmoktyKZRRxwqKdIq02QS4KkktsBQykOL7YqWgXt0dqFtQBUhqIzGvbJD25UTq1im2wCzQKMpyp5Wfj0PNkH3soxWmQlFg34owo4XAiWB4I0UZr27fBLYXNcATD1B2M5VlCgKU06CAgBgLzM0g3BNMI2hjglBGOOUO3BHrNQbbzOSlfqqX5ERO68r5llIOwPxoL31cGz/rESw4aUGVIeCS+8wpCKjkAr95Oee6BEDKEih/MLYcBhEaiafDREcdekx9H2duVL8/DRCkqmGzEB1n4R5w38EshR29+7bDqME5bUfyP/vV/elGhHSAdGywKiVrzdsxVjHedGjefqg64GC98dlc5zBSS4YuvhtsTj0bDq8VDgKEFh2mwkWMm9Ku8VJfv1gkATdWJ64kpEeEQkZjK6KiagDaV46Rckplrub5m8Q+TuPdNSB6t6ZFSYJQSY1aqMifsWOyT0rZcAVEWMjrqymOdHa0Ci+hs7FJ80CfULwDGo0SuhxjtnJZhRkUkfpgkHRc+7L2pArmCrR3MvBvKHzuo09iwjwtxlK7axQNWHK2ucdobIGVVRkOxwxIunQqCOVmOGtRvrgtWvecHkGj3Z5KUtRIo7S1ZopAjc5k3EVCIsO2JggE5oU0qM5Buh4ayb2Al8ppr56YbGZt0O0mm/BVRBB/WVi39kIEJCyaTaDdebr3TE8htoJ+f7oDj7fdyllaZDivSEtm5JUObxIeyYRdgZRyRCEQjMD3dOs2lYicGFwhGxjuN57CdOB7R8urFYbhl9Dq7n+7ozfEHmU86FLVZjx82PsGqOHNpjIhqWH/sMfVHWrsfArIYCugsVzfBeGKAh2aBLq5Wk/qGD5EfEA1WqOo5btDB//Bf+7PLYQlLQki+RgP3JLvz9dUW7lc/Hm9naF4yFHcxcaPxgcTK1lqhkxIvxUZxjC4iViQPP0qvHYbUiuAiL+mwqpo1iGwRoq8biiLoakXk1ThSAKFiQ0kAVFD0a5Dbg13tRpd6M2EAjusn14aCnqPMEsnO6Y3o/ir5DIYVkl8y70O6KSGOcFYJpFEnBsMcxZUgrOmlQPsz6CShJzAQwoEQ7AfBi18dYNsRId9zopkXtaJiKQNRw0IshRTUQiEjbSxLfGJu2r1GIq2MPniDwKF1ohm4CEF/6u4cQHLQUav7BHiyNZTynVgnxku2w5ieRkzD6GgBcoNYqA0jCbXwwAW800fAj6L0TXejTCKQBRU9x8kPlN6D58EDIdBZ82zUK7I2fJIHbx8ajnLEK4NfH/9uhBLjRxPdGeJN6loUgScrKxETQAoDD95Nuhk7IENXiUoYgk8qO7GyPbL0VHl6cnBF0+YHcP4gsXgrQHQMROmCJYIna8hX7pQq62yrkwSGpQ9672OTreQLCAoJdNHC1usnWoOADn21Uv04DWdpUCmAIKDgWKRwc+uL//G//pdc5AJJrOPEeVQhlJpKxTkNeSa6WGjqQ0nNk5rVcxGesyVnJUUZSVmWg7WECE2wFLX10c7CjMhUkKVNapsk7gB5Ue4eGNTDDVihsQCEBQkgJWrzCuMJJ1NCKvvSI57GRRp+OiT3tn8xIjg3fgE8hITkQM5KsvFOU3TC4uzBIKVeRFFFQ+C0KEFiLj8dpgEcAxTNLaREJnCJ3SXUhD/3GYIR6XplQtMXu+3GHKiUukfprhLAEjIwLYWm8gmwgyX3vAlJC/XEPHPL8yKDkAR1eXpdS0nNSonprKiy11CzO9TMtMVjQMxuSQ0+4F0cmERgUfFDh92RpKTvXMLByMgHd59t7Ro8KBlKi90lQS9yoVyKvN19f72mfUzHwrj6wQ+3IGhLMLwR52rA3igq1TReqDWs2Qiym3iyEcRWvPo+mwHo2rZVOqLF4dKR/IRTSy4OdIdx8HR+FedkVjc0Ji1ETDOSebz4qzpVuGyu9/ZqROWl0WMSV1nlQ20geil/KVZ4GABUJQLhRXDjqPMUzkjTaEGivMpAkaFWNzjbJCICBOg7+B//G3+VQhKhmKUMtYFlpURY5buRiVdUEqjQgMos3tzfeJA1CgiATw2FqundgEpTuDhlVCRIEm5PqftJGhjHOkawcFpuV3RAwK1TDb6vRUkEmNB4H+xBlODs7ICN6cbPgIAoxLoiT50X+e6s5pIU3Xy9gQ0ukUqOJderEFtVQsvCDrbTfPb4NOeKd1YGrWIYVO2s6ASFjTU57uTetBLvq9E5nkis4fXQ0CgK2DukeywkyXQvw+hNEznsx32wmkFaJQ56bwxB1z0h6pEO7YFk12loANRJrKhZ5IXuXLntmuCFhQS5mkDKhAOi1OhkhcjEc9DgEHTLEtcWLXIpRUP25ESouHAYGBUfNuBQTo4oEYzFzH45fnCoEhSLtSxkEDfAKWvzxKq8OCyFVf3cfx92gG1lGs3jNEmAV9++0K7XFbArxsa8OESdl2FJ9aKEZEvsWjb0/BQJvISCgAM2JFKPsiiAgPdoawcOxwDKdjsI12HqBfYSX5QYTIJi0cDvbMo7ouIDxbp2aqMhI9MVlIQprYi5qipRF0tLg6qUhHKtel95uoxA43/kn/wzBJLaobuCQwsB8qlxwS4WgpUoEZaEv9uFsIu4oFyffC6Vh6QJBm2CjCKAEcboReMZ1cCASAkAGzQyl8BAzqkRXNB5Ehow21F1CNb8qAhGpWi7yS9GjhNYWBBQTAO8IIyssHU05P6DD/0uAHCAcRs2ikgXVDpruzbaBXiY0XrcOqYRvG7GiacuYOvEoT/r6b/Jw1RY5AeJ8RgnpdFDOFDSIcOFx9kgdbdCVHKXKXizTjpgwAiEFsoyOANfgRZZEDvVg3RHOHjn57j2wgMlQAlcZtGPFXu0JmlO4vXCtVWD48qkKhD4CHgJL5NBdEs39kZgqAdHKyAk4ewrj3noiAP62mdPkJSKZdIrb0+GEYRcycfr6o8VRUFjs8QYzwVdTklfWyeWHIMSoVK8jp0g7V7fX6ZBx6VBC/ar5znSx2W+RHhr7udKb3uaIGqd85BOj/O1o1pjrJMuNaghZKqSydIDkniiq9R8wCauOnqwqbOHtWJjwi1FlHiAEJtIbgMYnr0BCzdEbYkHPKgjfJ7AFpjpOCTDYGJpAUcuToTrFbGBzHEgA//Fv/FniU45FuUFLValFessiRYGiXSR7AaU7M9JhWodnnY1yTy05upVVIS7BgoPEOGbBq47eOZzTGRkSiN0P4oCz3BhlyAQUINKD0YEPtClvDepKChB06i102GmXs0DuQf/CmjaZZAamOxsVqAKZQEA7sxCjtRqJ2Iq8l48eAeWF1XKMagcPJ+IASsoEMnqg9SrVpeqj6aW9WR4PRUs0vw7AkGbELEeT7w2fbiPU9hOeMmJiKxGY/luIDEr3RyPWmtemzUPjmKiavqqDwwVH6Yw4XHiF2hIWiC1/QDSdThmrvCqpA1EFzLsSIWcLKaF376KSJ/QfCs7UMIOmLhLoNVm6HmCzBY38J1EhZSYFRPEqwCqRdosP9xXFWI17q+Gsc4pPx5Zb6wnaQOoJTSDjc6Ek1kIleBcAqnvFda2kGGK+cdumYgP9IsYf+DmPoYflKtsK3W/KgBjQzHasP7cJZRMcFrXuJvtizpUMiQCu1ij3vJWMpeswK7hXmRMQ0kWJHTkLYDAKxbKJIsHSRGdg0ejJcmEPQoQKhh4Fb4cT1TwHt4SD5bW3vyP/Nk/Ve6aLEsPJrKi1ky8NQGZ2CAUIx+1PvR4P5VEY2W1XFrXugpOBsngqEiDKJ6FMEAr5Lpky620wS7j+uAQDWTSbxPxLHGha1OV9REbGj+H3y4Ot13EG+jVcGMVywHNsNYwO4UX1j71ellDOrFJowQBe/A9qhQNuAOkB6Bs9hexsULev4FAknXaC34DPhhaztpNqh0S7VaHXzLWcdWkBIiWzdEwC3oa5CtegvnZxbKDOu5OHqncnGH0bp+eefCiy9Q1BQhH2R6ackZUEFNlAulwNOa5F+yTX7/tsKtT0GEnJ0Boh4ivTauiiDaKxHclcOtZF+VjgC0NTDKiqTq4eHqnsKq6SnDm0GwlFSQOxZacniH4SsVc0sBhKjtR7WRPxLeXXL0DeLOya0ier+PWCX6uF3uF/zgjZW2k4oVHguLhekdBCz5+kTinI4vqWAaiW0DsQ4K5KdEzgkGzirpWikiEtO32LgGvwf2TXipK2FxWsJ5AfKWe6Y725oY98oEfMWXMdgTEhGDseDrwlPgZWdtpk08RPlBohhwdps0VJgCSAEiZ2gb4IhL+C3/2F+W8fdxIalTKqxKznSYAJhxs5R0Qsa1khaB1eORIO4WLiytIC9qA48GseuiTqBQeIM04C86MKyXqAwIF6IElRIVaGYDheLDpLjKv3vLns3S0JnGAJde+GMkg2dJESaDCrwBjTvVtpDSSLbwCk9rbKBoZsP1Uqo9kpGaBWhuVjFCpnhWgImGw2EqVzRCVEX4C4MBJ2CQvh0CCKsHDUpQT8QMggBv3q5qC81v2A1+eWi0yUJO2bMEKH8PCKOu2lCIkMed4k+R3JvExe0M5mJF38gL2UCIGNAMXf/Xp+NPtYKJtAB2sXllyJ0nD1qw2W0MG4PAkhDhZYlL1Ces0mgd2wHt50dV92wuAKImwUUsKb87Hn36xHTuu+k6IQDWq1uyWQkx2wCAT6oCA2wG0VCxdMIARrTM/T853PZZNjM8kkY7m1XIUfbBrM/hxua6dQBRpA0eQUJ7kFrgaNM97vHqu0jZtbZGosJDU7PslG1RQN8vYh4Ce9RDL0hw2rRUtMjwoTZ+I37xxbhylvRKJA21B45WcDFoYr1ORAASQ0XHa+ZWiUgj8j/6lfzrG4RIC0lzH2wyG0/Yu5izg5mJ5lBqHj8jSoUm7H/l8KXsRopO6B0h5ZIFAGPh0DjiQIkcPZRrQBdZSVjISBCH66i85CaUSgl05nUuw6TIA5GSrrXqY8FSgpwAuq1fEanQ+pcIBRhWHRrNNvUuAD5eNXtROsytiW6vRGaebEYKlkbRAhAAmqKQN0oa479ikSF7VUxKIkzMzphBDxFYg4o8bVWGvqmKtEgaxAQlFaMWQXYsXe2RqBSf2FoatRzTGBDPUVu5yNSfKb2Eq8YhC7pk7SYgTQSw+LD2MEq7WViVVmbqcC+ql+Dnszd6mgRY1Z/EJcknk3rzlMGiaS6o3oICfmATIFiD1SA6rZLqpoDWzoyVnKuauFDZKt48oJDMnHhp4ezN0ExxYpBKXKYH7C0boYpET8aUV9UgOmNAeeBhE/Nn0prOca6dqC1j0KnbsBcVCfkqLT218NXfgjMcyOaa9bSJEGaw0Io4dwblxwMleLIqUWu0g+N3q8nIVlqZVoBZwjpvqfI6pYKuBXIk5W4UXlI3WSNfWPc48AiMlB/Bf/Kt/SaROdlAr+qKTiXBUB0DLU9FOx9VfPQ8LJgrERlYwfDrRRFkLeLKEQ2R7sYOGoj7xbrVfrPfH1kCgSsoIViVxPyIM2IgTSgUxhmWcQkJrMdvLypGHnS0KsoJGi8YHvE+pxYKxi1oDa8QxWPYPXE3vWugvILs01xLiOiGMS8jrLFKJc0Zjc0w64lw+EaJoy6dasjiu7iDTj1CLXfzSEzf5DLesmhvi2lcO9x0gauQxyuODCO0I8pFaJgeIm2CgnyLlLs8yOjEhVtPwn3I4LAxRGW3Kp3BUEPOoPAEXsDcyAaqgqni4/26Pf8jUL5gIfkRvOEytMkZp5ClnZXQHQG035qAnQbe7dShE3V51MqMzLUbOIkjytAvJeWjL+76ljlxqmW9KQiCDjBHnFuZihrOk3rkxSwsCdcdWhGGIWCWKQQxsq0rWFV0hiOEESmvVk/Vp0tZmusUxqZqXAJOcqnEQ+QN7Xs1a01UruHobO6S1cNdJNJXIIB0CkfHQTymXdWU4lS2YrJAIPTDpTbR5k3IBYaZXMnGpp8OFefbxQk3oHq4yNDKK/9v/5F/zmlfzQKRdxQY6uDw4QISkoQLdUI2L7bijK3ti2wNJ7yp/V9wN6EZi3T1q4+b2Sss2CrYq5ROIpB2aS6wIwG4NKK1Odj5UUCER2jK9t4UxHJQ/H/yN0bneB03rfC6WHYp9F/XB8JSiJ7RSKLxXdyG+oH30ARI6SoxqzDx8CQ4IOlQT9ic6qRe/wGOVPPzScIzGyQ4g0gdQ5IJRxVUPyqzs5ECeqqUZ3C4gJlDnvLFwQ02iquiEpESZHtkoRVrdq8YU4x4HFaqY2urtktS9uL0rqSKyGoQ8S0HEJRqSW+ZgegzmwDy0VKRLLkFZCWfwa4d1qW8+iKr4eAzuyZ44+Xl8DHQ0evHlEinXs2oP5QA+pB0LXsEZlVP42xZe0hIGCHLFJolQJNwVV/Fq7xGHYVSd1VD4hrygPRgVl0jcWZSOPDKSEEupZH8PvErBCKRmpJlWulAoaiGjC42njgQXqZIjVmZB1mrKTiaBQ/IgMCJWLAM4GXl1zQwH0GaamU0BULhLYqIdFUyjYpTtRsoZacBMNKAXgUU0RoU6hPy1OSoVEKKA/zt/9Z/KgqdoHAkMYgJ8qAgKKbXyrOOCSclC3LlV8MHQNn3x4KqRALUIv1obiwxToEN5MWkQKgAaXc0RNzktnkdVLTD7kiQuC0/IP72pMCFY0KOKbUb3llqpiHFKIIQFIVGCcwHpaljBfDKFKHtPrnwoCQkrOCh5ZMQBWqINkT1SpFclA2fQnJIkEFBYG4Qkqil/V1dIqBJIsWIK5f1dRdRpx09nQqhcHcFvFA3NobQd+QvdbshxUzFtqLHDhZmrHtyTA5N34fVez4cUkaJ9xLLJ3iBdcuFDPdOjCoFKhIGhhwVw5fjUM2GYgbJJZRbUQR7QvAiVGBwKCiRhq3SWMO+V4Q5VEoOTS8SCJyFkBmr7JBQ5lWoltGwGYVu4P5WtDikjbQl1Z8Fz0pQnEQYjgewUKLG9QnuLLT09PHeDnrgMlJvmoT4gHRyQhZyaY3JW8nkeyHDVrkF7gbbBjinqUszlgLuptON22mFvfWB1zzpMs1DMT5sumHkgbfLOlIj2EsadgR2DmXvCxkYCUmR7RQuN9u1HlRpm5QBKQhXGVUQ9L4DBCXHHLMFUeAXY4EhBQ3wnrAYlN2Ad29ZgvscDxRof2Gs1AwSgX4afOlPQSy8pNNzLq2DTZMtCuW7n7uu34w4zKVrUjKdjH5JMNyJPQYxxMPXGennmBLyJHDj5QFd8nVsffdCpa0AcUHmewgbSI3awp3hr8AdRLH5+8LYmhL0zMIcgUph5xKfT4fyEcwispEmtqja2Q3XdfzyLu3WMulVq4d48qorMO8/yGRbRTlb2hTZD6RNZoB8DGAFOlXWEB7IlID/ArUstLX2a5C9oL0TnlZpsSjf83m9/iholPfAGLSBL0g/C0W0ClCHrRb1yQCEWxpRAxuugQHv7ZnNMf6z/qBYrueRdKrUPRsPJZ0CxZgiLeXPC3rO8izds1B9vEAFgyhf9CiCUQ8JHHSNrcC5AFcJY8cEtu5we+Xr2tYCBORDH2cB0tV5WYEootG2R7Ts/9lGO/Cw5pVDGkc6/93h1VoLn7Qb3OU8pnCWjxKQMDZ9HTCSHvmCN+MXso3tHz2pB9d5xxRzIQf3B8YAm0B+wDzaY22BrD94eWzMtURk0NRQ62xK6sVXuJHCLZTCQ/8pf/u9tWEoeDftqHHYUoYRU2H9G+FOjpRAiFFIBKtGdlbZLLh6N18SDlgUhQ+9SQovV/QIIgp2sdwH3j9UgBsAlg8nKA1t49Ju9KpAECMoShBKGNP/+NGoAhU8S0Uhexf0gh0RpBFmnVzxGr3dbO7lr7jwtOUI0F7RZKEBh+fIsjzSLq5cnaBf1jUZEh4oCMY1AEHEgBNyJv5VJrO9T6ra+WDwCnIwtFIpOkwm/uudTDckpP6N5SPg5lwPMOc5TTfMUKHWAn8NFoVCVaoQv9kyx+ABCYJsCiE0DogulQn4g1au4cDMoEzngwWg8cB+n1ZktGpavvm3tpNhtJKXledHRitBUfsW5pcl0//E4UY1XwBvICsOr8iafdvL0oopFElYZMvkUZnFjrE+CavlIXoAYMEnl0OkGlJ7zKyI3Jgu8Dayw43OCVRviwWdWt7GuNes6gdWRCYGlIVE1SK2ig5tAOivRuqE3OuBaJxozUVqlGnhIF9BkWWeJlcGRdh3ZCRuE6XgRfFE6b80uAnQYqLc8pnyBbi30uvhmkp01uHl19CNBoaU04fjhv/A//MsjhlPUJoVzK1/Q/ST2hM2P8GxF6dFANmZBAVaiIBFBUtwcma+sw+0LtskBiTSCpgJOg/bJyRnOag5NtMBZzI0VTvAkxTYKdhf2CJpkQfQkXwDlkV0MTYF/1FqMp1XfY/dQaS9eP9yJTiQBPAcLsSGGp+IIhADZdho4/ObJDQKzIEOTT5aAVWGD2kgexAwQZgkKntEM2JqSOssYO/ZoX3ueLhAg0zIdsN09vw50mXdHqtFTyCoURfn2g4krJTvjYcHTs05ANKPqzukPSC/B31YC3iv1BhqcEXAcscoZCXN1yExFPAbQ27hhvyf67pjc74PTpFHFaCPRbOg4A/Tbo/3o3bxdYhuAKQgRoVAJOEdmhuRIcT6kPncrBmGfhOUe2M6jMNKjsSAA6eY/zQNYCgT0Nl2eXpBmiY1FK6NEBCSGduDoETh2HRBvOKnKgFoPR9Oop4zYNPMjMU7fJm075JfMR7KneI5qt3hC014EIZlSvLm4UnHuXhoxgE5qVmioXGQLRcxPeLMwUIIDhlQJJbkce2VfJ2kS7AyE6QQD1DggrYHwf+sv/rUiLJRilZrBYffB0aTqCHg8La9WIy0Pp4/rlM3SZOc0P9DKGQilvHCmHFrJTpfC8TvcCd+TjlDZ6tlYU8rBuiOJYmddFe1DR1yQilTCswKVSYSkApC5tpRYA08FRDWsQ+Vhb7Tt9GA1UYJNiGeBXFzAqJD2SPvNn1J+FWXcVFoZfkG6Eh2bVyKIHDhCFJriGOCVgCSa5bw75gIk3bbRhBnyp2jAgkBUqJSxwTSXoYc1VnEFP65OD8/WQj+btaj85nZJXI9vRV/PHGyW5jH1nBIM4jgVlDU4N80Cp+Dh/EQVspamlY0nE5KPtYS7N0gEQCHO8KOcUsNO6lCO1A5PCNdRlswzaFIgyqmFqJkuD38w1C9QBIKV4r1LNOQVHToTeCA0zA8hUUAVBRMRI9DtcSkHipAAokRJrGhYT5gMslXIh9b4BgTmCmCC5LYj5YqIHCgriia8sUPazBPQbTjsqR6bTjV8LYWiqgN+svXx1GE5FIQgQGRYs3p00yT0QPfqyCg0EbLYrxqcsGbUo6MKGKevImj/wTpKVYU3iHVaDeJ//J/+G+hIGFU7FwkFXBkbi+SdJ0A8G6KbIGjhXi+WKggm68705kh9gli5yY5q8xz76uBpKa6bQjwwKasRpWG7ITDARjKI/6z0RBUuRkpWeUh7QZlCRAQHJCqI4QEvGoszK9koOxkiZ1CTjOwlpwPHSxg/8SkTPZK/MQdHZbYyv3tv9sEX0Zl1Ph2ab1pIJSwf90kIfxqza+gnSiOMChkIhgOWhL28eSMsYmUwNC6vCi+fI7iUKGpRtvNmFGh3OHM/tqQgRhQxnAlUwtCDbZOMqp3UeFdd3PZTDSNzCNytrpLw4iGJkR1ztSTGsetxafymSh71gFxWQasgOiTNaX44YV77lzV08OYJmnga677BZrUsZMx9WZerNMEP4bMhrkDaq/ch++wC6WL7+YLaQqcLDnOQV+46wZSLcBjd7lPFsIcFdBKAOAhMxFtvqUnYbzmwcHSGH6AOpqS887Te9IZdWJQV2rBoMY8wixmmyEscJKGCVPiI0CZhTgNtQSviYopA6zaKYoA85V1SknmixAkMbyyrpcRhGS1vzZ5to3Gj2IEVVFp9qDnwX/wn/qladyrLuXwu3gR1dazWHttJQV3MRwEFf6RRLWHBNEwmlNzgVKopgQ8CE8EU8ngiGN+NuQNksA1p+XHohAIVZ86WaCgDPBnl6vbYpgS54uOObRYjO+xKAYdxSkAJrRsxZ9er4unBUbv37rpDoz2NYGVwgX4JxLC0DKbKHWXCXVPZ0RsMIMcUBfTOeeIhkNH2s/tu6xVIMKHtugjr6rDAT5NZZFWEeYhqI1MdRQZojCD7DB4nP16vKwIIeadxkcn96oSmVjEs0pNxpO4HDmYDTCEER6H+iV+/i1MjI3SS4UVkKc3RruIVTdAxoir5GrETqDLahWyRsOmoasR61hB+IGA3HNpzx1FlZMp9U1cHluZVCFBdK3oa4LyrJHlmRcv4tlajGkCmXML3o70wgHa233ct1WBgYwOm0FLFSqgQAAjcYprJnLtaFbZ2tilKI9z1aM/2+KIhVysm/nmEQD2Y5crnh7ll0Mk2gLh7pZx4w4zuGd6DgC3i4abD6aY2ItV5UfRVxw+EBlWyyCezl5nEJHhuGL35lcucerQbCz2BO6d7qoKjs7U1+S/+tb/i/ipHGjetixtBd172S196yppUEIJ1Vo+T2KRDuw2PIlSV0kzaDSiDVGvd25KEcTIn8U4vdOZ+npNNDbDrsVQwiY6xIvshlB2APXDJCQSD7sxGBbCTumR/9IdLDJwxW+PPOQi0OPVCMCXM+unR85xClWDDhSZRhebVWSDwFJCBVxZrBbQMo7g2Rr8QHg25Owl0YEI+7TPtrdZOpILiq627yHFnTuqLrZhbwDbM1uExeKvtqozW25aAjdDjbGlXayaxyzpcjHhACv+why/swKyCtAnVHRdntwJERSrd8Jn0ALQMdwpAmXegPhZob5SqymJqeJZkcDH4JH3KqTVEK71o3IVO1e1EdTBkwLSnWjNzaUIzv7Ps7nroSUoxaq92gn7TXJPyF4CJ9UejYQAQR5AxpTAFOGy9BPK9elTDbr6SEqCx7uW/QQV6ouY0IZqxvfe5MVjsmgR33aslUkGmlBScsCHF+lV4AIs40UUcRBKrvqX1x3AyFaZaUjUUCuA8mMEYUS00cZAmV1azOBIKSEWnpaSkb00MxR/oDYnYALlyBzIBIydu/of+6j8BXPiKNKAZuxqtAOnmNrQ5JBsACB6VDieBFmFx9UBhZNYHllhPR6kcJ88luhEoRsAH+MCRsRL7lXVP1J345lNlpNTgYHX0JL6yGjo3TQIGNtRGFEzkVChYtBEYISCw03Li5upwK24D7/k2fFBZnJ7MqnH1tIQpYfIjwUejRwdgrozpz1GkIJfaw8U2KaFUNy1OBDrAKMk/u9BpgQd0mIQE9kkkLSUmK0QiyJQzVxG495MrOEbUiaLO3a0ILIGVCpIm4EeZc/TgHWWYULw2Y/h1cEshWELr21LwvKzzKRCGkelc7tBEm3esjIOZiQl6GDESgqsLUaZnn3m2tQbeHZGwZdECHpltEJrshsrHHaprR1i9szIcuBcMiaqzqV3c85SjAGYbsFM6Ykgtx3hqKtzqlZgOfoCujpmhf+qulwhzkW+iVlusBXyaiHXWKPeDNDt9IpUAopxRxvL8An2oHMeAU6dIgb9lQ4iqNRG0DTIcsbE/VcEDXxtCzh7qwdR6xVN9th2lPTLw+oh/7RBYJQ0L2eiRxHHoBiVH6bPUz9NE4/A/9N/9sxdVeV9d2oNLoWWgaiNAOmmn9NU4gS4gw43S0QR4DP/cUMRIghzYnA19MIAMsiM5fCZiEy9oUlmD6pkOJgYI1Q9HGCPSNzMfaxD1hiDAghIt3ycKYSXyiSq6KAU2deKnAZw8KgrHedTG1UBzap5soFUjwCGjTqvWBwqoO2pHVzeABk3swaCSsl2DKz78KsOU+3HvpsRBbsI9DSL5dKRHTicGDuLkIE+H0OHxpE8bp7Gw94bE5tbLcpJuAqhIGJVg1sAwEXms8z22il3ZT2V2YLHUHjsEptfCQe5SmBkgKY6PvXF6RUuMZYGQuruPEnUYcOINvIPIi1szOg4cC6fz7d5HWsqRpIG4q1k3psC90lmFzI9ACwE9uy6qYxBXZeQqlZTOjinhkMLo8CAjtQs+wh2HOkTlmFBGBxVjF2GkokNC4Mv1SM4uhG150iojRQIZRlZQ4dkvOetUNencf8z1KntUu9ZyBTURqmMO8AVILRwOPgQUDfynB2/ixtLkkTY/D/bYEHQaLaBLvKhY+w2hCCtbCg11+dZUCG1mkVIhbwLw4n/4r/x1KFYANULaACCRRYLkSVcDJbgjSzAfFdGnAGxBE4LRr4JPBm30N/BphA9iYRBhXpCfX3KuTveHQRueRaeaYjGWh7YF8lY/xH5cvEudw+p75Qg6HWakYScBKWaNWxNPgk3QLVjobCGiu6DnRDcgD0IMQNiYTGLQrLs9ZBSAA+suLyChHcHiGZRD6o9nDiJmbBk/NVkPQOHF7OALB2aJU9VV14rqBjQ58DHX0TGExpiVLvFIsfHkDcEwtKgWADuwPBFS6svUhAoWsCAytmdX+9IM1EV3QaMgOiREPxhMbGhEEoeiKIY5RECHFEQkcIkCc/MamisERAkxqmiFoTDXxkYd44nUAu64MhHwHZDj5JEGGMhQ3QEpg1XzWK1/61/+F/9z/8X/Sq/XrkS4OhytPMiAHsgC3Amq3fHd3CGU22Z2ByDKpVypKIs3R+0hx1jy8SCkMQSO5Q5j4ihtWFiNMHKwgqPrSpeKoK8IOxp764vDuCQawOLGuyMJDfITfEHTaqAn8zn9t6BgxMJGlE/QJYqWURAvvowPRHsohz1RonpU5gM6I5EmYApDp/5FDRUlEA4jVwS9GihyJP5UOx/ok6aYZD/bimV3/vvgGNa3JZ6ZaM1oLdiASAHyQ1A4Pq7y2td5WJiSvLn435cnKkxK2ie7+1nZndgvfRtRcstsw2simu1CjQ9iejvwuOQI+w3BqpEd8uuhmcKc3d0bl9/I7N4jryouCs1zHeWmtFnPL4bBxHr7p4QDhVj97+6//b/55/5Y5Ssx6PXi02hw27gy0mmuO0vxdYBOfrf5BBuu4Oza6pR/qr7PCagEfjjxnNI4+LF1nv21w4fQEa9aOYlYi/I21SQMOCi7fp1pyzQvGCEs1AoRuGm3UAOx08y0Qx6Ng/IA9wOMu//+DDIhHmU+SF+5VpUWRDQdaZg++VdW0ReMFEafIB29HVB+ZsnvTsAOzKs3e7QZeKNz37HW8e3v1ByC+yQ/AMBFp8vBWLxo5X7bOy5U2sfwDgQiv33GaYOm0fGG871270FBRFHy/FFkTWgq1ZlgG3DU457XN6KQGgjR4Wr5bKS0q7fzGdmoIx7uh9MSnyN+oE8+8qJdd3BbrXEG/jzNEMW3d+kOxzJYU+UPs5SAtJcCyIhX6CG27/cpypXtUPrPWUZ1S8W6BR9O2f5bV//unnAKiG199VXIH82NrKUlG012aR5VK2+EQKlUo3BXyAjrCxMXgSFhllcv7FbxcjqUCDABP9WDREjmQfQJdQ+AGU8I/sDe6N5C4ES/3Sn6Hh1JQm4HgEN8cYP3gU8dqltnrEx9k6ygg7RGAwb0YOONYf0qbV9HE6CKZTS3VymUef0RdoN9urp67oMd8zv3FTuKHeR6MwZ4Ropd65mb+k/DdcIjBFFiCVjFdpNwLa5EnNHyLTFMaiQZwoTgAditAveLyaihM3P0hHZICOv0P/jh81QaeytD7TUpmmzBYIjAM2u1iGzXPu1YA0Q4QtuioO425eaFBx6DnzaQ+w9dgNgXHgwoXbwNZ/j0SsMwYxE43JjMez7l54+ff+dv/i/3H3/3//y//l/kzxrj49s2PZhYXnFOSHX9qT9nkJSgLX8Xf8PGhC4LiF+GV9n5Qem/wzhWI2I9DTuKP20giFODtgPuOGOdjwxw2q2Bj0r3xqJyo1/egehyoLsnB4A6/B4Q46fjN9SvJzg+eYBkREl1QM7XfIrcKMS5JnwZqIeXt2aInAJQ7U83rRzK8Notor31QGB2n0ZUCNT6Z42n/Wrj53FuSxYMmkVpG7OynBRxx/T04Ekpzu7JBmCpDeM4sqgN/BafL+yGYITZrLiOBIftqipSBv+OuJIlFE5QWkDuI3/ugJ0oYfbBxTIzJ4w+QuE8Y7OfP9TYpBUBfod5ao1omD2zb5D1EehDtJBCMCIvBRGWOPtBo4Xfe+9uquCinyV+7r/9t/4n95//+/+Hv/nP/ayfLMqe8bSLC0nKUfTURkXjORjrKbeehttHbxL4QUDXfDKkw0xlPErLgIwNmVD5+o4HUGv/vk+lI53PKAKrv1vzfku59++GgMq8hd6V78JG1BPuqAe4HmJMRO553jZHVGb8jFDSqkrs9T1b+w7YFPCGhOu8la6MpmfczLX+8PIAQCOkxitrBWKLvKfjZvo4Hmb0aJqJcTYAxNk76NionlfJQKSD1xtbj2/qOIhOMsnJjg5eES/0wvL27B34xTkJKipkIs2tRs5gVGV223EhchJrvdHpMoA+ePzwIQj4MeiQ/AeVf+MX8MkbT4uAfcM47Ub11+hBX5WYL/lVTQJo3XrnYKcuXUy2rM8LFfDL3xmD7WKk4yuLytMml7GkA90PFxbSaJMULRKT5i11NSCwe+8l8VkfmNIDLzOiX5GOli/+EvlYJbsQCwpEOpSOmQHGB+atWUZXNoAw6ykAKCVCDAIVebTTa7Fl//On5Q+xCHWSHvKd0AqRKKG3P15Asm5AQdXg6gWnEXGE0ZLEcRLSPzXtRF0SF+znxxYwFKFRUmFtj4MvVNqVwO+vDoIEHIZ68pifBQCxH/7zHZHy4MFiNutZDeATi+QEE7oatd6ET82StaOQmwUB6iQBPqaJR3/R+0ZrrL4E7vOtwYCer+eFkgznq9XHkjvwnot+F8jXd0IewmQvHN4M1jHON9F1yDWBqO3wSVWVcaojBtu93DQ467Kqi6P8nDxk++tsMos0br89iTCvt3xhjwGifhy9OZV1ato7HFexy4tYfv3xb/+t/2msBwCgQJ+NkTMx1D8p/AL/5LP5Go6sJVHoVFMfqeKqDQrqOKEZPguf5aTZKdeEmVgCvfvK9u6FeCg7FdSnaBreWIpaOiWlZVMPSWmNl8X6YODc7ZRA9lzdf0uGDxKdg2X0Yx0fzHxEP4pRQsciZ9M/Oq+f1U7ID1YZLVIs15QdSfKr+L0BMA9z4YIA+/PN/82/8jd69wAYRM5eMGcsCh2tMKSQzQBIJxfSsHTM0NgAJJlH4h0Th/sHcbC4J7Sz0RqqMUYBLaNxMDA2AaBRJ65zBT+VUqQYaZaMypY4nKq321ZgywS+sohNWM7N/NYeamJaI8/Kl1inVkAjvYhDpCEVWUKxodYxGQLOiOmkDOy7BDx6IJz89b//l/+Z9fkGgAj/v/+7/+Y/8F/+r2ejwfdNfRhkpTaGcMSqAenTDnrbVNnjHG1N/GzhGGyRg9cBfvnZkyTPWfkiKBzQeuZH0R2VT31KOjvbG/lJQSGwdif0A8jk3doHlIY/spNaGQ4FqYRsceZLvZLLON6reSESFD569NCZ6ClfTh6u3qEeKraBlFxVtrd4uyPf3ME6QpSiAR2JVnqbe8Vz/z/+j/9GhQNAhf97/+6/9Z//r/1XUxk3SzOzduj9e55E0R9ASAgFOnqMZESdBlOkzlM926SP9daSdoKDq0OSeCOpZOoCRqKdwzfhwdJoJeBecxHAKWAy3jPlMLd5fphfLJsKKntURQBIohYcoBARCPBGc2dCK8w0NAzOS9GoNN04KpEqs+BiXUbcfZgAq1M1DsHegIBtE9vmgh2F40mav4ngTwmMrDJWAcJFeNYpPA4veF2e+seLJ9HS9QS4YG04CKCNmk8DG3Wkgt+viToie1O/aLbvDiefCKlikQWB0sQhEl9YHfDAlxKclNxY5LTg+/mM8X1/zg8kBkecNjoFyU+ronN3cg+uCgp4iJesV9wBzdeHrKwxqvUw4nOH+O53QJXtB/4/uC08P3DA8WqHT6KiP07mrSr8V7PzCJvcIsI3TvlJD+ydfX6caeHq3fimUNOWgr9fgbCBMgKrPUknYNO43KinjcXA+zavA/QupsG0uD75/I5/aICaoK88JxMMK/zIuP+uSR1AhXb3SH2MvOr93ZoGfoz4c1xBZEUlMSvwOb0yAk5rqZ6NPmo1H3PNW+JjgwQe185u/6d/9V+M/4g1Yq/cTM87WTCUIatbIsYpe9ktibqCKcZY+xCNgrV94xCb+EF+PT9MhskEI2m7VX8CoxnA5lF+jEMZ9qsYWq3I3PipOkVXKanTE4k44oGpcNP2s7j8oVY43CYzDSZSuGEHNz7z5+VUINJxn4sL+l4EN8RGRgc/roiEnwuqBzg9De/YLHQA1GIZNa12E2sku3yAeqA39xyNzp0RUBgEhmA2gBtr3LmrT9ZPu12ySjZhRfbDIGhGT9FGv4+AM5rY0T9X+AGQx5ZdP0UugxuPwzU2GyMUpdfnnKd+cq94yQi49GwWF+3Jt8/fRK9z0E61BAhfVkyFOaVKaZxiMoRGR5E2Tg1kfcvr8ALw9C7McQYe0JfhvRH+v5z1/Ov/6j9faAjnrs1sW0nkFN8G2rmm8BBvBPcukIQXmTJAOvXKh6gCCCvGbs9D7fj9h086H/t4kpc3OcRpNl/kOpENS2d4ooRjGj84HglpJnSMMqsV4esyTBAZmg+j+mkDtpljqKYKFeSnwZPYVctefO080FtiNDgAhUmGkI0O4BrIFQE9ohdLpm7/AXtXnm07bMN/nDg/1n4YpWptPBdFQVKsUyw6dgWeEiWVqZmUVxG3oMtuNPqO9uNQfo+ygFl4Ii9AxtyDFpYnSWZVgFLCCzdjYwB6+a6n/EU5Uj2KCe14+MXdMYXc+eHxC/yXbRFJhdH0m9DhYSynfWpIKMKRrsRKv+MPdGLo2hJxPAtBdRhjODUKZ8F7PNL4H/kr/31FlKKWtO1Z2epyjfWz2Ckvlg6cKMdLUtgzWSqHk7RafMAlQUNUdjShjQM2TW97VoPeaeVDqMwkERYdXEprVJYRScBErKjdqXO4xoupKjG8Md+nTkYKDFQaBhYfAVbtlRVNJRNCDX+6bP+uql3kwZ2Mic5GqSo9xUyfNUGOnud9kUn4Z//v/uY/+yf98x9SCP+Ff/C/0WWq5N5wQZgC8sjnMGcBGpQrwiM2iEXm9nWGwnf2zoFgYEg+T69J+XOPUTibtntGT5eSHQcVFqckw008NiUytsRQ1y0gnPuR3jEEY/Eh4n4kMGUD9ABjGI4GWYTNHUeB9wF1a3ZUjrO4MU1sTtuywqghi8IpiruIUwFP9FrWLoeU4qCQff+dv/U/8/8fU7j/e/+Xf/sf+C/9g3xlnZEZY+GBLtcpB9xAjFBEy4PhA6yPx8SDBvJiLixFidIZaubwxvbYQ+gA+vEOkbJJ0DIkksO5JuEj1QIWs45oEV4SRMpv0ZjsXsCVOTugd7MWv9H+xCtgkVRLSWUKzorphSS5J/YdwBkRg/u3LQ7YiXKoIhzbYNcqOgTCiykyF9dK/470a2qDloBw9Ssv1HT5pO/8pjYhwYEQNeWn39sIko34VYwE1U7C0uOElujTu0E9p/NyLD3K5NqW4n1523y4ueom6wHvu04eIqV5QEilgRoEDZ0uSmUgdaOjcGD3eoIKnp8OTTAp+uf+ii+hJimT6kEE+FOStQp99rq63nhnafuw3N6fz/6P6p8/QQCadx50o1dXq4nx4v3pjU8nShAv3Pru5+9/wLfflPr60DP7TnLJL5yI8w9U+tYv/O3GKx8Gm3d5YrRIGWm9/QL4RF1kH6584gR7RMYw2mid1l7Ap2XfL4od7GzlrAyCiXdVMHAxLW7+6GzxyDNBb08alRlCN94fA5VJXAZukMM2tWtvAMC9lSR+PmJRXEz+uS32gv8EYbuotr29wetqPx1En/QXb5RGeRCb3W/gblOjrvSf/UUd6Rd5OB7B0fLmk4oJut70AkIgIQJob0d4uEPpGzEA9eOBHRLw5RBPZiXtPbKgPmBlax66HsZhB62J5Jnr8x4RUi1Xe0i1kuyMJn+0OpmXL7yvQyYS6UWzhJTmn/LUJYoZSYflZ8CTOw8p4nxQrrguJdDMnnCYCFYTyaWOWjkYnk9NlGYVdy9iphcjStOfIhjpPSmx49j+ptXrpx2snMX64roPeCQxonRy2rqvddqpTDzU4PfxXu34sT0Az/d59uQfxuPRic70FiENOPrEJ3tmM+j1R60ACzghVFAnUnI/3sl+6aFXnE9T3xe9fmVsfbXQgn3T/uNf/9f+hfOfCICznn/9b/4Llj6AbjxAuekn8e3A18PWTsqFmmtokIQC8yHv7TcFoM0pd/oU7+B7/Ps3rRGAYt8A1ahNR50hvRuN8q+MHQ0qoCGA8NxXpcUsUtOLxiJsh3by+zSxdjxj3Rgi7/0S9FJjloqOu4ih0/FLMT866hO0sLpcK5fosMZi6nSh1rsXVL10Y30xIEk3zlX/zr/2H1P//5EqAHsdqs0H7Ve+HrBzUX3WW/DsztkOyYHlWAke9H7z/kE6nAMIk/MG+briLTzNvtb7A87F55VIfSl5O4A9fwopESdhOjWcxH0IZg3QHCL0E4ch9VH71lrH8/B2vtCJjWpFGUgD8c+nNu7bfcYgiJ/3dkWpEZhfexl1NEBI1DngEYuFcLjwOjByjk55unXfv2ac6LShbV+0wRWqEnRHD+KPiialEamChqnTjQvTz/1adWdAYnmZQ4v7vFZnL8r6wTyJOjyDDi3I24BqSY+LfkVeGehWN5wRMSfB2h1ffY77uwlyUlbMrOLq6YH7ezKZ4CpxwgZVBNFa7BMLkKngq+Lz7k4kOOZjcRWY1CA/tj/ZIsjZ/54uB/DzuP+yFhIqsHrpsIX5/ODyG8Se4pBP3gSSpasj5ve6s4QEYwH9OjAwyxpEw1zC1ofibbgrARLOgnMYkzn90TVUCB+D79fTSyjjK7mA9yxE59a+bzI+MWiEvor5/shRAooMltLw/2Di9U0OXOqwiENKEvZvwOXbqnkjTUffnpyUEoZ0v18Aust+nudPvf+/RwXYz7/5r/5LtX9OIgz330xrl72uT3Grlcgi6nyJtizODYf8td2Yj1+JBgn+fHz1sLBP/xE+UTss8ezDGQcM8ETcsh32qwDjD61bPOI8lwC9v+MOpWbFOQM59IVazASnNPTGu5jnmyT0IW6O861FCGfpFHvzemB/9Ghoa3VQToYuthUKlF1+aPsS2AaEQaQnkLQ/UI5b5dMpNMipS4BJ4UobiBSzqLaDy3Y5+9Yj6YGv56oOmj9UgojZidrSowl70BscC42nxJK4sM1ODtcTfo/Oy7Uat0Kvcr2JMOLRo/u+L/pQNsJse+dz8x+HvcmUyH0EX6Ftnj48AHKyzLrk6E5MlbdLXHEXSrdIUSr8huCYLsmvlafw7+l0OOv523/rf7TvG9Nrv+zJGurtetXgi2/1eCxboC+wshEOLtxAjDeRQl59J6ZSXbix0NeUPzaNkSooITwSqWeuIhTMK7YHUwRsQzzKclYYFjrtdckT1+BmHVoCxCfyoIAeAB4zF+JGSF5cFncImvN+hspGz8n4WFjrM+4d9VOELhDgMH8aisjPh9u9Dv5f/5X/+X/Q+/97xsDZdrbMQhPE7i1DamP+HOCmK1BI4mGP1k43KM4sIalc1Gu/d9JpeAfoqz+87C3QACheTvccRDUwm7x9AvLGGdRD5j6GY8avnKkgyJugDrhQtE8+MGcVcCXlm3hQ7PtBt76wLlgLHLXg9ywYa18NBiUdcDokWb3HmTctNa6EeH+414nrqscP7Yo3kQB79pOSaUXUiFau2FpUpT0IPG+5WYIR2kHpb7w/Ff216Aefg4hFnJD+p8tCHivbgzC4uI7/yjaIF8YdLFzjIN90Giz9wLd9AT6XAB5l7Q99cLwXSuUGYMP5jnLtUw7mN7SvmehxwPnQ6V1pEUHg00Icq+8Cye+UYGJu+3utVJVX4Rb/fv5ff/tf+WfsP93rvh/7XgXw4aXke+O0GzT4l/MWx+unBhERNw3BrUQfWxnwJGVEXB8+qNugKQJJlBoh7Ky18NwrCwIVHdE1fXWEpKIBEKeRPXVk3F5U0k708CV37XpuQxAAHVdE5W+x3PibiChJ05uZ4yr264W5GvNEw4SOsZg6YMBMew2Eyfx5oXJ4a4+h0BO24D+dWM/f+V/9S/TrV3RN575BImjOgdh3VYGjp3nV9jeIP1hcKz+flmAoxiGDJyPDk8qdDraU1X4+xfMQU1s+EJYGZME4G6W+z0sD5dToBVuTjbfaaKthklJz2EzfQIYPJCS+kgECbDZ6WDmsfrByl2RTQdgS1wsR4bSe5pT5W06nO8jdhvy8d9+JopNodbfilQ1aE3KBVxU82pNFHJo2I4xK+gIR0A1x3nQMXAb95tGBm9Iq1SwCSeuwO0NcVZV+lqrrra2MDKqGB9ae7R3MXcUfrkEP03UeTcKDayjk2UJJkU98J5zPu+SK0xtANbqt9HExgM+ZP/A5+tDC/VvGnh5/9IwVTMVwB2Rc6Zy5H9wSLR74T9M/f8L282/8b//Hcc7VFZwH16GWibtdiPsiegcYhNA+lQgRixTla0UrynIf0DG/AsO1qBAIdGOr5J4Tik6hZERCgDbaPQqEypszewt/E1IQ3gDCJSj3tI74TgB+KPOh5fgcViFqaYn1AIEMsYvMfZWwJd9G1vXxQqfsqOiRn2fDY/L10LGKUEKiOPD/j7ANjByBfu/BwFZxS5N7Al5l7UgjoGBLy+lkMCi+eBOLHceD4ZhBjVskt/NwDny98VpVwpl4J4h1REWfmjJqrwDzIT/+BLkHe1c9KZ+cKHuZwyZJgPbK6kSrot0iWI7UUg8WE2y19CK/Dx1caWRqPw9OcNxnnAycFNxed1tY/MmAosbn7uTSCpeR/TbhwTgDCDkAqZBzu3fUSo4AvEPPp5cMRl2ZSeBcPjTbXcjoId0/owcoYZ2WjinwZK1LT0BDYnngJ8LdfpiBYn/wQe+esVuC38Dw5gQDagLIhAG8wWxF6foe7Ic7ZdR8jkR/r+EvhqzK82JCoOhQcdwhEf36jYB7j+Hw62//a/+s/WcGAADkWW5r3RaZwJAFCxy+nmpX+BbYv8OQg++n44gaLUb50OJEb7RLyx0YAtutWaLPuB/h9tTdGxBKsL+Wqgg4/whnnmythxtdeDiwRWgCPEhO7elAo5Cd3vk6ICnV9Kxdgl0aWnJXZh/7aFFDAex5ZTTD5Op2KlZqoxwxWpI9/S4v/d77tr/zt/7F/wz98x9+hc+96YecRvquavP0vUky2kcSLk2HBw9yiHASVPacM+IP0uH15BVIBr8CtZyv2289R38x2wbl50LHF4LfXgHxc5pUKwr3P20rNdNmfhyFWqC/f2+7TeResX9QHbcCUctTUJ75xJCsey4SwV2u4K8SSZSDUH7i0hkGL+y/bAItYtFGA8QOsYj+OtJxLRHPuM8PMnzSy7lO5KGwKXbWxp26+0TpbyWvU3cTjBI81n7oeC8CFJBi/aPScOT8CldK4HGqx93AS/dNO1SAM94aI4i+YoZsfbBGP8IY44faUiUxYQ/6f7P3t7/addtdGDbe5sta69r7fpxj/AalaZWgNmokWvUtStSEqlLbhP4B/dIPbdXQSJEqpW9fSKSCeTEOaQTBsTEGmkiVqipKE1FqAyZtSGzAJrRJa2IiSsAGG/v4PPfe17XWnHO89cNtHx/OeZ7n3M9zDn4pTO0Pe9/3ntdea8zfGOM3fnOsuaaFMEcBGn2fyMGyak7hKsRjs5mLZ2YUzaItiwQU4lZqTbPlvnxRELOv66uGvTWuP/Wv/HZwo2eeqW+8FGU6wQgzIaMqmfV41GED6rwyySo/FlQ2Iz8DwTcqPt07uM3cZIEiCFhukIW6P6P5yl2YOUDI7kO9PqTWTOZEOuUCf1Q0Gss+jNRN1ZEgGnLYnki8ltp1cJqBtZGdCZzysd+XSXNzTLmXSr04LBalF2WMuFDUsmjXx0eWv8z8ZaXwD3/Pd476tvpiJ9LQ5VBLuCyZbU1t0VmCuTn46SIEcMa0Uj0qBT2K1/Bd0RBAn0u973SWjGcOkeJVQh0OCnauaS4VoAtCU27BaCKZufHDB115DYGAnMksh+vEJmQAoYGWEc9EZeubb5n52BKwyhx6CWB64RJ4riwJ92OWmiso1wz3E52JZl+x1emzPqn0XK1vnHh4sTPKkyeq34wbSi6MILMNxpXqo3ldSytY4i3yxCDQEasZZPZYrD7PYTot0ZHq4n1xuQKCWhlcIdt8uPKUWSdazU5+RU9yhHL3m4pm2TyD2iHXLLBKNDPphgbix1OkRjqeRNAAhN7YVlZ6PScRItEM2HphBew4eX74gISvuuoAYHoBJyxioLEySOusnItLvqKcZDg4gCVocefgEfjkronA2C5p9NhMbYc7JeEIwVyVZJoNWtfIZWtv6AI11jFjhrSnNuurBbpfXOQ59oNb1BQpiIz+CtzeVpjcZsqgunKCUFvsSroCLF6BwHzXethJaAxphwNOU8zBKB0Lo5DQvkFcP/xd3/mV4V+Y/4nf+N+QL/eBSYb3FJAIrrE5wGqqiEgMc3Y9uFogOiaKAmrfazlWNe3PpM5TMEsAUchYchhvmaA0R5DHCvJEamgJJRMccbCDMyhuyMu17NeFUgkKu+xwAaNKXEjufr+MGBvFXlEHJfmjzRx0bScxyWgdm1vQjh2YoBkKb/fwzEM2kYrgW+HsRGOTweKdrOoYHqu404WrVgstUHK3DC10lAQO9LWajOQtJQ01jDUeIFgIo2z1WAnZgJ8qnIDEmMAFJyvZJWw79Op0Pq9FCHWvMCpUfWPiBpUzCKFwWiMH7ojmkhpo6VqRKzC7EYfzgQ8se0mT5i1ibE2CHndJM05B8cXobjA1dX9d/PZPfO9HyP8fuervSkBIKdCUhsSglmva5bnLuc3Q6hJXtNUz53FnXY/nnVxLy7XPE/TlsdOMXiwbLUX3xSulCQsLoea1zK7phqOwVfWHsbcZZ0Y/2WauOyRdNCum8NYa2CgPdRgQC+PRYtWYTkUaYQFgOmAJEijZ/mwVIGqZgWnckhCwICxNjIggnfZx4f/d+HJOeB97WM4KvBJI3eFG7WFTvUD4GpnuRlj7K4zAcQFoYK0v56gJFF5z4USG7HxX0JJ+etPGULdQ1Eno7oFrB8l6swRJ2DTdCXXNvmpWLuw2NdxZeUZIb+pM4rphgYQOaGi0X5CMu21ha+2TzApBKjuRC1Z1pdI2HksnJV98S40UClt3Pi3Tk608UQpA2ZJa7H0ljoTJUQIMnFgLAWDyLAETcFMMsOQdDSC1hMW9YlBo2BXQMDopglWvHCxpnuGVX/crSFEpxsQg23RGTSqIdrHoBR6vlc0ezKxSja/WW6B5WNZHWLFxaTnphZHWicvsWENxcU9HU9BlUtUE64Sgtna6Xx9Z/n7kquu4fvC7fruvlWj9qIt2oywZzyxzATqDF5FdH6zu+ysWq/tYyDxfRwfoIL2NEF6DqVqJoKc9tK4Mk8xFATm4k6YGUDTrshvqSCqxD7gSsbSics56mfLD57Idtnpu4d2A4Gl0XFAQbIWqDao+eAsYBJFD2ynQzlEE3u3nUfh49yZ7ifF4+ZHv/r3+UYHgN/3Gf2Sr/Tf9xn/kS8OBz+uHvu9ffNiDe8Q7RRs4ps9ePHcmKKTIrDWwxE49KABnhMVqwprBkGbCPBIZqBUQIKptymW0iDEqBXI8R1TgyfpIv6Kiyb0dklLz7Jox5qAn2AeDUy1F5tn4CSqMbfgqr+kCS6Z6IPJ49RMKE7erohFCmakpoTi5rIKFdu3qaZ0XlM0epJ0PKbKY9A7m8CCiuMJ8RVILAdzTV5YcGxi7VZ42Sk7bdEFpxHjIHYrBOCYDkiFYpG89ipl/yMxSz6dQmd3JzrkcWxJlKY5w3FByXmOXgHWfHGVOLiqlncYLh2es1ZUgH0FYM8srbbEYCa7b2iYqHdH75mp8CakJ2Ae9Q4bNFuMtRbI+Xv/4v/o713uvOgDYHPbyBYfVnKRGNIRCVyj3BN3pmhqzc6TVZFQIRTZx6k/GRXmGJYObgpyN9oDzMXcvCDR7hM0qOxo1uqUUhmJzFKxc8xRvXdpUsrP5jSZiJcbbRsCv3i1aCEUb/SolxAwHJGOLWVHFi6xtTr4WRgAU11CR5KwgUQtleik51yeE/48khL5mjerWTsVctmEVJMgCOdxXwBPM6AyUURZRZlhtR69MHAxosiKKS89LRc9rRvQCRtKszmkM5sO0XgDlfpJ7Tdl8mjPjskzp3qt47hTLNYkIHwAkZfm5EnsIxrUL6myDa1Og5NIQziofnsQSbmLhwlhydUJ/2INHmXJCg7ENf3GmPUIzlywrBdO9YPgqWy8IK0y72ny4BxAuh+sx6ULi2W9IhVMAUtJ3890L0GNmqtUySNfo4BIVyXU0n5XzNai2Kp4ewBjBiHFSjJ0dshdorRyVGBlqZqMVwtGfWJQpzi0xTse1JXhfMa3cW1DsDjUiakGtPRHNii2FxeeGVI4CwJdea3205v3FVf/yJDCvH/y+37Fe1FQje34hKHsB5iu5mOwCKCFQZN0xSwPMLNHJTztPhOZN07fWNDj8FZsnaEBUYLeIm8IZU4cZQUxPLW4ZgnGQx7iufqhtofRUMHjlBdZSq+0Equ70AtPnoKnqh+ohYXkv20yNGI29nCYOEpVpMxPxVajgdWbm/Px/8D2/5+PC/xdDwFf6QNrlvLbGrT1FwJpRGaErMJot63BFr1omT4RWqOW8vkCWDEv17LXMqsHUIrLzsvvoSHihNsea2SokQ1l4Kz6TSWeqrEsGhe5mx8Mp5c7gBNJT4DZXBSWBpwlxYQ3AAa06FQk5Jt2UNtxW9uy+joBWWjyCJhCAyBNh3gzoAE07eQEnoXl1kQIbKUHZyqJ5LHR1qHVWrZK7M88VGMz7gcRPdMzLp5aVM8OddStKde1PjK3k2xRlvi2kSyIzSl0BAMicSLQEEQycZreJW9O+IiNPbWqhb1v08wGeV8CNVltTqTyINihhwYAnIA0kTtvuW4K1UA7NKGhrZtyAZw/EzsuI59L1+T/1vd+uH8N/PhIBP899dXjM5SC6GJY5GlDNMuKFX0E8fYFhazbncuYoaxHuLQjdj0tq3reRNDmPYq1lNu4Kk5j7rLxjoSbw7sWF/X5wIUsk9zyIad3r65VxGlYDh5W2ylVjVdKM8lxLl+Z8EFqpoYjvTmVEEXhEJFcVbd0JkixCZJnNrSWcH35069uX+v9XmsLn9UPf9XvKixXzEostK/dXvzYtEyjFARbHskLVCnuk21ilEudKztJjDE/JjMeqopQI+Jh4bUtmOa7EWVisgmyTJNG8sOxY0VOlxSMy4c7QdGs8UWj5o3QlgoGv1LY2NWMgXA64VoTf+Hzy1EmAtdSyLF8WtC0dRSItJ4oZKKfezU1uREFUuvJla+nsAKcJnAf7yaMAeEOKO0e67wdmS9E5LU4goY2RbqWjuA1as7qLXlIASg/qTe9PAM+15+Q5ea7ToURLp6noo3lJvril2hOf9QMLa0o8grxe3BIbJThWo3lDQ01++LCCNAuMA6j5klVODBhwJo9Ho2zxZtvWsTbKq70U1sjx7g1yH4H+rxr21rj+xHd9+7Xc4TpL4abExlVq394KRjFppbgZbFRRpj2aTT9XP4jx/gaI6OoH7WB2ypwbLnwlz9dmUe+mToBoEtfrUUfH6QNqNeLzJHS4ZX+ug5LCayOg3NZNlcdZ9mLzWkRM69wYxUdR9MRBBSKDO3jBHW55LVwFa81JxjHT7OU//L7//VcN/x/NgnRqpbVslLAGd/aam85SINgPuY4upjSixnSMw+R2x0lRZJNYilyKm/SCuJVkbNnrMmPtZUKrlp6k0O9snqm0mvrKW9vSAfZcwlEQGGeSnimlTkwvd4Hi+PAkECnUq9eo0/Jh8hiFRTFxnhI7Vcv7WFxdUTiSJlthW/vWnls8PIk0qCQl7ICLvBblatraaKB4wn3FpnoAXTNyVIUqVM2NGcjyPjG4NqtsLnGqAei6uDTGcbvWjGuWD1bf/Rs2rjbwLbKX6m2LjojFLi40/WnO2nDiInGMaaW7K4allWXFQCpHlohG4DyE/Kmm3LIxOUKTJ1y9rdESLjxjwCtri50RHnijNfnjJP8vW+mP0EPXlQUTN0ILpbC59G6LaxiNHGb3VJnrmPRaif0AquLzYj4UiRTTcGKJmwIFF2Vg2B0j6l0wc3pnJ8bJdoE+54sroDQJSyNQrYQokAnMfpVRsyfRypAjB2by83zIsjRzC9jZnLjzAlRYlr5KrFc/7exZ03bOl/Q538cOH7kjpuul3KpcK8ZoijBNJMPYgRHMozXXE2Tbgu63bdz2jIo4RbkIwT1bIpUx0QVTHvrmaEfzx/QZLTl90WNbHZ+glC33yGPcz+1YLuIGT6d6G1kQeJKZv/iyY3bpWLm69LxPsNtIPcDKtEy9bGNgSMMlrW5CN4gIW3dMa8tYoqbkTLpVN4q51IlD85RF+HB73BdHNyJ8iooYgJwh0aEtdMUsAkm2gBwxIwn6cLGcWApjLbJGuMpda1sikYy+ZoqLlEo4eKY91sgJ4mnzSlYEuqB519xrVElC4QqJcgG6PjBdnJ82Bgs+LG3Nu0AwXZGYdi674FYhFEpk7PvbnekMWrfHY/3J7/nn1yfyn09gQQiQ1xe6Q7u2cpZcVaTGM0xQxX0rAQVBGJAPIbWrRE1ROWmpL8J0DnrVvPzdEbPEGeTNHQ/n6MhasxuQYK1isyzqiToxg5fMXZJU0VSGRgCHWSUsBLGeHaIZc+NF1Im61WAjIOWNwY3Kmd3zuUrlOnBJe4w/972/29/DDh+3I/bnv+s7395VbV8MVjhLAKCQNJgpMjWWPhUfKZS5HsSDclLg2gG1LOOx4L44DVdw7HnROq9VqzCyOkL6PutbOivaMLP+insbA/0KoiNI6quKFTL2gtx2Aqh2h7kCaK3WW+KZfM4eJ2LZmRXBFpWxWr/ozvIwvYlzxwq6bw+CsPjQwHFfTEAdQHynIgJZmPenvXiDTnNELwLEbFIMIUYL2BppUltqNYM82Gc6bZRlI1BY4AKMQo0zsgG2dUm0USD2NdH1abHMzZCr61Eh2UeJmXWf7VILdUIaK4X3PZ3IE55M2xXzlAWx6YNWwr5llDPftH0qIWb1q1yQc4HTy6IHEI0iBnbae/Cfr6TC</script></body></html>

@@ -1,0 +1,9 @@
+id,file,caption,source
+V11_cv_comparison,V11_cv_comparison.png,"CV used for selection. Error bars: sample SD over fold/seed rows, not a confidence interval.",results_full/tables
+V11_fold_seed,V11_fold_seed.png,"Each point is one run; seeds and folds are correlated, not independent datasets.",results_full/tables
+V08_learning_curves,V08_learning_curves.png,"Selected configurations, fold 0 and seed 535. Raw loss scales differ; compare AP for quality.",results_full/tables
+V09_ablations,V09_ablations.png,"One-factor 8M ablations. Error bars are descriptive fold/seed SD, not confidence intervals.",results_full/tables
+V12_test_curves,V12_test_curves.png,"Locked models, all 1,404 test records. Neural curves use mean probabilities across three seeds.",results_full/tables
+V12_confusion,V12_confusion.png,Raw counts at locked OOF-selected thresholds. Label 1: neoantigen; label 0: other. Common color scale.,results_full/tables
+V10_encoder_comparison,V10_encoder_comparison.png,8M/35M also change dimension and head capacity. Fit timings exclude encoder extraction and are hardware-specific.,results_full/tables
+V04_dataset,V04_dataset.png,Published class counts and lengths; no biological grouping is inferred from length.,results_full/tables

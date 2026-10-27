@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1692" height="855" viewBox="0 0 564 285">
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#7E94AE"/></marker></defs>
+<rect x="0" y="0" width="564" height="285" fill="#FFFFFF" stroke="none" stroke-width="0.8"/>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" fill="#155BD7">
+<tspan x="138" y="19.08">Five parallel Conv1D branches</tspan>
+</text>
+<rect x="8" y="100" width="104" height="66" fill="#102D50" stroke="#102D50" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="400" fill="#FFFFFF">
+<tspan x="60.0" y="129.92">One-hot</tspan>
+<tspan x="60.0" y="145.6">[B, 20, 35]</tspan>
+</text>
+<line x1="112" y1="133" x2="130" y2="133" stroke="#7E94AE" stroke-width="1"/>
+<line x1="130" y1="47" x2="130" y2="223" stroke="#7E94AE" stroke-width="1"/>
+<line x1="130" y1="47" x2="149" y2="47" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="149" y="31" width="137" height="32" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#102D50">
+<tspan x="217.5" y="51.25">k = 2    64 filters</tspan>
+</text>
+<line x1="286" y1="47" x2="310" y2="47" stroke="#7E94AE" stroke-width="1"/>
+<line x1="130" y1="91" x2="149" y2="91" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="149" y="75" width="137" height="32" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#102D50">
+<tspan x="217.5" y="95.25">k = 3    64 filters</tspan>
+</text>
+<line x1="286" y1="91" x2="310" y2="91" stroke="#7E94AE" stroke-width="1"/>
+<line x1="130" y1="135" x2="149" y2="135" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="149" y="119" width="137" height="32" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#102D50">
+<tspan x="217.5" y="139.25">k = 4    64 filters</tspan>
+</text>
+<line x1="286" y1="135" x2="310" y2="135" stroke="#7E94AE" stroke-width="1"/>
+<line x1="130" y1="179" x2="149" y2="179" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="149" y="163" width="137" height="32" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#102D50">
+<tspan x="217.5" y="183.25">k = 5    64 filters</tspan>
+</text>
+<line x1="286" y1="179" x2="310" y2="179" stroke="#7E94AE" stroke-width="1"/>
+<line x1="130" y1="223" x2="149" y2="223" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="149" y="207" width="137" height="32" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#102D50">
+<tspan x="217.5" y="227.25">k = 8    64 filters</tspan>
+</text>
+<line x1="286" y1="223" x2="310" y2="223" stroke="#7E94AE" stroke-width="1"/>
+<line x1="310" y1="47" x2="310" y2="223" stroke="#7E94AE" stroke-width="1"/>
+<line x1="310" y1="133" x2="330" y2="133" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="330" y="100" width="82" height="66" fill="#E9F5F2" stroke="#16766E" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="400" fill="#102D50">
+<tspan x="371.0" y="129.92">Concat</tspan>
+<tspan x="371.0" y="145.6">[B, 320]</tspan>
+</text>
+<line x1="412" y1="133" x2="436" y2="133" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="436" y="91" width="120" height="84" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#102D50">
+<tspan x="496.0" y="123.25">Dropout 0.3</tspan>
+<tspan x="496.0" y="137.25">Linear + sigmoid</tspan>
+<tspan x="496.0" y="151.25">Score</tspan>
+</text>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="11.6" font-weight="400" fill="#53677F">
+<tspan x="149" y="271.944">Per branch: ReLU, valid-window mask, global max</tspan>
+</text>
+</svg>

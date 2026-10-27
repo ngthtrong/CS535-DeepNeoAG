@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project 3 — DeepNeoAG: From Protein Language Models to Multi-window 1D CNNs</title>
+<style>
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#172033;--muted:#667085;--accent:#315efb;--accent2:#6d28d9;--line:#e5e8ef;--soft:#eef2ff;--good:#087a55;--warn:#9a5b00;--code:#111827}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.7}
+header{padding:54px 7vw 44px;background:linear-gradient(125deg,#172554,#1d4ed8 55%,#6d28d9);color:#fff}
+header h1{font-size:clamp(2rem,5vw,4rem);line-height:1.08;margin:.4rem 0 1rem;max-width:1100px}
+header p{max-width:950px;font-size:1.08rem;opacity:.92}.kicker{letter-spacing:.12em;text-transform:uppercase;font-size:.86rem;opacity:.8}
+.badges{display:flex;gap:9px;flex-wrap:wrap}.badge{padding:6px 10px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.12);font-size:.86rem}
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:25px;max-width:1450px;margin:auto;padding:26px}
+nav{position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px}
+nav a{display:block;text-decoration:none;color:#344054;padding:7px 8px;border-radius:7px;font-size:.9rem}nav a:hover{background:var(--soft);color:var(--accent)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:28px;margin-bottom:20px}
+h2{margin:0 0 14px;font-size:1.65rem}h3{margin:23px 0 8px}.lead{font-size:1.08rem;color:#344054}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}.card b{display:block;margin-bottom:5px}
+.flow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#111827;color:#dbeafe;padding:15px;border-radius:12px;overflow:auto;white-space:pre}
+.callout{border-left:4px solid var(--accent);background:#f8faff;border-radius:9px;padding:13px 15px;margin:14px 0}.callout.good{border-left-color:var(--good);background:#f2fbf7}.callout.warn{border-left-color:var(--warn);background:#fff8e9}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:.93rem}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f9fafb}
+code{background:#f2f4f7;border-radius:5px;padding:2px 5px}pre{background:var(--code);color:#e5e7eb;padding:14px;border-radius:11px;overflow:auto}
+.pill{display:inline-block;padding:4px 8px;margin:2px;border-radius:999px;background:#eef2ff;color:#3146a3;font-size:.82rem}.small{color:var(--muted);font-size:.88rem}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.compare>div{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+footer{max-width:1450px;margin:auto;padding:4px 26px 40px;color:var(--muted)}
+@media(max-width:900px){.layout{grid-template-columns:1fr;padding:14px}nav{position:relative;top:auto;max-height:none}.compare{grid-template-columns:1fr}header{padding:38px 20px}}
+</style>
+
+</head>
+<body>
+<header><div class="kicker">CS535 Computational Biology · Sequence Learning</div>
+<h1>Project 3 — DeepNeoAG: From Protein Language Models to Multi-window 1D CNNs</h1><p>A classroom bridge from IMDb sequence classification to peptide-function prediction using contextual residue embeddings and multi-scale local pattern detection.</p><div class="badges"><span class="badge">Neoantigen</span><span class="badge">Protein Language Model</span><span class="badge">ESM-2</span><span class="badge">1D CNN</span><span class="badge">MCNN</span><span class="badge">Imbalanced Learning</span></div></header>
+
+<div class="layout">
+<nav>
+<a href="#why">1. Why DeepNeoAG?</a><a href="#biology">2. Biological question</a><a href="#data">3. Published dataset</a>
+<a href="#bridge">4. IMDb → DeepNeoAG</a><a href="#baseline">5. One-hot baseline</a><a href="#plm">6. PLM representation</a>
+<a href="#mcnn">7. Multi-window CNN</a><a href="#lite">8. Classroom Lite model</a><a href="#rigor">9. Research rigor</a>
+<a href="#metrics">10. Metrics</a><a href="#experiments">11. Experiments</a><a href="#report">12. Research report</a><a href="#sources">13. Sources</a>
+</nav><main>
+
+<section id="why"><h2>1. Why DeepNeoAG is the ideal first biological project</h2>
+<p class="lead">DeepNeoAG is conceptually close to the IMDb exercise: both are short token sequences, both benefit from pretrained contextual representations, and both can use multi-window 1D CNNs to detect task-relevant local patterns.</p>
+<div class="flow">IMDb review
+↓
+language model
+↓
+token embeddings
+↓
+multi-window Conv1D
+↓
+sentiment
+
+        ⇩ same computational idea ⇩
+
+peptide sequence
+↓
+protein language model
+↓
+residue embeddings
+↓
+multi-window Conv1D
+↓
+neoantigen prediction</div>
+</section>
+
+<section id="biology"><h2>2. Biological question</h2>
+<p>Neoantigens arise from tumor-specific mutations and may trigger anti-tumor immune responses. DeepNeoAG was designed to predict neoantigen epitopes directly from peptide sequence information while avoiding an explicit requirement for MHC-allele input.</p>
+<div class="callout"><b>Teaching question:</b> Can a model learn biologically useful sequence patterns directly from peptide “language,” and does PLM pretraining improve those representations?</div>
+</section>
+
+<section id="data"><h2>3. Published DeepNeoAG dataset design</h2>
+<p>The public DeepNeoAG repository reports 32,877 initial epitope sequences. After sequence-similarity filtering to below 30% and restricting length to &lt;35 residues, 7,012 sequences remained: 302 neoantigens and 6,710 “other” peptides. The repository reports an 80/20 training/testing split of 5,608 / 1,404 samples.</p>
+<table>
+<tr><th>Class</th><th>Initial</th><th>After &lt;30% similarity</th><th>Length &lt;35</th><th>Train</th><th>Test</th></tr>
+<tr><td>Neoantigen</td><td>671</td><td>303</td><td>302</td><td>241</td><td>61</td></tr>
+<tr><td>Other</td><td>32,206</td><td>6,717</td><td>6,710</td><td>5,367</td><td>1,343</td></tr>
+<tr><td>Total</td><td>32,877</td><td>7,019</td><td>7,012</td><td>5,608</td><td>1,404</td></tr>
+</table>
+<div class="callout warn"><b>Critical research lesson:</b> this is strongly imbalanced (~1:22 after filtering). Accuracy alone is not sufficient. AUPRC, MCC, recall, precision, and specificity matter.</div>
+</section>
+
+<section id="bridge"><h2>4. IMDb → DeepNeoAG: the conceptual transfer</h2>
+<table>
+<tr><th>IMDb</th><th>DeepNeoAG</th></tr>
+<tr><td>review text</td><td>peptide sequence</td></tr>
+<tr><td>subword token</td><td>amino acid residue</td></tr>
+<tr><td>DistilBERT</td><td>ESM / ProtTrans / TAPE</td></tr>
+<tr><td>contextual token embedding</td><td>contextual residue embedding</td></tr>
+<tr><td>local phrase pattern</td><td>local peptide pattern</td></tr>
+<tr><td>sentiment class</td><td>neoantigen class</td></tr>
+</table>
+</section>
+
+<section id="baseline"><h2>5. Start with a transparent baseline</h2>
+<div class="flow">peptide
+↓
+20-aa one-hot encoding
+L × 20
+↓
+Conv1D
+↓
+Global Max Pool
+↓
+binary classifier</div>
+<p>This model is intentionally simple. It asks whether local sequence patterns can be learned without a pretrained biological representation.</p>
+</section>
+
+<section id="plm"><h2>6. Protein Language Model representation</h2>
+<p>The published repository supports ProtTrans, TAPE, and ESM feature generation; its example ESM command uses <code>esm2_t33_650M_UR50D</code> and per-token representations. The paper describes combining global sequence-level PLM information with local features from a multi-window CNN.</p>
+<div class="flow">peptide:  S L Y N T V A T L
+             ↓
+        Protein LM
+             ↓
+contextual residue vectors
+        L × D
+             ↓
+         Conv1D</div>
+<div class="callout good"><b>Key idea:</b> “L” still means sequence length, exactly as in text. The difference is that the token alphabet is amino acids rather than words/subwords.</div>
+</section>
+
+<section id="mcnn"><h2>7. Multi-window scanning CNN</h2>
+<div class="flow">PLM residue embeddings
+        L × D
+          ├─ Conv1D window 2 ─ pool ┐
+          ├─ Conv1D window 3 ─ pool ┤
+          ├─ Conv1D window 4 ─ pool ┤
+          ├─ Conv1D window 5 ─ pool ┤ → concatenate → classifier
+          └─ Conv1D window 8 ─ pool ┘</div>
+<p>Different windows test whether useful biological patterns exist at different local sequence scales. In a research report, students should not claim that a window directly equals a biological motif unless interpretability evidence supports that conclusion.</p>
+</section>
+
+<section id="lite"><h2>8. Classroom model: DeepNeoAG-Lite</h2>
+<p>The original repository provides larger PLMs and precomputed-feature workflows. For a T4 classroom, the accompanying Colab first uses a smaller ESM-2 model so students can observe the full process end-to-end.</p>
+<table>
+<tr><th>Classroom</th><th>Research reproduction</th></tr>
+<tr><td>ESM-2 small checkpoint</td><td>Published ProtTrans / TAPE / ESM features</td></tr>
+<tr><td>small subset / cached embeddings</td><td>full filtered dataset</td></tr>
+<tr><td>fast multi-window CNN</td><td>published parameter search / CV workflow</td></tr>
+<tr><td>concept demonstration</td><td>paper-level reproduction</td></tr>
+</table>
+</section>
+
+<section id="rigor"><h2>9. Research rigor specific to peptide prediction</h2>
+<div class="grid">
+<div class="card"><b>Similarity leakage</b>Near-identical peptides across train/test can inflate performance. The repository explicitly reports &lt;30% similarity filtering.</div>
+<div class="card"><b>Class imbalance</b>Use class-weighting or sampling carefully, and report metrics that reflect the minority positive class.</div>
+<div class="card"><b>Independent test</b>Do not tune thresholds, windows, or filters on the final test set.</div>
+<div class="card"><b>Negative definition</b>“Other” peptides are not automatically perfect biological negatives; discuss label quality.</div>
+<div class="card"><b>Peptide length</b>Padding and masking must not create artificial patterns.</div>
+<div class="card"><b>External validation</b>Future extension should test across cancer types / cohorts, not only the original domain.</div>
+</div>
+</section>
+
+<section id="metrics"><h2>10. Evaluation metrics</h2>
+<p><span class="pill">Sensitivity / Recall</span><span class="pill">Specificity</span><span class="pill">Precision</span><span class="pill">F1</span><span class="pill">MCC</span><span class="pill">ROC-AUC</span><span class="pill">PR-AUC</span><span class="pill">TP/TN/FP/FN</span></p>
+<div class="callout warn"><b>Do not optimize for accuracy alone.</b> With ~1 positive for every ~22 negatives, a trivial majority-class classifier already has high accuracy.</div>
+</section>
+
+<section id="experiments"><h2>11. Required experiments</h2>
+<table>
+<tr><th>Experiment</th><th>Comparison</th><th>Scientific question</th></tr>
+<tr><td>E1</td><td>amino-acid composition / simple ML vs one-hot CNN</td><td>Does sequence order matter?</td></tr>
+<tr><td>E2</td><td>one-hot CNN vs ESM-2 pooled embedding</td><td>What does pretraining contribute?</td></tr>
+<tr><td>E3</td><td>ESM-2 + single-window CNN</td><td>Does local pattern extraction add value?</td></tr>
+<tr><td>E4</td><td>window 2 / 3 / 4 / 5 / 8</td><td>Which local scales are useful?</td></tr>
+<tr><td>E5</td><td>single-window vs multi-window</td><td>Does multi-scale modeling improve generalization?</td></tr>
+<tr><td>E6</td><td>32 / 64 / 128 / 256 filters</td><td>What model capacity is needed?</td></tr>
+<tr><td>E7</td><td>unweighted vs class-weighted loss</td><td>How does imbalance handling change precision/recall?</td></tr>
+<tr><td>E8</td><td>standard split vs similarity-controlled split</td><td>How much does leakage affect apparent performance?</td></tr>
+</table>
+</section>
+
+<section id="report"><h2>12. Student research report</h2>
+<ol>
+<li>Neoantigen biological background and the prediction problem.</li>
+<li>Dataset construction and similarity control.</li>
+<li>One-hot baseline.</li>
+<li>Protein Language Model representation.</li>
+<li>Multi-window CNN architecture.</li>
+<li>Controlled window/filter experiments.</li>
+<li>Imbalance-aware evaluation.</li>
+<li>Independent-test results and error analysis.</li>
+<li>Limitations: peptide labels, HLA independence, cohort generalization.</li>
+<li>Proposed next experiment toward current research.</li>
+</ol>
+</section>
+
+<section id="sources"><h2>13. Sources</h2>
+<ul>
+<li><a href="https://doi.org/10.1016/j.ijbiomac.2024.136252" target="_blank">DeepNeoAG paper — International Journal of Biological Macromolecules (2024)</a></li>
+<li><a href="https://github.com/B1607/DeepNeoAG" target="_blank">Public DeepNeoAG repository</a></li>
+<li><a href="https://github.com/facebookresearch/esm" target="_blank">ESM / ESM-2 resources</a></li>
+</ul>
+</section>
+</main></div>
+
+<footer>CS535 · 1D CNN → Pretrained Language Models → Protein Language Models</footer>
+</body></html>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project 2 — IMDb: From 1D CNN to Pretrained Language Models</title>
+<style>
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#172033;--muted:#667085;--accent:#315efb;--accent2:#6d28d9;--line:#e5e8ef;--soft:#eef2ff;--good:#087a55;--warn:#9a5b00;--code:#111827}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.7}
+header{padding:54px 7vw 44px;background:linear-gradient(125deg,#172554,#1d4ed8 55%,#6d28d9);color:#fff}
+header h1{font-size:clamp(2rem,5vw,4rem);line-height:1.08;margin:.4rem 0 1rem;max-width:1100px}
+header p{max-width:950px;font-size:1.08rem;opacity:.92}.kicker{letter-spacing:.12em;text-transform:uppercase;font-size:.86rem;opacity:.8}
+.badges{display:flex;gap:9px;flex-wrap:wrap}.badge{padding:6px 10px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.12);font-size:.86rem}
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:25px;max-width:1450px;margin:auto;padding:26px}
+nav{position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px}
+nav a{display:block;text-decoration:none;color:#344054;padding:7px 8px;border-radius:7px;font-size:.9rem}nav a:hover{background:var(--soft);color:var(--accent)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:28px;margin-bottom:20px}
+h2{margin:0 0 14px;font-size:1.65rem}h3{margin:23px 0 8px}.lead{font-size:1.08rem;color:#344054}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}.card b{display:block;margin-bottom:5px}
+.flow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#111827;color:#dbeafe;padding:15px;border-radius:12px;overflow:auto;white-space:pre}
+.callout{border-left:4px solid var(--accent);background:#f8faff;border-radius:9px;padding:13px 15px;margin:14px 0}.callout.good{border-left-color:var(--good);background:#f2fbf7}.callout.warn{border-left-color:var(--warn);background:#fff8e9}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:.93rem}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f9fafb}
+code{background:#f2f4f7;border-radius:5px;padding:2px 5px}pre{background:var(--code);color:#e5e7eb;padding:14px;border-radius:11px;overflow:auto}
+.pill{display:inline-block;padding:4px 8px;margin:2px;border-radius:999px;background:#eef2ff;color:#3146a3;font-size:.82rem}.small{color:var(--muted);font-size:.88rem}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.compare>div{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+footer{max-width:1450px;margin:auto;padding:4px 26px 40px;color:var(--muted)}
+@media(max-width:900px){.layout{grid-template-columns:1fr;padding:14px}nav{position:relative;top:auto;max-height:none}.compare{grid-template-columns:1fr}header{padding:38px 20px}}
+</style>
+
+</head>
+<body>
+<header><div class="kicker">CS535 Computational Biology · Sequence Learning</div>
+<h1>Project 2 — IMDb: From 1D CNN to Pretrained Language Models</h1><p>A bridge from convolutional pattern detection in images to local sequence patterns, contextual embeddings, and ultimately Protein Language Models.</p><div class="badges"><span class="badge">IMDb</span><span class="badge">1D CNN</span><span class="badge">Multi-window CNN</span><span class="badge">DistilBERT</span><span class="badge">Transfer Learning</span></div></header>
+
+<div class="layout">
+<nav>
+<a href="#why">1. Why IMDb?</a><a href="#bridge">2. 2D CNN → 1D CNN</a><a href="#data">3. Dataset</a>
+<a href="#baseline">4. Baseline Model</a><a href="#cnn">5. Multi-window 1D CNN</a><a href="#lm">6. DistilBERT</a>
+<a href="#hybrid">7. LM + CNN</a><a href="#experiments">8. Experiments</a><a href="#metrics">9. Evaluation</a>
+<a href="#bio">10. Bridge to PLM</a><a href="#report">11. Student Report</a><a href="#sources">12. Sources</a>
+</nav><main>
+
+<section id="why"><h2>1. Why IMDb is the ideal second project</h2>
+<p class="lead">After image CNNs, IMDb removes one spatial dimension but preserves the same core idea: a convolutional filter scans a local neighborhood and responds when a useful pattern is present.</p>
+<div class="compare">
+<div><b>Image CNN</b><div class="flow">image
+↓
+2D local patch
+↓
+Conv2D kernel
+↓
+visual pattern
+↓
+feature map</div></div>
+<div><b>Text CNN</b><div class="flow">token sequence
+↓
+local word/subword window
+↓
+Conv1D kernel
+↓
+phrase pattern
+↓
+feature map</div></div>
+</div>
+<div class="callout good"><b>Course goal:</b> students should discover that CNN is not an “image-only” model. It is a local pattern detector over an ordered representation.</div>
+</section>
+
+<section id="bridge"><h2>2. From 2D CNN to 1D CNN</h2>
+<table>
+<tr><th>Computer Vision</th><th>IMDb Text</th><th>Protein</th></tr>
+<tr><td>pixel</td><td>word / subword token</td><td>amino acid token</td></tr>
+<tr><td>2D neighborhood</td><td>1D token window</td><td>1D residue window</td></tr>
+<tr><td>3×3 kernel</td><td>window size 3</td><td>window size 3 residues</td></tr>
+<tr><td>visual pattern</td><td>local phrase pattern</td><td>sequence motif / local context</td></tr>
+<tr><td>ImageNet representation</td><td>BERT representation</td><td>ESM / ProtT5 representation</td></tr>
+</table>
+<p>Example: the phrase <code>not very good</code> is a 3-token local pattern. A Conv1D filter with window size 3 can learn to respond strongly to combinations like this without explicitly hard-coding the phrase.</p>
+</section>
+
+<section id="data"><h2>3. IMDb dataset</h2>
+<p>The Hugging Face IMDb dataset contains 25,000 labeled training reviews, 25,000 labeled test reviews, and an additional 50,000 unlabeled reviews. The official Hugging Face text-classification tutorial uses IMDb to demonstrate DistilBERT sentiment classification.</p>
+<div class="flow">review text
+→ tokenizer
+→ token IDs / embeddings
+→ sequence model
+→ positive or negative</div>
+<div class="callout warn"><b>Research practice:</b> create a validation split from the training set. Keep the official test set untouched until architecture and hyperparameters are chosen.</div>
+</section>
+
+<section id="baseline"><h2>4. Baseline: learned word embeddings + simple 1D CNN</h2>
+<div class="flow">review
+↓
+simple tokenizer
+↓
+vocabulary IDs
+↓
+Embedding(vocab_size, 128)
+↓
+Conv1D
+↓
+Global Max Pool
+↓
+binary classifier</div>
+<p>This baseline is intentionally not pretrained. It answers: <b>how much can local phrase patterns learn from the task data alone?</b></p>
+</section>
+
+<section id="cnn"><h2>5. Multi-window 1D CNN</h2>
+<p>A single window size assumes one useful phrase length. A multi-window CNN allows several local scales to be learned simultaneously.</p>
+<div class="flow">L × D embedding
+     ├─ Conv1D window 2 ─ max pool ┐
+     ├─ Conv1D window 3 ─ max pool ┤
+     ├─ Conv1D window 4 ─ max pool ┤ → concatenate → classifier
+     └─ Conv1D window 5 ─ max pool ┘</div>
+<table>
+<tr><th>Window</th><th>Interpretation</th></tr>
+<tr><td>2</td><td>short bigram-like local interactions</td></tr>
+<tr><td>3</td><td>short phrase patterns</td></tr>
+<tr><td>4–5</td><td>longer compositional local sentiment patterns</td></tr>
+</table>
+</section>
+
+<section id="lm"><h2>6. Why add a pretrained language model?</h2>
+<p>Random or task-trained word embeddings assign one representation to a token. A contextual language model such as DistilBERT generates token representations that depend on surrounding context.</p>
+<div class="compare">
+<div><b>Static / task embedding</b><pre>bank → one vector</pre></div>
+<div><b>Contextual embedding</b><pre>river bank   → vector A
+bank account → vector B</pre></div>
+</div>
+<div class="callout">This is the conceptual step that later becomes a Protein Language Model: amino-acid representations can also become context dependent.</div>
+</section>
+
+<section id="hybrid"><h2>7. DistilBERT + multi-window CNN</h2>
+<div class="flow">review
+↓
+DistilBERT tokenizer
+↓
+DistilBERT hidden states
+L × 768
+↓
+transpose to 768 × L
+↓
+multi-window Conv1D
+2 / 3 / 4 / 5
+↓
+global max pooling
+↓
+sentiment classifier</div>
+<p>For teaching, first freeze DistilBERT and train only the CNN head. Then optionally unfreeze the language model for full fine-tuning.</p>
+</section>
+
+<section id="experiments"><h2>8. Required controlled experiments</h2>
+<table>
+<tr><th>Experiment</th><th>Compare</th><th>Question</th></tr>
+<tr><td>E1</td><td>Bag-of-words logistic regression vs 1D CNN</td><td>Do local sequence patterns help?</td></tr>
+<tr><td>E2</td><td>window 2 / 3 / 4 / 5 / 7</td><td>Which local scale matters?</td></tr>
+<tr><td>E3</td><td>filters 32 / 64 / 128 / 256</td><td>How much representation width is needed?</td></tr>
+<tr><td>E4</td><td>single-window vs multi-window</td><td>Does multi-scale local modeling help?</td></tr>
+<tr><td>E5</td><td>random/task embedding vs DistilBERT</td><td>What does pretraining contribute?</td></tr>
+<tr><td>E6</td><td>frozen DistilBERT vs fine-tuned DistilBERT</td><td>When is task adaptation useful?</td></tr>
+<tr><td>E7</td><td>short review vs long review / negation cases</td><td>Where does the model fail?</td></tr>
+</table>
+</section>
+
+<section id="metrics"><h2>9. Evaluation</h2>
+<p><span class="pill">Accuracy</span><span class="pill">Precision</span><span class="pill">Recall</span><span class="pill">F1</span><span class="pill">ROC-AUC</span><span class="pill">PR-AUC</span><span class="pill">Confusion Matrix</span></p>
+<p>IMDb is relatively balanced, so accuracy is interpretable, but students should still report threshold-dependent and threshold-independent metrics.</p>
+</section>
+
+<section id="bio"><h2>10. The exact bridge to Protein Language Models</h2>
+<div class="flow">IMDb:
+text → DistilBERT → L×768 → multi-window 1D CNN → sentiment
+
+Protein:
+sequence → ESM-2 / ProtT5 → L×D → multi-window 1D CNN → biological function</div>
+<table>
+<tr><th>IMDb</th><th>DeepNeoAG</th></tr>
+<tr><td>word/subword token</td><td>amino acid residue</td></tr>
+<tr><td>review</td><td>peptide</td></tr>
+<tr><td>DistilBERT</td><td>ESM-2 / ProtTrans</td></tr>
+<tr><td>phrase detector</td><td>local peptide-pattern detector</td></tr>
+<tr><td>positive / negative</td><td>neoantigen / other</td></tr>
+</table>
+</section>
+
+<section id="report"><h2>11. Student report structure</h2>
+<ol>
+<li>Research question and hypothesis.</li><li>Dataset and split.</li><li>Baseline representation.</li>
+<li>1D CNN architecture and parameter calculation.</li><li>Window-size experiments.</li>
+<li>Pretrained language-model experiment.</li><li>Complete metrics and error analysis.</li>
+<li>Bridge: explain how the same architecture can be transferred to protein sequences.</li>
+</ol>
+</section>
+
+<section id="sources"><h2>12. Sources</h2>
+<ul>
+<li><a href="https://huggingface.co/docs/transformers/tasks/sequence_classification" target="_blank">Hugging Face — Text Classification</a></li>
+<li><a href="https://huggingface.co/docs/course/chapter7/3" target="_blank">Hugging Face Course — IMDb dataset and language-model adaptation</a></li>
+</ul>
+</section>
+</main></div>
+
+<footer>CS535 · 1D CNN → Pretrained Language Models → Protein Language Models</footer>
+</body></html>

@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS535 Beginner Guide to Academic Research | From Research Questions to Papers and Presentations</title>
+<style>
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#172033;--muted:#667085;--accent:#315efb;--accent2:#6d28d9;--good:#087a55;--warn:#a65d00;--bad:#b42318;--line:#e5e8ef;--soft:#eef2ff;--code:#111827}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.72;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI","Noto Sans TC",Arial,sans-serif}header{padding:58px 7vw 46px;color:#fff;background:linear-gradient(125deg,#172554,#1d4ed8 55%,#6d28d9)}header .kicker{font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;opacity:.82}header h1{font-size:clamp(2.1rem,5vw,4.4rem);line-height:1.05;margin:.5rem 0 1rem;max-width:1100px}header p{max-width:980px;font-size:1.1rem;opacity:.93}.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.badge{padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.26);background:rgba(255,255,255,.13);font-size:.9rem}.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:26px;max-width:1500px;margin:0 auto;padding:28px}nav{position:sticky;top:18px;align-self:start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;max-height:calc(100vh - 36px);overflow:auto}nav h3{margin:2px 0 9px;color:var(--muted);font-size:.9rem}nav a{display:block;text-decoration:none;color:#344054;padding:7px 9px;border-radius:8px;font-size:.91rem}nav a:hover{background:var(--soft);color:var(--accent)}main{min-width:0}section{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px;margin-bottom:22px;box-shadow:0 2px 8px rgba(16,24,40,.025)}h2{font-size:1.72rem;line-height:1.25;margin:0 0 16px}h3{margin:25px 0 9px}h4{margin:18px 0 7px}p{margin:9px 0}.lead{font-size:1.08rem;color:#344054}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px;margin:16px 0}.card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}.card b{display:block;margin-bottom:5px}.callout{border-left:4px solid var(--accent);padding:14px 16px;background:#f8faff;border-radius:10px;margin:16px 0}.callout.good{border-left-color:var(--good);background:#f1fbf6}.callout.warn{border-left-color:var(--warn);background:#fff8e9}.callout.bad{border-left-color:var(--bad);background:#fff5f5}.flow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#111827;color:#dbeafe;padding:16px;border-radius:13px;white-space:pre;overflow:auto}table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.94rem}th,td{border-bottom:1px solid var(--line);padding:10px 11px;text-align:left;vertical-align:top}th{background:#f9fafb;color:#344054}code{background:#f2f4f7;padding:2px 5px;border-radius:5px}.small{font-size:.88rem;color:var(--muted)}.metric,.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;margin:3px;background:#fbfcff;font-size:.87rem}.pill{background:#eef2ff;color:#3346a8;border-color:#dce3ff}.checklist{display:grid;gap:7px;margin:12px 0}.checkrow{display:flex;gap:9px;align-items:flex-start;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#fff}.checkrow input{margin-top:5px;transform:scale(1.15)}.progress-wrap{height:12px;background:#edf0f5;border-radius:99px;overflow:hidden;margin:8px 0}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#315efb,#6d28d9);transition:width .2s}.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:11px}.field label{display:block;color:var(--muted);font-size:.84rem;margin-bottom:4px}.field input,.field textarea{width:100%;border:1px solid #d8dde6;border-radius:8px;padding:9px;background:#fff;font:inherit;color:var(--ink)}.field textarea{min-height:90px;resize:vertical}.output{border:1px solid #cfd7ff;border-radius:12px;background:#f5f7ff;padding:14px;margin-top:13px;font-weight:650}.btn{border:1px solid #cfd7ff;background:#eef2ff;color:#1f3fb8;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer}.slidegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}.slide{border:1px solid var(--line);border-radius:11px;padding:12px;background:#fff}.slide strong{display:block;margin-bottom:4px;color:#243c9f}.source-list li{margin:8px 0}.source-list a{color:#2347c5}footer{max-width:1500px;margin:auto;padding:4px 28px 42px;color:var(--muted)}@media(max-width:900px){.layout{grid-template-columns:1fr;padding:15px}nav{position:relative;top:auto;max-height:none}header{padding:40px 22px}}@media print{nav,.btn{display:none!important}.layout{display:block;padding:0}section{break-inside:avoid;box-shadow:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<header><div class="kicker">CS535 · Beginner Research Guide</div><h1>Your First Academic Research Project: From Questions and Experiments to Papers and Presentations</h1><p>A practical guide for students who are new to research. The goal is not simply to produce many results, but to build a chain of evidence that is testable, reproducible, interpretable, and clearly communicated.</p><div class="badges"><span class="badge">Research Question</span><span class="badge">Literature Review</span><span class="badge">Study Design</span><span class="badge">Reproducibility</span><span class="badge">IMRaD</span><span class="badge">Scientific Presentation</span><span class="badge">Responsible AI Use</span></div></header>
+<div class="layout"><nav><h3>Research Guide</h3><a href="#start">1. What Is Research Really About?</a><a href="#roadmap">2. The Complete Research Workflow</a><a href="#question">3. Research Question Builder</a><a href="#literature">4. Literature Review and Research Gap</a><a href="#design">5. Study Design and Protocol</a><a href="#ml">6. ML / Bioinformatics Research Standards</a><a href="#repro">7. Reproducibility</a><a href="#results">8. Results and Scientific Inference</a><a href="#writing">9. Academic Writing / IMRaD</a><a href="#figures">10. Figures and Evidence</a><a href="#presentation">11. A 20-Slide Academic Presentation</a><a href="#delivery">12. Delivering the Presentation</a><a href="#ai">13. Responsible Use of AI Tools</a><a href="#mistakes">14. Common Beginner Mistakes</a><a href="#checklist">15. Final Research Checklist</a><a href="#sources">16. Online Learning Resources</a></nav><main>
+
+<section id="start">
+<h2>1. What Is Research Really About?</h2>
+<p class="lead">Academic research is not simply “choose a model, run a dataset, and report an accuracy.” The core of research is to ask a worthwhile question, design evidence that can answer it, and state honestly how far that evidence supports your conclusion.</p>
+<div class="grid">
+  <div class="card"><b>Question</b>What do you truly want to know? Is the question specific, measurable, and falsifiable?</div>
+  <div class="card"><b>Evidence</b>What data or experiments could distinguish between competing answers?</div>
+  <div class="card"><b>Control</b>What baseline or control is needed to determine where an improvement actually comes from?</div>
+  <div class="card"><b>Reproducibility</b>Could another researcher reconstruct the main result from your methods, data, and code?</div>
+  <div class="card"><b>Interpretation</b>What do the results support, and what conclusions go beyond the evidence?</div>
+  <div class="card"><b>Communication</b>Can a reader understand the question, method, key evidence, and limitations within a few minutes?</div>
+</div>
+<div class="callout"><b>In one sentence:</b> Research is a chain of justified decisions. Every “why did you do it this way?” should have a scientific reason—not merely “because the code runs.”</div>
+</section>
+
+
+<section id="roadmap">
+<h2>2. The Complete Research Workflow</h2>
+<div class="flow">Observation / Problem
+        ↓
+Narrow research question
+        ↓
+Literature review
+        ↓
+Research gap + contribution
+        ↓
+Hypothesis / objective
+        ↓
+Study protocol + baselines + metrics
+        ↓
+Data collection / dataset construction
+        ↓
+Analysis / model development
+        ↓
+Validation + robustness + error analysis
+        ↓
+Interpretation + limitations
+        ↓
+Paper / report / presentation
+        ↓
+Data + code + metadata + reproducibility package</div>
+
+<h3>Start with a one-page research plan</h3>
+<table>
+<tr><th>Field</th><th>Write only 1–3 sentences</th></tr>
+<tr><td>Problem</td><td>What important problem currently exists?</td></tr>
+<tr><td>Known</td><td>What is already established in the literature?</td></tr>
+<tr><td>Gap</td><td>What remains unknown, poorly solved, or unfairly evaluated?</td></tr>
+<tr><td>Question</td><td>What precise question will this study answer?</td></tr>
+<tr><td>Hypothesis</td><td>What do you expect to observe, and why?</td></tr>
+<tr><td>Data</td><td>What data will be used, and what are its quality limitations?</td></tr>
+<tr><td>Experiment</td><td>What is the smallest experiment that is sufficient to answer the question?</td></tr>
+<tr><td>Baseline</td><td>What methods or controls must you compare against?</td></tr>
+<tr><td>Primary metric</td><td>What is the main criterion for success?</td></tr>
+<tr><td>Contribution</td><td>If the study succeeds, what new knowledge will it add?</td></tr>
+</table>
+</section>
+
+
+<section id="question">
+<h2>3. Research Question Builder</h2>
+<p>Purdue OWL recommends narrowing an overly broad topic into a manageable scope and then writing it as a clear research question. A good question usually specifies the <b>population/system, method/intervention, comparison, outcome, and conditions</b>.</p>
+
+<div class="form-grid">
+  <div class="field"><label>Population / dataset / system</label><input id="rqPop" placeholder="e.g., non-homologous protein test set"></div>
+  <div class="field"><label>Method / intervention / input</label><input id="rqMethod" placeholder="e.g., ESM-2 embeddings + 1D CNN"></div>
+  <div class="field"><label>Comparison / baseline</label><input id="rqBase" placeholder="e.g., one-hot CNN / classical ML"></div>
+  <div class="field"><label>Primary outcome / metric</label><input id="rqMetric" placeholder="e.g., MCC and AUPRC"></div>
+  <div class="field"><label>Condition / constraint</label><input id="rqCond" placeholder="e.g., after 30% sequence-identity filtering"></div>
+</div>
+<button class="btn" id="buildRQ">Build Research Question</button>
+<div class="output" id="rqOutput">Fill in the fields above to generate a testable research question.</div>
+
+<h3>Five checks for a strong research question</h3>
+<div class="checklist" data-progress="rq">
+<label class="checkrow"><input type="checkbox" data-save>The question can be answered with evidence rather than opinion.</label>
+<label class="checkrow"><input type="checkbox" data-save>I know the primary outcome / metric.</label>
+<label class="checkrow"><input type="checkbox" data-save>I know at least one reasonable baseline or control.</label>
+<label class="checkrow"><input type="checkbox" data-save>Positive or negative results would both produce interpretable knowledge.</label>
+<label class="checkrow"><input type="checkbox" data-save>The scope is feasible within the available semester / research period.</label>
+</div>
+<div class="progress-wrap"><div class="progress-bar" data-bar="rq"></div></div>
+<div class="small" data-label="rq"></div>
+</section>
+
+
+<section id="literature">
+<h2>4. Literature Review: Do Not Just Collect PDFs—Map What Is Known, Unknown, and Contested</h2>
+<p>The most useful output of a literature review is not a pile of summaries. It is a research map showing the major approaches, datasets, findings, limitations, and unresolved questions.</p>
+
+<h3>A three-pass reading strategy</h3>
+<div class="grid">
+  <div class="card"><b>Pass 1 — 5 minutes</b>Title, abstract, figures, and conclusion. Decide whether the paper deserves deeper reading.</div>
+  <div class="card"><b>Pass 2 — 20–40 minutes</b>Research question, dataset, methods, main results, and limitations.</div>
+  <div class="card"><b>Pass 3 — Deep reading</b>Reconstruct the experimental logic, inspect assumptions, trace key citations, and judge reproducibility.</div>
+</div>
+
+<h3>Record at least these 10 fields for every important paper</h3>
+<table>
+<tr><th>Field</th><th>What to record</th></tr>
+<tr><td>Citation</td><td>Authors, year, DOI / URL</td></tr>
+<tr><td>Question</td><td>The actual question the paper addresses</td></tr>
+<tr><td>Dataset</td><td>Source, scale, inclusion and exclusion criteria</td></tr>
+<tr><td>Split / validation</td><td>Training / validation / test / external validation</td></tr>
+<tr><td>Method</td><td>Core model and critical parameters</td></tr>
+<tr><td>Baseline</td><td>Whether the comparison is fair and appropriate</td></tr>
+<tr><td>Primary metric</td><td>How the main result is evaluated</td></tr>
+<tr><td>Main result</td><td>The key quantitative result or effect</td></tr>
+<tr><td>Limitation</td><td>What the authors admit—and what you additionally notice</td></tr>
+<tr><td>Relevance</td><td>How this paper changes your research design</td></tr>
+</table>
+
+<h3>Research gaps come in many forms</h3>
+<div>
+<span class="pill">Knowledge gap</span><span class="pill">Method gap</span><span class="pill">Dataset gap</span>
+<span class="pill">Generalization gap</span><span class="pill">Mechanistic gap</span><span class="pill">Replication gap</span>
+<span class="pill">Clinical / translational gap</span><span class="pill">Reporting gap</span>
+</div>
+<div class="callout warn"><b>Weak novelty claim:</b> “Nobody has applied model X to dataset Y.”<br><b>Stronger framing:</b> Identify an important condition under which current approaches fail, then explain why your design could address that failure.</div>
+</section>
+
+
+<section id="design">
+<h2>5. Study Design: Write the Protocol Before Running Large Numbers of Experiments</h2>
+<p>NIH describes scientific rigor in terms of unbiased, well-controlled design, methods, analysis, interpretation, and reporting. A common beginner mistake is to let the final results determine the original research question after the fact.</p>
+
+<h3>Your protocol should define these items in advance</h3>
+<div class="checklist" data-progress="protocol">
+<label class="checkrow"><input type="checkbox" data-save>The primary research question / hypothesis is explicit.</label>
+<label class="checkrow"><input type="checkbox" data-save>Data source, version, inclusion, and exclusion rules are fixed.</label>
+<label class="checkrow"><input type="checkbox" data-save>The primary outcome / metric is predefined.</label>
+<label class="checkrow"><input type="checkbox" data-save>Baselines / controls are predefined.</label>
+<label class="checkrow"><input type="checkbox" data-save>Training / validation / test roles are clearly separated.</label>
+<label class="checkrow"><input type="checkbox" data-save>Hyperparameter tuning will not use the independent test set.</label>
+<label class="checkrow"><input type="checkbox" data-save>Failure cases, missing data, and outliers have predefined handling rules.</label>
+<label class="checkrow"><input type="checkbox" data-save>The main statistical or model-comparison procedure is decided.</label>
+<label class="checkrow"><input type="checkbox" data-save>Negative or null results will still be reported appropriately.</label>
+</div>
+<div class="progress-wrap"><div class="progress-bar" data-bar="protocol"></div></div>
+<div class="small" data-label="protocol"></div>
+</section>
+
+
+<section id="ml">
+<h2>6. Research Standards Especially Important in Machine Learning and Bioinformatics</h2>
+<p>Computational research can produce attractive numbers very easily. Attractive numbers are not the same as reliable science. The following practices should become routine.</p>
+<table>
+<tr><th>Issue</th><th>Minimum expectation</th></tr>
+<tr><td>Dataset provenance</td><td>Document where the data came from, when it was downloaded, the version, and cleaning rules.</td></tr>
+<tr><td>Leakage</td><td>Ensure that duplicate subjects, near-duplicate samples, homologous sequences, patients, or time-dependent information do not leak across splits.</td></tr>
+<tr><td>Baseline</td><td>Include simple and reasonable baselines—not only complex models.</td></tr>
+<tr><td>Controlled experiment</td><td>If studying kernel size, do not simultaneously change optimizer, filter count, and augmentation.</td></tr>
+<tr><td>Hyperparameter selection</td><td>Select using validation data only; use the independent test set at the end.</td></tr>
+<tr><td>Metrics</td><td>Choose metrics that match the problem; for imbalanced data, do not rely only on accuracy or ROC-AUC.</td></tr>
+<tr><td>Repeated runs</td><td>If results are sensitive to initialization, use multiple random seeds and report mean ± SD / CI.</td></tr>
+<tr><td>Ablation</td><td>Remove key components to determine what actually causes the improvement.</td></tr>
+<tr><td>Error analysis</td><td>Do not report only average scores; inspect false positives, false negatives, and hard cases.</td></tr>
+<tr><td>External validation</td><td>If you claim generalization, evaluate on data from another source, time period, or institution when possible.</td></tr>
+<tr><td>Compute report</td><td>Report software version, GPU/CPU, epochs, batch size, seeds, and runtime.</td></tr>
+</table>
+
+<div class="callout good"><b>A better ML research question:</b> Not “my model achieved 0.95 AUC,” but “does the improvement remain after leakage control, independent testing, fixed baselines, and predefined metrics?”</div>
+</section>
+
+
+<section id="repro">
+<h2>7. Reproducibility: A Core Requirement in Modern Research</h2>
+<p>A 2026 PLOS Biology cross-disciplinary consensus treats reproducibility as something that spans the entire research lifecycle—from planning and methods to data management, analysis, and dissemination. NIH has also updated its Data Management and Sharing Plan format, emphasizing repositories, privacy, sharing timelines, and long-term accessibility.</p>
+
+<h3>Your reproducibility package should include at least</h3>
+<div class="checklist" data-progress="repro">
+<label class="checkrow"><input type="checkbox" data-save>README: how to rerun the project from scratch.</label>
+<label class="checkrow"><input type="checkbox" data-save>Original data source and download date / accession / DOI.</label>
+<label class="checkrow"><input type="checkbox" data-save>Fixed train/validation/test split or code that generates it.</label>
+<label class="checkrow"><input type="checkbox" data-save>Complete preprocessing and filtering rules.</label>
+<label class="checkrow"><input type="checkbox" data-save>Requirements / environment / package versions.</label>
+<label class="checkrow"><input type="checkbox" data-save>Random seed and deterministic settings.</label>
+<label class="checkrow"><input type="checkbox" data-save>Training and analysis code.</label>
+<label class="checkrow"><input type="checkbox" data-save>Instructions to reproduce the main results and figures.</label>
+<label class="checkrow"><input type="checkbox" data-save>Data dictionary / metadata.</label>
+<label class="checkrow"><input type="checkbox" data-save>What can and cannot be shared because of privacy or IP, with reasons.</label>
+</div>
+<div class="progress-wrap"><div class="progress-bar" data-bar="repro"></div></div>
+<div class="small" data-label="repro"></div>
+</section>
+
+
+<section id="results">
+<h2>8. Results Should Answer the Research Question—not Dump Every Output</h2>
+<h3>For each major result, use Claim → Evidence → Limitation</h3>
+<table>
+<tr><th>Claim</th><th>Evidence</th><th>Limitation / boundary</th></tr>
+<tr><td>What did you observe?</td><td>Which figure, table, or number directly supports it?</td><td>For which data, conditions, or populations does it hold?</td></tr>
+</table>
+
+<h3>Results and Discussion serve different purposes</h3>
+<div class="grid">
+<div class="card"><b>Results</b>What happened? Report predefined and important findings systematically.</div>
+<div class="card"><b>Discussion</b>What does it mean? Connect to prior work, explain mechanisms, discuss limitations, and interpret implications.</div>
+</div>
+
+<h3>Evaluate results along at least four dimensions</h3>
+<div>
+<span class="metric">effect / magnitude</span><span class="metric">uncertainty</span>
+<span class="metric">robustness</span><span class="metric">practical / biological meaning</span>
+</div>
+<div class="callout warn"><b>Avoid:</b> declaring an important breakthrough solely because p&lt;0.05 or one metric improved by 0.003. Ask how large the effect is, how stable it is, and whether it survives different splits, seeds, or external datasets.</div>
+</section>
+
+
+<section id="writing">
+<h2>9. Academic Writing: Use IMRaD to Build a Traceable Argument</h2>
+<p>Empirical research often follows IMRaD: Introduction, Methods, Results, and Discussion. The EQUATOR Network provides reporting guidelines for many study types, including randomized trials, observational studies, systematic reviews, prediction models, and diagnostic studies.</p>
+
+<h3>What the reader wants from each section</h3>
+<table>
+<tr><th>Section</th><th>Reader's question</th><th>Common beginner mistake</th></tr>
+<tr><td>Title</td><td>What did you study?</td><td>Too broad, vague, or only a model name.</td></tr>
+<tr><td>Abstract</td><td>What was the problem, method, key result, and meaning?</td><td>Too much background, no core quantitative result.</td></tr>
+<tr><td>Introduction</td><td>Why is this study needed?</td><td>Reads like a textbook and never identifies the gap.</td></tr>
+<tr><td>Methods</td><td>What exactly did you do, and can I reproduce it?</td><td>Missing split rules, versions, parameters, or exclusion criteria.</td></tr>
+<tr><td>Results</td><td>What did you actually find?</td><td>Mixing interpretation into the Results section.</td></tr>
+<tr><td>Discussion</td><td>What do the findings mean in relation to existing knowledge?</td><td>Repeating results or overclaiming.</td></tr>
+<tr><td>Limitations</td><td>Where should I stop trusting the conclusion?</td><td>One token sentence with no real boundary conditions.</td></tr>
+<tr><td>Conclusion</td><td>What is the most important evidence-supported takeaway?</td><td>Presenting future work as if it were completed evidence.</td></tr>
+</table>
+
+<h3>A four-step Introduction</h3>
+<div class="flow">1. Important problem / context
+        ↓
+2. What is already known
+        ↓
+3. What remains unresolved (gap)
+        ↓
+4. What this study asks / contributes</div>
+
+<h3>The standard for Methods</h3>
+<p>PLOS author guidance treats Methods as the backbone of credibility and replicability: the description should be detailed enough for a researcher with similar training to reproduce the work, not merely identify the model name.</p>
+
+<h3>A practical writing order</h3>
+<div class="flow">Figures / tables
+   ↓
+Results
+   ↓
+Methods
+   ↓
+Discussion
+   ↓
+Introduction
+   ↓
+Abstract
+   ↓
+Title</div>
+<p class="small">This is not a mandatory rule. It is a useful beginner workflow because it forces the paper to grow from the evidence that actually exists rather than from an overambitious story.</p>
+</section>
+
+
+<section id="figures">
+<h2>10. Figures: Every Figure Should Answer a Question</h2>
+<p>A good figure is not decoration. It is a piece of evidence. Write the figure's message first, then decide what panels are needed to support that message.</p>
+<table>
+<tr><th>Figure</th><th>Typical function</th></tr>
+<tr><td>Fig. 1</td><td>Research question / workflow / dataset construction</td></tr>
+<tr><td>Fig. 2</td><td>Method architecture and experimental design</td></tr>
+<tr><td>Fig. 3</td><td>Main performance / primary endpoint</td></tr>
+<tr><td>Fig. 4</td><td>Ablation / controlled experiments</td></tr>
+<tr><td>Fig. 5</td><td>Robustness / external validation</td></tr>
+<tr><td>Fig. 6</td><td>Error analysis / biological interpretation</td></tr>
+</table>
+<div class="callout"><b>Figure self-test:</b> If you remove the main text and leave only the figure plus caption, can the reader still identify what was compared, what the main result is, and what the sample size / uncertainty means?</div>
+</section>
+
+
+<section id="presentation">
+<h2>11. Preparing an Academic Presentation: Do Not Paste the Paper into PowerPoint</h2>
+<p>Harvard Catalyst emphasizes slide design that helps audiences understand and remember scientific information. MIT Communication Lab recommends one message per slide and keeping only information that supports that message. Nature's presentation guidance similarly emphasizes building a research story around a key message.</p>
+
+<h3>A practical 20-slide research presentation</h3>
+<div class="slidegrid">
+<div class="slide"><strong>1. Title</strong>Title, name, affiliation, one-sentence topic statement.</div>
+<div class="slide"><strong>2. Big problem</strong>The important problem in the field.</div>
+<div class="slide"><strong>3. Why it matters</strong>Scientific / clinical / engineering importance.</div>
+<div class="slide"><strong>4. What we know</strong>Only the background needed to understand the study.</div>
+<div class="slide"><strong>5. Gap</strong>The unresolved limitation in current knowledge or methods.</div>
+<div class="slide"><strong>6. Research question</strong>One slide for the central question / hypothesis.</div>
+<div class="slide"><strong>7. Dataset</strong>Source, scale, quality, and split.</div>
+<div class="slide"><strong>8. Study design</strong>Control / baseline / validation strategy.</div>
+<div class="slide"><strong>9. Method overview</strong>One clear workflow diagram.</div>
+<div class="slide"><strong>10. Technical method</strong>Only the technical details needed to understand the results.</div>
+<div class="slide"><strong>11. Evaluation</strong>Primary metrics and success criteria.</div>
+<div class="slide"><strong>12. Baseline</strong>Establish the reference point.</div>
+<div class="slide"><strong>13. Main result</strong>The single most important piece of evidence.</div>
+<div class="slide"><strong>14. Controlled / ablation</strong>Where did the improvement come from?</div>
+<div class="slide"><strong>15. Robustness</strong>Different seeds / subsets / conditions.</div>
+<div class="slide"><strong>16. Independent validation</strong>Truly unseen data.</div>
+<div class="slide"><strong>17. Error analysis</strong>Where and why does the method fail?</div>
+<div class="slide"><strong>18. Interpretation</strong>How should the result change our understanding?</div>
+<div class="slide"><strong>19. Limitations</strong>Define the boundary of trust explicitly.</div>
+<div class="slide"><strong>20. Take-home message</strong>No more than three conclusions + Q&A.</div>
+</div>
+
+<h3>Assertion–Evidence principle</h3>
+<div class="callout good"><b>Weak title:</b> “Results”<br><b>Stronger title:</b> “Pretraining improved independent-test MCC, but gains disappeared without homology control.”<br><br>The slide title states the claim; the figure provides the evidence.</div>
+</section>
+
+
+<section id="delivery">
+<h2>12. How to Deliver the Academic Presentation</h2>
+<div class="grid">
+<div class="card"><b>Define the audience first</b>A specialist faculty audience, interdisciplinary researchers, and students require different levels of background.</div>
+<div class="card"><b>Keep only 1–3 core messages</b>Nature's presentation guidance repeatedly emphasizes key messages and research story.</div>
+<div class="card"><b>Do not read the slides</b>The slides should carry visual evidence; you provide the explanation.</div>
+<div class="card"><b>Problem before tool</b>Do not begin by introducing CNNs, Transformers, or software. Begin with the research problem.</div>
+<div class="card"><b>Rehearse with a timer</b>Deleting material is usually better than speaking faster.</div>
+<div class="card"><b>Prepare for Q&A</b>Anticipate questions about datasets, baselines, leakage, statistics, and limitations.</div>
+</div>
+
+<h3>Every results slide can follow three steps</h3>
+<div class="flow">Question
+  ↓
+Evidence (figure / table)
+  ↓
+One-sentence interpretation</div>
+</section>
+
+
+<section id="ai">
+<h2>13. In 2026, AI Can Assist Research—but Responsibility Cannot Be Outsourced</h2>
+<p>Current ICMJE guidance states that AI-assisted technologies should not be listed as authors. Human authors remain responsible for accuracy, citations, originality, and the final content, and AI use should be disclosed appropriately. A 2026 Nature Computational Science editorial likewise emphasizes human oversight, accountability, and transparency. If AI materially contributes to data analysis, figure generation, or the research workflow, describe that contribution clearly in Methods or another required disclosure section.</p>
+
+<h3>Reasonable uses of AI</h3>
+<div class="grid">
+<div class="card"><b>Literature exploration</b>Generate search terms and organize concepts, then verify claims in the original sources.</div>
+<div class="card"><b>Programming</b>Generate boilerplate, debug code, and write tests—but understand and verify the code yourself.</div>
+<div class="card"><b>Writing support</b>Improve language and structure, but do not allow AI to invent data, citations, or conclusions.</div>
+<div class="card"><b>Analysis assistance</b>AI may suggest analyses, but assumptions, code, and numerical outputs require independent verification.</div>
+</div>
+
+<h3>Minimum AI-use record</h3>
+<table>
+<tr><th>Record</th><th>What to document</th></tr>
+<tr><td>Tool</td><td>Tool / model name and version, if available</td></tr>
+<tr><td>Purpose</td><td>Literature search, code, language editing, analysis, figure generation, etc.</td></tr>
+<tr><td>Human verification</td><td>How the output was checked</td></tr>
+<tr><td>Research impact</td><td>Whether AI materially changed the method or analysis</td></tr>
+<tr><td>Disclosure</td><td>Where it was disclosed according to journal / institutional rules</td></tr>
+</table>
+<div class="callout bad"><b>Unacceptable:</b> fabricated citations, invented data, unverified analysis, or uploading confidential manuscripts / patient data to an unauthorized external AI system.</div>
+</section>
+
+
+<section id="mistakes">
+<h2>14. Twelve Common Beginner Research Mistakes</h2>
+<table>
+<tr><th>#</th><th>Mistake</th><th>Correction</th></tr>
+<tr><td>1</td><td>The topic is too broad</td><td>Convert it into one measurable research question.</td></tr>
+<tr><td>2</td><td>Choosing a fancy model before identifying the problem</td><td>Define the gap, data, and outcome first.</td></tr>
+<tr><td>3</td><td>Repeatedly looking at the test set</td><td>Open the test set only after model selection is complete.</td></tr>
+<tr><td>4</td><td>Changing many parameters at the same time</td><td>Use controlled experiments or an explicit factorial design.</td></tr>
+<tr><td>5</td><td>Reporting only the best run</td><td>Use multiple seeds and report uncertainty.</td></tr>
+<tr><td>6</td><td>Reporting only accuracy</td><td>Choose metrics appropriate to the problem.</td></tr>
+<tr><td>7</td><td>Using weak baselines</td><td>Include simple, established, and relevant strong baselines.</td></tr>
+<tr><td>8</td><td>Treating literature review as a collection of summaries</td><td>Organize evidence, disagreement, limitations, and gaps.</td></tr>
+<tr><td>9</td><td>Writing an incomplete Methods section</td><td>Write enough detail for a domain peer to reproduce the study.</td></tr>
+<tr><td>10</td><td>Treating results as conclusions</td><td>Separate observation from interpretation.</td></tr>
+<tr><td>11</td><td>Filling slides with paper text</td><td>Use one message per slide and visual evidence.</td></tr>
+<tr><td>12</td><td>Using AI output without verification</td><td>Verify, document, disclose, and retain human accountability.</td></tr>
+</table>
+</section>
+
+
+<section id="checklist">
+<h2>15. Final Research Readiness Checklist</h2>
+<p>This checklist can be used for project meetings or final-report self-assessment. Progress is stored locally in the current browser.</p>
+<div class="checklist" data-progress="final">
+<label class="checkrow"><input type="checkbox" data-save>I can explain the research question in one sentence.</label>
+<label class="checkrow"><input type="checkbox" data-save>I can identify the 3–5 most important prior studies and their limitations.</label>
+<label class="checkrow"><input type="checkbox" data-save>My research gap is more meaningful than “nobody has used my model before.”</label>
+<label class="checkrow"><input type="checkbox" data-save>Dataset provenance, cleaning, and inclusion/exclusion rules are documented.</label>
+<label class="checkrow"><input type="checkbox" data-save>The roles of training, validation, and independent test data are clear.</label>
+<label class="checkrow"><input type="checkbox" data-save>I have a reasonable baseline / control.</label>
+<label class="checkrow"><input type="checkbox" data-save>The primary metric was chosen before looking at the test result.</label>
+<label class="checkrow"><input type="checkbox" data-save>Key model components have ablation or controlled experiments.</label>
+<label class="checkrow"><input type="checkbox" data-save>I performed error analysis rather than reporting only the highest score.</label>
+<label class="checkrow"><input type="checkbox" data-save>I understand the conditions under which the main conclusion may not hold.</label>
+<label class="checkrow"><input type="checkbox" data-save>The Methods section is detailed enough for a domain peer to reconstruct the main analysis.</label>
+<label class="checkrow"><input type="checkbox" data-save>Software, environment, random seeds, and hardware are documented.</label>
+<label class="checkrow"><input type="checkbox" data-save>Data/code sharing—or reasons that sharing is restricted—has been planned.</label>
+<label class="checkrow"><input type="checkbox" data-save>Every major figure answers a specific research question.</label>
+<label class="checkrow"><input type="checkbox" data-save>Results and Discussion are clearly separated.</label>
+<label class="checkrow"><input type="checkbox" data-save>The presentation fits within the time limit without rushing.</label>
+<label class="checkrow"><input type="checkbox" data-save>Each slide has one main message.</label>
+<label class="checkrow"><input type="checkbox" data-save>AI-assisted work has been verified by a human and disclosed when required.</label>
+</div>
+<div class="progress-wrap"><div class="progress-bar" data-bar="final"></div></div>
+<div class="small" data-label="final"></div>
+<button class="btn" id="resetChecks">Reset All Checks</button>
+</section>
+
+
+<section id="sources">
+<h2>16. Online Resources Used to Build This Guide</h2>
+<p>You do not need to read every resource immediately. Return to the original sources when you need deeper guidance. Purdue OWL, EQUATOR, NIH, PLOS, MIT Communication Lab, and Harvard Catalyst are especially useful starting points.</p>
+<ul class="source-list">
+<li><a href="https://owl.purdue.edu/owl/research_and_citation/conducting_research/research_overview/index.html" target="_blank">Purdue OWL — Research: Where to Begin</a>: narrowing topics, forming research questions, and selecting sources.</li>
+<li><a href="https://writingcenter.gmu.edu/writing-resources/imrad/imrad-reports-introductions" target="_blank">George Mason Writing Center — IMRaD Introduction</a>: literature, motivation, and contribution.</li>
+<li><a href="https://writingcenter.gmu.edu/writing-resources/imrad/imrad-results-discussion" target="_blank">George Mason Writing Center — IMRaD Results & Discussion</a>: findings versus interpretation.</li>
+<li><a href="https://www.equator-network.org/reporting-guidelines/" target="_blank">EQUATOR Network — Reporting Guidelines</a>: CONSORT, STROBE, PRISMA, TRIPOD, STARD, ARRIVE, and more.</li>
+<li><a href="https://grants.nih.gov/policy-and-compliance/policy-topics/reproducibility" target="_blank">NIH — Rigor and Reproducibility</a>: well-controlled design, analysis, interpretation, and reporting.</li>
+<li><a href="https://grants.nih.gov/policy-and-compliance/policy-topics/sharing-policies/dms/writing-dms-plan" target="_blank">NIH — Data Management & Sharing Plan</a>: 2026 DMS format and data-sharing principles.</li>
+<li><a href="https://www.niddk.nih.gov/research-funding/research-resources/data-management-sharing/guidance-writing-dms-plan" target="_blank">NIDDK — DMS Guidance</a>: code, metadata, standards, and reusable workflows.</li>
+<li><a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3003726" target="_blank">PLOS Biology 2026 — Core Reproducibility Items</a>: cross-disciplinary reproducibility consensus.</li>
+<li><a href="https://explore.plos.org/author-resources/how-to-write-a-methods-section" target="_blank">PLOS — How to Write a Methods Section</a>: Methods should support replication.</li>
+<li><a href="https://mitcommlab.mit.edu/broad/commkit/slideshow/" target="_blank">MIT Communication Lab — Slideshow</a>: one message per slide and visual evidence.</li>
+<li><a href="https://catalyst.harvard.edu/writing-communication-center/visualize-science/slides/" target="_blank">Harvard Catalyst — Scientific Slides</a>: slide design and assertion-evidence principles.</li>
+<li><a href="https://www.nature.com/masterclasses/advancing-scientific-presentations/52046894" target="_blank">Nature Masterclasses — Advancing Scientific Presentations</a>: key messages, research story, deck design, delivery, and Q&A.</li>
+<li><a href="https://www.icmje.org/recommendations/browse/artificial-intelligence/" target="_blank">ICMJE — Use of AI in Publishing</a>: AI disclosure, human accountability, and confidentiality.</li>
+<li><a href="https://www.nature.com/articles/s43588-026-01043-4" target="_blank">Nature Computational Science 2026 — Responsible and Transparent AI Use</a>: AI as an assistive tool, not a substitute for scholarly judgment.</li>
+</ul>
+</section>
+
+</main></div>
+<footer>CS535 Computational Biology · Beginner Research Guide · Research question → evidence → reproducibility → paper → presentation</footer>
+<script>
+(()=>{const $=id=>document.getElementById(id);const build=$("buildRQ");if(build)build.addEventListener("click",()=>{const p=$("rqPop").value.trim()||"[population / dataset]",m=$("rqMethod").value.trim()||"[method]",b=$("rqBase").value.trim()||"[baseline]",metric=$("rqMetric").value.trim()||"[primary metric]",c=$("rqCond").value.trim();$("rqOutput").textContent=`In ${p}, does ${m}, compared with ${b}, improve ${metric}${c?` under the condition of ${c}`:""}?`;});const boxes=Array.from(document.querySelectorAll('input[type="checkbox"][data-save]'));boxes.forEach((box,i)=>{const key="cs535_research_check_"+i;box.checked=localStorage.getItem(key)==="1";box.addEventListener("change",()=>{localStorage.setItem(key,box.checked?"1":"0");updateAll();});});function updateGroup(name){const group=document.querySelector(`[data-progress="${name}"]`),bar=document.querySelector(`[data-bar="${name}"]`),label=document.querySelector(`[data-label="${name}"]`);if(!group||!bar||!label)return;const items=Array.from(group.querySelectorAll('input[type="checkbox"]')),done=items.filter(x=>x.checked).length,pct=items.length?Math.round(done/items.length*100):0;bar.style.width=pct+"%";label.textContent=`Completed ${done} / ${items.length} (${pct}%)`;}function updateAll(){["rq","protocol","repro","final"].forEach(updateGroup)}updateAll();const reset=$("resetChecks");if(reset)reset.addEventListener("click",()=>{boxes.forEach((box,i)=>{box.checked=false;localStorage.removeItem("cs535_research_check_"+i)});updateAll();});})();
+</script>
+</body></html>

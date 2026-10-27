@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1692" height="951" viewBox="0 0 564 317">
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#7E94AE"/></marker></defs>
+<rect x="0" y="0" width="564" height="317" fill="#FFFFFF" stroke="none" stroke-width="0.8"/>
+<rect x="8" y="2" width="548" height="34" fill="#102D50" stroke="#102D50" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="400" fill="#FFFFFF">
+<tspan x="282.0" y="23.76">Frozen ESM embeddings  [B, 35, D]</tspan>
+</text>
+<line x1="22" y1="36" x2="22" y2="270" stroke="#7E94AE" stroke-width="1"/>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" fill="#155BD7">
+<tspan x="50" y="67.08">Pooled LR</tspan>
+</text>
+<line x1="22" y1="98.0" x2="50" y2="98.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="50" y="74" width="140" height="48" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="120.0" y="95.36">Mean real residues</tspan>
+<tspan x="120.0" y="108.8">[B, D]</tspan>
+</text>
+<line x1="190" y1="98.0" x2="210" y2="98.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="210" y="74" width="110" height="48" fill="#E9F5F2" stroke="#16766E" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="265.0" y="102.08">StandardScaler</tspan>
+</text>
+<line x1="320" y1="98.0" x2="340" y2="98.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="340" y="74" width="132" height="48" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="406.0" y="95.36">Balanced LR</tspan>
+<tspan x="406.0" y="108.8">C = 0.1</tspan>
+</text>
+<line x1="472" y1="98.0" x2="495" y2="98.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" fill="#155BD7">
+<tspan x="497" y="102.08">Score</tspan>
+</text>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" fill="#155BD7">
+<tspan x="50" y="150.08">Single-window CNN</tspan>
+</text>
+<line x1="22" y1="181.0" x2="50" y2="181.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="50" y="157" width="140" height="48" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="120.0" y="178.36">Conv1D</tspan>
+<tspan x="120.0" y="191.8">k = 3, 64 filters</tspan>
+</text>
+<line x1="190" y1="181.0" x2="210" y2="181.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="210" y="157" width="110" height="48" fill="#E9F5F2" stroke="#16766E" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="265.0" y="178.36">Mask + max</tspan>
+<tspan x="265.0" y="191.8">[B, 64]</tspan>
+</text>
+<line x1="320" y1="181.0" x2="340" y2="181.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="340" y="157" width="132" height="48" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="406.0" y="178.36">Dropout 0.3</tspan>
+<tspan x="406.0" y="191.8">Linear + sigmoid</tspan>
+</text>
+<line x1="472" y1="181.0" x2="495" y2="181.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" fill="#155BD7">
+<tspan x="497" y="185.08">Score</tspan>
+</text>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" fill="#155BD7">
+<tspan x="50" y="233.08">Multi-window CNN</tspan>
+</text>
+<line x1="22" y1="270.0" x2="50" y2="270.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="50" y="240" width="140" height="60" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="120.0" y="260.64">5 parallel windows</tspan>
+<tspan x="120.0" y="274.08">k = 2, 3, 4, 5, 8</tspan>
+<tspan x="120.0" y="287.52">256 filters each</tspan>
+</text>
+<line x1="190" y1="270.0" x2="210" y2="270.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="210" y="240" width="110" height="60" fill="#E9F5F2" stroke="#16766E" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="265.0" y="267.35999999999996">Mask + max</tspan>
+<tspan x="265.0" y="280.79999999999995">Concat [B, 1280]</tspan>
+</text>
+<line x1="320" y1="270.0" x2="340" y2="270.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<rect x="340" y="240" width="132" height="60" fill="#EDF4FF" stroke="#155BD7" stroke-width="0.8"/>
+<text text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="400" fill="#102D50">
+<tspan x="406.0" y="267.35999999999996">Dropout 0.3</tspan>
+<tspan x="406.0" y="280.79999999999995">Linear + sigmoid</tspan>
+</text>
+<line x1="472" y1="270.0" x2="495" y2="270.0" stroke="#7E94AE" stroke-width="1" marker-end="url(#arrow)"/>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="12" font-weight="700" fill="#155BD7">
+<tspan x="497" y="274.08">Score</tspan>
+</text>
+<text text-anchor="start" font-family="Helvetica Neue, Arial, sans-serif" font-size="10.7" font-weight="400" fill="#53677F">
+<tspan x="8" y="312.138">CNNs transpose to [B, D, 35]. ReLU follows Conv1D; masking precedes max.</tspan>
+</text>
+</svg>
