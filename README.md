@@ -4,6 +4,7 @@ An English-language, reproducible course project about controlled peptide-classi
 
 ## Deliverables
 
+- **PDF reports and presentation files:** [presentation/](presentation/).
 - **Upload to Kaggle:** [dataset ZIP](dist/deepneoag-course-dataset.zip).
 - **Import as a Kaggle notebook:** [standalone notebook](notebooks/DeepNeoAG_Course_Project_Kaggle.ipynb).
 - **Run instructions:** [Kaggle guide](docs/KAGGLE_RUN_GUIDE.md).

@@ -24,11 +24,9 @@ htmlcov/
 *.egg-info/
 /tmp/
 
-# Publish report and presentation deliverables; ignore local run outputs
-/output/*
-!/output/pdf/
-/outputs/*
-!/outputs/presentation/
+# Local run outputs; published deliverables live in /presentation/
+/output/
+/outputs/
 
 # Datasets are downloaded locally; keep only the download documentation
 /data/*
